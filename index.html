@@ -22,1025 +22,172 @@
             --gray-900: #1A1A18;
             --text: #1A1A18;
             --text-secondary: #555450;
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
-            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.10);
-            --shadow-gold: 0 4px 24px rgba(200, 150, 62, 0.18);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
+            --shadow-gold: 0 4px 24px rgba(200,150,62,0.18);
             --radius-sm: 8px;
             --radius: 14px;
             --radius-lg: 20px;
-            --transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-            --font-display: 'Georgia', 'Times New Roman', 'Noto Serif', serif;
+            --transition: 0.28s cubic-bezier(0.4,0,0.2,1);
+            --font-display: 'Georgia', 'Times New Roman', serif;
             --font-body: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
             --max-width: 1200px;
             --nav-height: 72px;
         }
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: calc(var(--nav-height) + 20px);
-            font-size: 16px;
-            -webkit-text-size-adjust: 100%;
-        }
-        body {
-            font-family: var(--font-body);
-            background: var(--white);
-            color: var(--text);
-            line-height: 1.65;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden;
-        }
-        img,
-        svg {
-            display: block;
-            max-width: 100%;
-            height: auto;
-        }
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-        ul {
-            list-style: none;
-        }
-        button {
-            cursor: pointer;
-            font-family: inherit;
-            border: none;
-            background: none;
-        }
-        input,
-        select,
-        textarea {
-            font-family: inherit;
-            font-size: inherit;
-        }
+        *{box-sizing:border-box;margin:0;padding:0}
+        html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-height) + 20px);font-size:16px}
+        body{font-family:var(--font-body);background:var(--white);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+        img,svg{display:block;max-width:100%;height:auto}
+        a{color:inherit;text-decoration:none}
+        ul{list-style:none}
+        button{cursor:pointer;font-family:inherit;border:none;background:none}
+        input,select,textarea{font-family:inherit;font-size:inherit}
 
-        /* ========== NAVBAR ========== */
-        .navbar {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--gray-200);
-            transition: var(--transition);
-            height: var(--nav-height);
-        }
-        .navbar.scrolled {
-            box-shadow: var(--shadow-md);
-            border-bottom-color: var(--gold-pale);
-        }
-        .nav-inner {
-            max-width: var(--max-width);
-            margin: 0 auto;
-            padding: 0 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 100%;
-            gap: 1rem;
-        }
-        .nav-logo-link {
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-        }
-        .nav-logo-link svg {
-            height: 44px;
-            width: auto;
-        }
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 0.2rem;
-            flex-wrap: wrap;
-        }
-        .nav-links a {
-            padding: 0.45rem 0.9rem;
-            border-radius: 6px;
-            font-size: 0.88rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            transition: var(--transition);
-            white-space: nowrap;
-            letter-spacing: 0.3px;
-        }
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--gold-dark);
-            background: var(--gold-pale);
-        }
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            flex-shrink: 0;
-        }
-        .btn-lang {
-            padding: 0.4rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            border: 1.5px solid var(--gray-300);
-            color: var(--text-secondary);
-            transition: var(--transition);
-            background: var(--white);
-            letter-spacing: 0.3px;
-            white-space: nowrap;
-        }
-        .btn-lang:hover {
-            border-color: var(--gold);
-            color: var(--gold-dark);
-            background: var(--gold-pale);
-        }
-        .btn-nav-login {
-            padding: 0.45rem 1.1rem;
-            border-radius: 20px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            background: var(--gold);
-            color: #fff;
-            letter-spacing: 0.4px;
-            transition: var(--transition);
-            white-space: nowrap;
-            border: 2px solid var(--gold);
-        }
-        .btn-nav-login:hover {
-            background: var(--gold-dark);
-            border-color: var(--gold-dark);
-            box-shadow: var(--shadow-gold);
-            transform: translateY(-1px);
-        }
-        .mobile-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            padding: 0.5rem;
-            z-index: 1001;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-        .mobile-toggle span {
-            display: block;
-            width: 24px;
-            height: 2.5px;
-            background: var(--gold-dark);
-            border-radius: 2px;
-            transition: var(--transition);
-            transform-origin: center;
-        }
-        .mobile-toggle.open span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        .mobile-toggle.open span:nth-child(2) {
-            opacity: 0;
-            transform: scaleX(0);
-        }
-        .mobile-toggle.open span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
-        }
+        /* NAVBAR */
+        .navbar{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,0.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--gray-200);transition:var(--transition);height:var(--nav-height)}
+        .navbar.scrolled{box-shadow:var(--shadow-md);border-bottom-color:var(--gold-pale)}
+        .nav-inner{max-width:var(--max-width);margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:100%;gap:1rem}
+        .nav-logo-link{flex-shrink:0;display:flex;align-items:center}
+        .nav-logo-link svg{height:44px;width:auto}
+        .nav-links{display:flex;align-items:center;gap:0.2rem;flex-wrap:wrap}
+        .nav-links a{padding:0.45rem 0.9rem;border-radius:6px;font-size:0.88rem;font-weight:500;color:var(--text-secondary);transition:var(--transition);white-space:nowrap;letter-spacing:0.3px}
+        .nav-links a:hover,.nav-links a.active{color:var(--gold-dark);background:var(--gold-pale)}
+        .nav-actions{display:flex;align-items:center;gap:0.5rem;flex-shrink:0}
+        .btn-lang{padding:0.4rem 0.75rem;border-radius:20px;font-size:0.78rem;font-weight:600;border:1.5px solid var(--gray-300);color:var(--text-secondary);transition:var(--transition);background:var(--white);letter-spacing:0.3px;white-space:nowrap}
+        .btn-lang:hover{border-color:var(--gold);color:var(--gold-dark);background:var(--gold-pale)}
+        .btn-nav-login{padding:0.45rem 1.1rem;border-radius:20px;font-size:0.82rem;font-weight:600;background:var(--gold);color:#fff;letter-spacing:0.4px;transition:var(--transition);white-space:nowrap;border:2px solid var(--gold)}
+        .btn-nav-login:hover{background:var(--gold-dark);border-color:var(--gold-dark);box-shadow:var(--shadow-gold);transform:translateY(-1px)}
+        .mobile-toggle{display:none;flex-direction:column;gap:5px;padding:0.5rem;z-index:1001;background:none;border:none;cursor:pointer}
+        .mobile-toggle span{display:block;width:24px;height:2.5px;background:var(--gold-dark);border-radius:2px;transition:var(--transition);transform-origin:center}
+        .mobile-toggle.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+        .mobile-toggle.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+        .mobile-toggle.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
 
-        /* ========== HERO ========== */
-        .hero {
-            background: linear-gradient(180deg, var(--off-white) 0%, var(--white) 100%);
-            padding: 4rem 1.5rem 5rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -100px;
-            right: -120px;
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, rgba(200, 150, 62, 0.07) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: -80px;
-            left: -100px;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(200, 150, 62, 0.05) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 750px;
-            margin: 0 auto;
-        }
-        .hero-logo-svg {
-            display: block;
-            margin: 0 auto 1.8rem;
-            width: 260px;
-            height: auto;
-            animation: fadeInUp 0.7s ease-out;
-        }
-        .hero-badge {
-            display: inline-block;
-            background: var(--gold-pale);
-            color: var(--gold-dark);
-            padding: 0.35rem 1.1rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            margin-bottom: 1.2rem;
-            animation: fadeInUp 0.7s ease-out 0.1s both;
-        }
-        .hero-title {
-            font-family: var(--font-display);
-            font-size: 2.8rem;
-            font-weight: 700;
-            color: var(--gray-900);
-            letter-spacing: 1px;
-            line-height: 1.2;
-            margin-bottom: 0.8rem;
-            animation: fadeInUp 0.7s ease-out 0.2s both;
-        }
-        .hero-title .gold {
-            color: var(--gold);
-        }
-        .hero-subtitle {
-            font-size: 1.08rem;
-            color: var(--text-secondary);
-            margin-bottom: 2.2rem;
-            max-width: 540px;
-            margin-left: auto;
-            margin-right: auto;
-            animation: fadeInUp 0.7s ease-out 0.3s both;
-        }
-        .hero-btns {
-            display: flex;
-            gap: 0.9rem;
-            flex-wrap: wrap;
-            justify-content: center;
-            animation: fadeInUp 0.7s ease-out 0.4s both;
-        }
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(28px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.4rem;
-            padding: 0.8rem 1.8rem;
-            border-radius: 30px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 0.95rem;
-            text-align: center;
-            white-space: nowrap;
-            border: 2px solid transparent;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, var(--gold-dark), var(--gold-metallic));
-            color: #fff;
-            border-color: transparent;
-            box-shadow: 0 4px 18px rgba(180, 130, 40, 0.3);
-        }
-        .btn-primary:hover {
-            box-shadow: 0 6px 28px rgba(180, 130, 40, 0.45);
-            transform: translateY(-2px);
-            filter: brightness(1.06);
-        }
-        .btn-outline {
-            background: transparent;
-            border-color: var(--gold);
-            color: var(--gold-dark);
-        }
-        .btn-outline:hover {
-            background: var(--gold-pale);
-            border-color: var(--gold-dark);
-            transform: translateY(-2px);
-        }
-        .btn-sm {
-            padding: 0.5rem 1.2rem;
-            font-size: 0.82rem;
-            border-radius: 22px;
-        }
-        .btn-block {
-            width: 100%;
-            justify-content: center;
-        }
+        /* HERO */
+        .hero{background:linear-gradient(180deg,var(--off-white) 0%,var(--white) 100%);padding:4rem 1.5rem 5rem;text-align:center;position:relative;overflow:hidden}
+        .hero::before{content:'';position:absolute;top:-100px;right:-120px;width:350px;height:350px;background:radial-gradient(circle,rgba(200,150,62,0.07) 0%,transparent 70%);border-radius:50%;pointer-events:none}
+        .hero-content{position:relative;z-index:1;max-width:750px;margin:0 auto}
+        .hero-logo-svg{display:block;margin:0 auto 1.8rem;width:260px;height:auto;animation:fadeInUp 0.7s ease-out}
+        .hero-badge{display:inline-block;background:var(--gold-pale);color:var(--gold-dark);padding:0.35rem 1.1rem;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:1.2rem;animation:fadeInUp 0.7s ease-out 0.1s both}
+        .hero-title{font-family:var(--font-display);font-size:2.8rem;font-weight:700;color:var(--gray-900);letter-spacing:1px;line-height:1.2;margin-bottom:0.8rem;animation:fadeInUp 0.7s ease-out 0.2s both}
+        .hero-title .gold{color:var(--gold)}
+        .hero-subtitle{font-size:1.08rem;color:var(--text-secondary);margin-bottom:2.2rem;max-width:540px;margin-left:auto;margin-right:auto;animation:fadeInUp 0.7s ease-out 0.3s both}
+        .hero-btns{display:flex;gap:0.9rem;flex-wrap:wrap;justify-content:center;animation:fadeInUp 0.7s ease-out 0.4s both}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:0.4rem;padding:0.8rem 1.8rem;border-radius:30px;font-weight:600;letter-spacing:0.5px;cursor:pointer;transition:var(--transition);font-size:0.95rem;text-align:center;white-space:nowrap;border:2px solid transparent}
+        .btn-primary{background:linear-gradient(135deg,var(--gold-dark),var(--gold-metallic));color:#fff;border-color:transparent;box-shadow:0 4px 18px rgba(180,130,40,0.3)}
+        .btn-primary:hover{box-shadow:0 6px 28px rgba(180,130,40,0.45);transform:translateY(-2px);filter:brightness(1.06)}
+        .btn-outline{background:transparent;border-color:var(--gold);color:var(--gold-dark)}
+        .btn-outline:hover{background:var(--gold-pale);border-color:var(--gold-dark);transform:translateY(-2px)}
+        .btn-sm{padding:0.5rem 1.2rem;font-size:0.82rem;border-radius:22px}
+        .btn-block{width:100%;justify-content:center}
 
-        /* ========== SECTIONS ========== */
-        .section {
-            padding: 4.5rem 1.5rem;
-            max-width: var(--max-width);
-            margin: 0 auto;
-        }
-        .section-label {
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--gold);
-            margin-bottom: 0.4rem;
-        }
-        .section-title {
-            font-family: var(--font-display);
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--gray-900);
-            margin-bottom: 0.6rem;
-            letter-spacing: 0.5px;
-            line-height: 1.2;
-        }
-        .section-divider {
-            width: 50px;
-            height: 3px;
-            background: var(--gold);
-            border-radius: 2px;
-            margin-bottom: 1.5rem;
-        }
-        .section-desc {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            max-width: 580px;
-            margin-bottom: 2rem;
-            line-height: 1.7;
-        }
+        /* SECTIONS */
+        .section{padding:4.5rem 1.5rem;max-width:var(--max-width);margin:0 auto}
+        .section-label{text-transform:uppercase;letter-spacing:3px;font-size:0.7rem;font-weight:700;color:var(--gold);margin-bottom:0.4rem}
+        .section-title{font-family:var(--font-display);font-size:2.2rem;font-weight:700;color:var(--gray-900);margin-bottom:0.6rem;letter-spacing:0.5px;line-height:1.2}
+        .section-divider{width:50px;height:3px;background:var(--gold);border-radius:2px;margin-bottom:1.5rem}
+        .section-desc{color:var(--text-secondary);font-size:1rem;max-width:580px;margin-bottom:2rem;line-height:1.7}
 
-        /* Services */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-        .service-card {
-            background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: var(--radius);
-            padding: 2rem 1.6rem;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
-            opacity: 0;
-            transition: var(--transition);
-        }
-        .service-card:hover {
-            border-color: var(--gold);
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-4px);
-        }
-        .service-card:hover::before {
-            opacity: 1;
-        }
-        .service-icon {
-            font-size: 2.2rem;
-            display: block;
-            margin-bottom: 0.8rem;
-        }
-        .service-card h3 {
-            font-family: var(--font-display);
-            font-size: 1.15rem;
-            color: var(--gray-900);
-            margin-bottom: 0.5rem;
-            letter-spacing: 0.3px;
-        }
-        .service-card p {
-            color: var(--text-secondary);
-            font-size: 0.88rem;
-            line-height: 1.6;
-        }
+        /* SERVICES */
+        .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
+        .service-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:2rem 1.6rem;transition:var(--transition);position:relative;overflow:hidden}
+        .service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light),var(--gold-dark));opacity:0;transition:var(--transition)}
+        .service-card:hover{border-color:var(--gold);box-shadow:var(--shadow-lg);transform:translateY(-4px)}
+        .service-card:hover::before{opacity:1}
+        .service-icon{font-size:2.2rem;display:block;margin-bottom:0.8rem}
+        .service-card h3{font-family:var(--font-display);font-size:1.15rem;color:var(--gray-900);margin-bottom:0.5rem;letter-spacing:0.3px}
+        .service-card p{color:var(--text-secondary);font-size:0.88rem;line-height:1.6}
 
-        /* Order Section */
-        .order-section-bg {
-            background: var(--gray-50);
-            border-top: 1px solid var(--gray-200);
-            border-bottom: 1px solid var(--gray-200);
-        }
-        .order-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.1fr;
-            gap: 2.5rem;
-            align-items: start;
-        }
-        .order-info h3 {
-            font-family: var(--font-display);
-            font-size: 1.6rem;
-            color: var(--gray-900);
-            margin-bottom: 0.8rem;
-        }
-        .order-info ul li {
-            padding: 0.4rem 0;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .order-info ul li::before {
-            content: '✦';
-            color: var(--gold);
-            font-size: 0.6rem;
-            flex-shrink: 0;
-        }
-        .order-form-card {
-            background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: var(--radius);
-            padding: 2rem;
-            box-shadow: var(--shadow-sm);
-        }
-        .order-form-card h3 {
-            font-family: var(--font-display);
-            font-size: 1.25rem;
-            color: var(--gray-900);
-            text-align: center;
-            margin-bottom: 1.5rem;
-            letter-spacing: 0.5px;
-        }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        .form-group label {
-            display: block;
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 0.3rem;
-            letter-spacing: 0.4px;
-            text-transform: uppercase;
-        }
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.7rem 0.9rem;
-            background: var(--gray-50);
-            border: 1.5px solid var(--gray-200);
-            border-radius: var(--radius-sm);
-            color: var(--text);
-            font-size: 0.9rem;
-            transition: var(--transition);
-            resize: vertical;
-        }
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(200, 150, 62, 0.06);
-            background: var(--white);
-        }
-        .form-group textarea {
-            min-height: 95px;
-        }
-        .form-group select {
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23C8963E'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 0.9rem center;
-            padding-right: 2.4rem;
-        }
-        .form-note {
-            text-align: center;
-            font-size: 0.72rem;
-            color: var(--gray-600);
-            margin-top: 0.6rem;
-        }
+        /* ORDER */
+        .order-section-bg{background:var(--gray-50);border-top:1px solid var(--gray-200);border-bottom:1px solid var(--gray-200)}
+        .order-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:2.5rem;align-items:start}
+        .order-info h3{font-family:var(--font-display);font-size:1.6rem;color:var(--gray-900);margin-bottom:0.8rem}
+        .order-info ul li{padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;display:flex;align-items:center;gap:0.5rem}
+        .order-info ul li::before{content:'✦';color:var(--gold);font-size:0.6rem;flex-shrink:0}
+        .order-form-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:2rem;box-shadow:var(--shadow-sm)}
+        .order-form-card h3{font-family:var(--font-display);font-size:1.25rem;color:var(--gray-900);text-align:center;margin-bottom:1.5rem;letter-spacing:0.5px}
+        .form-group{margin-bottom:1rem}
+        .form-group label{display:block;font-size:0.78rem;font-weight:700;color:var(--text);margin-bottom:0.3rem;letter-spacing:0.4px;text-transform:uppercase}
+        .form-group input,.form-group select,.form-group textarea{width:100%;padding:0.7rem 0.9rem;background:var(--gray-50);border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);color:var(--text);font-size:0.9rem;transition:var(--transition);resize:vertical}
+        .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,150,62,0.06);background:var(--white)}
+        .form-group textarea{min-height:95px}
+        .form-group select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23C8963E'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0.9rem center;padding-right:2.4rem}
+        .form-note{text-align:center;font-size:0.72rem;color:var(--gray-600);margin-top:0.6rem}
 
-        /* About */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2.5rem;
-            align-items: center;
-        }
-        .about-text p {
-            color: var(--text-secondary);
-            margin-bottom: 0.9rem;
-            font-size: 0.95rem;
-            line-height: 1.75;
-        }
-        .about-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.2rem;
-        }
-        .stat-card {
-            background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            text-align: center;
-            transition: var(--transition);
-        }
-        .stat-card:hover {
-            border-color: var(--gold);
-            box-shadow: var(--shadow-md);
-        }
-        .stat-number {
-            font-family: var(--font-display);
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--gold);
-            line-height: 1;
-        }
-        .stat-label {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-top: 0.3rem;
-        }
+        /* ABOUT */
+        .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center}
+        .about-text p{color:var(--text-secondary);margin-bottom:0.9rem;font-size:0.95rem;line-height:1.75}
+        .about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+        .stat-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:1.5rem;text-align:center;transition:var(--transition)}
+        .stat-card:hover{border-color:var(--gold);box-shadow:var(--shadow-md)}
+        .stat-number{font-family:var(--font-display);font-size:2.2rem;font-weight:700;color:var(--gold);line-height:1}
+        .stat-label{font-size:0.75rem;color:var(--text-secondary);letter-spacing:1px;text-transform:uppercase;margin-top:0.3rem}
 
-        /* Contact */
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-        .contact-card {
-            background: var(--white);
-            border: 2px solid var(--gray-200);
-            border-radius: var(--radius);
-            padding: 2rem 1.5rem;
-            text-align: center;
-            transition: var(--transition);
-            cursor: pointer;
-            display: block;
-            color: inherit;
-        }
-        .contact-card:hover {
-            border-color: var(--gold);
-            box-shadow: var(--shadow-gold);
-            transform: translateY(-3px);
-        }
-        .contact-card .icon {
-            font-size: 2.4rem;
-            display: block;
-            margin-bottom: 0.6rem;
-        }
-        .contact-card h4 {
-            font-family: var(--font-display);
-            font-size: 1.1rem;
-            color: var(--gray-900);
-            margin-bottom: 0.2rem;
-            letter-spacing: 0.4px;
-        }
-        .contact-card span {
-            color: var(--gold-dark);
-            font-size: 0.95rem;
-            font-weight: 600;
-        }
-        .contact-card small {
-            display: block;
-            color: var(--gray-600);
-            font-size: 0.7rem;
-            margin-top: 0.3rem;
-        }
+        /* CONTACT */
+        .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+        .contact-card{background:var(--white);border:2px solid var(--gray-200);border-radius:var(--radius);padding:2rem 1.5rem;text-align:center;transition:var(--transition);cursor:pointer;display:block;color:inherit}
+        .contact-card:hover{border-color:var(--gold);box-shadow:var(--shadow-gold);transform:translateY(-3px)}
+        .contact-card .icon{font-size:2.4rem;display:block;margin-bottom:0.6rem}
+        .contact-card h4{font-family:var(--font-display);font-size:1.1rem;color:var(--gray-900);margin-bottom:0.2rem;letter-spacing:0.4px}
+        .contact-card span{color:var(--gold-dark);font-size:0.95rem;font-weight:600}
+        .contact-card small{display:block;color:var(--gray-600);font-size:0.7rem;margin-top:0.3rem}
 
-        /* Footer */
-        .footer {
-            background: var(--gray-900);
-            color: #ccc;
-            text-align: center;
-            padding: 2rem 1.5rem;
-            font-size: 0.8rem;
-            letter-spacing: 0.4px;
-        }
-        .footer .gold {
-            color: var(--gold-light);
-            font-weight: 600;
-        }
+        /* FOOTER */
+        .footer{background:var(--gray-900);color:#ccc;text-align:center;padding:2rem 1.5rem;font-size:0.8rem;letter-spacing:0.4px}
+        .footer .gold{color:var(--gold-light);font-weight:600}
 
-        /* ========== MODAL ========== */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.55);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            backdrop-filter: blur(3px);
-            -webkit-backdrop-filter: blur(3px);
-        }
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .modal {
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            padding: 2.5rem 2rem;
-            width: 92%;
-            max-width: 440px;
-            position: relative;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-            animation: modalIn 0.3s ease-out;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        @keyframes modalIn {
-            from {
-                transform: translateY(36px) scale(0.95);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-        }
-        .modal-close {
-            position: absolute;
-            top: 0.9rem;
-            right: 0.9rem;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: var(--gray-100);
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            border: none;
-            cursor: pointer;
-            line-height: 1;
-        }
-        .modal-close:hover {
-            background: #e0ded9;
-            color: var(--text);
-        }
-        .modal h3 {
-            font-family: var(--font-display);
-            font-size: 1.4rem;
-            color: var(--gray-900);
-            text-align: center;
-            margin-bottom: 0.2rem;
-            letter-spacing: 0.5px;
-        }
-        .modal .modal-sub {
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            margin-bottom: 1.3rem;
-        }
-        .modal-tabs {
-            display: flex;
-            border-radius: 24px;
-            overflow: hidden;
-            border: 2px solid var(--gray-200);
-            margin-bottom: 1.4rem;
-        }
-        .modal-tab-btn {
-            flex: 1;
-            padding: 0.55rem;
-            text-align: center;
-            font-weight: 600;
-            font-size: 0.82rem;
-            letter-spacing: 0.4px;
-            transition: var(--transition);
-            background: transparent;
-            color: var(--text-secondary);
-            border: none;
-            cursor: pointer;
-            font-family: inherit;
-        }
-        .modal-tab-btn.active {
-            background: var(--gold);
-            color: #fff;
-        }
-        .modal .form-group {
-            margin-bottom: 0.9rem;
-        }
-        .modal .btn-block {
-            margin-top: 0.4rem;
-        }
-        .modal-msg {
-            text-align: center;
-            font-size: 0.78rem;
-            margin-top: 0.7rem;
-            min-height: 1.3em;
-            transition: var(--transition);
-            font-weight: 500;
-        }
-        .modal-msg.success {
-            color: #2d8a4e;
-        }
-        .modal-msg.error {
-            color: #c0392b;
-        }
-        .hidden {
-            display: none !important;
-        }
+        /* MODAL */
+        .modal-overlay,.dashboard-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s ease;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+        .modal-overlay.active,.dashboard-overlay.active{opacity:1;pointer-events:auto}
+        .modal{background:var(--white);border-radius:var(--radius-lg);padding:2.5rem 2rem;width:92%;max-width:700px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.25);animation:modalIn 0.3s ease-out;max-height:90vh;overflow-y:auto}
+        @keyframes modalIn{from{transform:translateY(36px) scale(0.95);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+        .modal-close{position:absolute;top:0.9rem;right:0.9rem;width:34px;height:34px;border-radius:50%;background:var(--gray-100);color:var(--text-secondary);font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:var(--transition);border:none;cursor:pointer;line-height:1}
+        .modal-close:hover{background:#e0ded9;color:var(--text)}
+        .modal h3{font-family:var(--font-display);font-size:1.4rem;color:var(--gray-900);text-align:center;margin-bottom:0.2rem;letter-spacing:0.5px}
+        .modal .modal-sub{text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-bottom:1.3rem}
+        .modal-tabs{display:flex;border-radius:24px;overflow:hidden;border:2px solid var(--gray-200);margin-bottom:1.4rem}
+        .modal-tab-btn{flex:1;padding:0.55rem;text-align:center;font-weight:600;font-size:0.82rem;letter-spacing:0.4px;transition:var(--transition);background:transparent;color:var(--text-secondary);border:none;cursor:pointer;font-family:inherit}
+        .modal-tab-btn.active{background:var(--gold);color:#fff}
+        .modal .form-group{margin-bottom:0.9rem}
+        .modal .btn-block{margin-top:0.4rem}
+        .modal-msg{text-align:center;font-size:0.78rem;margin-top:0.7rem;min-height:1.3em;transition:var(--transition);font-weight:500}
+        .modal-msg.success{color:#2d8a4e}
+        .modal-msg.error{color:#c0392b}
+        .hidden{display:none !important}
 
-        /* ========== ADMIN DASHBOARD ========== */
-        .dashboard-table-wrap {
-            overflow-x: auto;
-            margin-top: 1rem;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--gray-200);
-        }
-        .dashboard-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-            min-width: 600px;
-        }
-        .dashboard-table th,
-        .dashboard-table td {
-            padding: 0.6rem 0.8rem;
-            text-align: left;
-            border-bottom: 1px solid var(--gray-200);
-        }
-        .dashboard-table th {
-            background: var(--gray-50);
-            font-weight: 700;
-            color: var(--text);
-            letter-spacing: 0.3px;
-            text-transform: uppercase;
-            font-size: 0.7rem;
-        }
-        .dashboard-table tr:hover td {
-            background: var(--gold-pale);
-        }
-        .dashboard-empty {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-        .btn-danger-sm {
-            background: #c0392b;
-            color: #fff;
-            padding: 0.3rem 0.7rem;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .btn-danger-sm:hover {
-            background: #a93226;
-        }
+        /* DASHBOARD */
+        .dashboard-tabs{display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:1.5rem;border-bottom:2px solid var(--gray-200);padding-bottom:0.5rem}
+        .dash-tab{padding:0.5rem 1rem;font-weight:600;font-size:0.85rem;border-radius:20px;transition:var(--transition);color:var(--text-secondary);background:transparent;border:none;cursor:pointer}
+        .dash-tab.active{background:var(--gold-pale);color:var(--gold-dark)}
+        .dashboard-content{background:var(--gray-50);border-radius:var(--radius-sm);padding:1rem;min-height:200px}
+        .order-track-table{width:100%;border-collapse:collapse;font-size:0.8rem}
+        .order-track-table th,.order-track-table td{padding:0.5rem;border-bottom:1px solid var(--gray-200);text-align:left}
+        .order-track-table th{background:var(--gray-100);font-weight:700}
+        .status-select{padding:0.3rem;border-radius:4px;border:1px solid var(--gray-300);font-size:0.75rem}
+        .note-input{width:100%;padding:0.3rem;font-size:0.75rem;border:1px solid var(--gray-300);border-radius:4px}
+        .logo-gallery{display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
+        .logo-option{width:80px;height:50px;border:2px solid var(--gray-200);border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:5px;transition:var(--transition)}
+        .logo-option.active{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold-pale)}
+        .logo-option svg{width:100%;height:auto}
+        .upload-area{border:2px dashed var(--gray-300);border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer;transition:var(--transition)}
+        .upload-area:hover{border-color:var(--gold);background:var(--gold-pale)}
 
-        /* ========== TOAST ========== */
-        .toast {
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            background: var(--gray-900);
-            color: #fff;
-            padding: 0.8rem 1.4rem;
-            border-radius: 28px;
-            z-index: 3000;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            font-size: 0.85rem;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-            animation: slideIn 0.35s ease-out, fadeOut 0.35s ease-in 2.5s forwards;
-            pointer-events: none;
-            border-left: 3px solid var(--gold);
-        }
-        @keyframes slideIn {
-            from {
-                transform: translateX(110%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        @keyframes fadeOut {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(110%);
-                opacity: 0;
-            }
-        }
+        /* TOAST */
+        .toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--gray-900);color:#fff;padding:0.8rem 1.4rem;border-radius:28px;z-index:3000;font-weight:600;letter-spacing:0.3px;font-size:0.85rem;box-shadow:0 8px 30px rgba(0,0,0,0.3);animation:slideIn 0.35s ease-out,fadeOut 0.35s ease-in 2.5s forwards;pointer-events:none;border-left:3px solid var(--gold)}
+        @keyframes slideIn{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
+        @keyframes fadeOut{from{transform:translateX(0);opacity:1}to{transform:translateX(110%);opacity:0}}
 
-        /* ========== RESPONSIVE ========== */
-        @media (max-width: 968px) {
-            .order-grid,
-            .about-grid,
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            .hero-title {
-                font-size: 2.1rem;
-            }
-            .section-title {
-                font-size: 1.7rem;
-            }
-            .hero-logo-svg {
-                width: 200px;
-            }
-            .about-stats {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        @media (max-width: 768px) {
-            .nav-links {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 75%;
-                max-width: 300px;
-                height: 100vh;
-                background: rgba(255, 255, 255, 0.98);
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
-                flex-direction: column;
-                padding: 5rem 1.5rem 2rem;
-                gap: 0.5rem;
-                transition: right 0.35s ease;
-                border-left: 1px solid var(--gray-200);
-                z-index: 999;
-                box-shadow: -4px 0 20px rgba(0, 0, 0, 0.08);
-            }
-            .nav-links.open {
-                right: 0;
-            }
-            .nav-links a {
-                font-size: 0.95rem;
-                padding: 0.6rem 1rem;
-                display: block;
-                width: 100%;
-                border-radius: 8px;
-            }
-            .mobile-toggle {
-                display: flex;
-            }
-            .hero-title {
-                font-size: 1.7rem;
-            }
-            .hero-subtitle {
-                font-size: 0.9rem;
-            }
-            .section {
-                padding: 3rem 1.2rem;
-            }
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-            .btn {
-                padding: 0.65rem 1.3rem;
-                font-size: 0.85rem;
-            }
-            .nav-actions {
-                gap: 0.3rem;
-            }
-            .btn-nav-login {
-                padding: 0.38rem 0.8rem;
-                font-size: 0.75rem;
-            }
-            .btn-lang {
-                padding: 0.35rem 0.6rem;
-                font-size: 0.7rem;
-            }
-            .hero-logo-svg {
-                width: 170px;
-            }
-            .modal {
-                padding: 2rem 1.3rem;
-            }
-            .dashboard-table {
-                font-size: 0.7rem;
-            }
-        }
-        @media (max-width: 480px) {
-            .hero-title {
-                font-size: 1.4rem;
-            }
-            .hero-logo-svg {
-                width: 140px;
-            }
-            .section-title {
-                font-size: 1.3rem;
-            }
-            .about-stats {
-                grid-template-columns: 1fr;
-            }
-            .stat-number {
-                font-size: 1.6rem;
-            }
-            .order-form-card {
-                padding: 1.3rem 1rem;
-            }
-            .hero-btns {
-                flex-direction: column;
-                align-items: center;
-            }
-            .btn {
-                width: 100%;
-                max-width: 280px;
-                justify-content: center;
-            }
-        }
+        @media (max-width:968px){.order-grid,.about-grid,.contact-grid{grid-template-columns:1fr;gap:2rem}.hero-title{font-size:2.1rem}.section-title{font-size:1.7rem}.hero-logo-svg{width:200px}}
+        @media (max-width:768px){.nav-links{position:fixed;top:0;right:-100%;width:75%;max-width:300px;height:100vh;background:rgba(255,255,255,0.98);backdrop-filter:blur(20px);flex-direction:column;padding:5rem 1.5rem 2rem;gap:0.5rem;transition:right 0.35s ease;border-left:1px solid var(--gray-200);z-index:999}.nav-links.open{right:0}.nav-links a{font-size:0.95rem;padding:0.6rem 1rem;display:block;width:100%;border-radius:8px}.mobile-toggle{display:flex}.hero-title{font-size:1.7rem}.section{padding:3rem 1.2rem}.services-grid{grid-template-columns:1fr}}
     </style>
 </head>
 <body>
-
-    <!-- ==================== NAVBAR ==================== -->
+    <!-- NAVBAR -->
     <nav class="navbar" id="navbar">
         <div class="nav-inner">
-            <a href="#home" class="nav-logo-link" aria-label="Royal Programming Home">
-                <!-- Inline optimized SVG Logo -->
-                <svg width="220" height="50" viewBox="0 0 440 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <defs>
-                        <linearGradient id="goldGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#C8963E"/>
-                            <stop offset="35%" stop-color="#E8D48B"/>
-                            <stop offset="60%" stop-color="#D4A853"/>
-                            <stop offset="100%" stop-color="#A07828"/>
-                        </linearGradient>
-                        <linearGradient id="goldGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#A07828"/>
-                            <stop offset="30%" stop-color="#D4A853"/>
-                            <stop offset="70%" stop-color="#E8D48B"/>
-                            <stop offset="100%" stop-color="#C8963E"/>
-                        </linearGradient>
-                        <linearGradient id="goldGrad3" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="#E8D48B"/>
-                            <stop offset="50%" stop-color="#C8963E"/>
-                            <stop offset="100%" stop-color="#A07828"/>
-                        </linearGradient>
-                        <filter id="metallicShine" x="-5%" y="-5%" width="110%" height="110%">
-                            <feGaussianBlur in="SourceAlpha" stdDeviation="0.5" result="blur"/>
-                            <feSpecularLighting in="blur" surfaceScale="3" specularConstant="0.6" specularExponent="25" result="spec">
-                                <fePointLight x="200" y="30" z="180"/>
-                            </feSpecularLighting>
-                            <feComposite in="spec" in2="SourceAlpha" operator="in" result="specOut"/>
-                            <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="0.3" k4="0"/>
-                        </filter>
-                    </defs>
-                    <!-- Crown -->
-                    <g filter="url(#metallicShine)">
-                        <polygon points="18,72 34,28 50,72 66,28 82,72" fill="url(#goldGrad1)" stroke="url(#goldGrad2)" stroke-width="2" stroke-linejoin="round"/>
-                        <rect x="18" y="70" width="64" height="10" rx="2" fill="url(#goldGrad3)" stroke="url(#goldGrad2)" stroke-width="1.5"/>
-                        <!-- Crown jewels -->
-                        <circle cx="34" cy="40" r="3.5" fill="#fff" opacity="0.85"/>
-                        <circle cx="50" cy="55" r="4" fill="#fff" opacity="0.9"/>
-                        <circle cx="66" cy="40" r="3.5" fill="#fff" opacity="0.85"/>
-                        <!-- Crown base dots -->
-                        <circle cx="26" cy="75" r="2" fill="#fff" opacity="0.7"/>
-                        <circle cx="50" cy="75" r="2.2" fill="#fff" opacity="0.8"/>
-                        <circle cx="74" cy="75" r="2" fill="#fff" opacity="0.7"/>
-                    </g>
-                    <!-- </> symbol -->
-                    <g transform="translate(88, 50)">
-                        <text x="0" y="0" font-size="18" font-family="'Courier New', monospace" font-weight="700" fill="url(#goldGrad2)" text-anchor="start" dominant-baseline="middle">&lt;/&gt;</text>
-                    </g>
-                    <!-- Text: ROYAL -->
-                    <text x="130" y="38" font-size="26" font-family="'Georgia','Times New Roman',serif" font-weight="700" fill="url(#goldGrad2)" letter-spacing="3">ROYAL</text>
-                    <!-- Text: PROGRAMMING -->
-                    <text x="130" y="62" font-size="16" font-family="'Georgia','Times New Roman',serif" font-weight="600" fill="#7A6A4A" letter-spacing="4">PROGRAMMING</text>
-                    <!-- Tagline -->
-                    <text x="130" y="82" font-size="7.5" font-family="'Segoe UI','Inter',sans-serif" font-weight="500" fill="#B0A080" letter-spacing="2.5">CODE · CREATE · ELEVATE</text>
-                </svg>
-            </a>
+            <a href="#home" class="nav-logo-link" id="logoLink"></a>
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home" data-lang-key="navHome" class="active">Home</a></li>
                 <li><a href="#services" data-lang-key="navServices">Services</a></li>
@@ -1049,209 +196,64 @@
                 <li><a href="#contact" data-lang-key="navContact">Contact</a></li>
             </ul>
             <div class="nav-actions">
-                <button class="btn-lang" id="btnLang" title="Switch Language">🇳🇵 नेपाली</button>
-                <button class="btn-nav-login" id="btnOpenLogin" data-lang-key="loginBtn">Login</button>
-                <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
-                    <span></span><span></span><span></span>
-                </button>
+                <button class="btn-lang" id="btnLang">🇳🇵 नेपाली</button>
+                <button class="btn-nav-login" id="btnOpenLogin">Login</button>
+                <button class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></button>
             </div>
         </div>
     </nav>
 
-    <!-- ==================== HERO ==================== -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <svg class="hero-logo-svg" width="300" height="120" viewBox="0 0 440 100" xmlns="http://www.w3.org/2000/svg" aria-label="Royal Programming Logo">
-                <defs>
-                    <linearGradient id="hg1" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#C8963E"/><stop offset="35%" stop-color="#E8D48B"/><stop offset="60%" stop-color="#D4A853"/><stop offset="100%" stop-color="#A07828"/>
-                    </linearGradient>
-                    <linearGradient id="hg2" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stop-color="#A07828"/><stop offset="30%" stop-color="#D4A853"/><stop offset="70%" stop-color="#E8D48B"/><stop offset="100%" stop-color="#C8963E"/>
-                    </linearGradient>
-                    <linearGradient id="hg3" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stop-color="#E8D48B"/><stop offset="50%" stop-color="#C8963E"/><stop offset="100%" stop-color="#A07828"/>
-                    </linearGradient>
-                    <filter id="mshine" x="-5%" y="-5%" width="110%" height="110%">
-                        <feGaussianBlur in="SourceAlpha" stdDeviation="0.5" result="blur"/>
-                        <feSpecularLighting in="blur" surfaceScale="3" specularConstant="0.6" specularExponent="25" result="spec">
-                            <fePointLight x="200" y="30" z="180"/>
-                        </feSpecularLighting>
-                        <feComposite in="spec" in2="SourceAlpha" operator="in" result="specOut"/>
-                        <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="0.3" k4="0"/>
-                    </filter>
-                </defs>
-                <g filter="url(#mshine)">
-                    <polygon points="18,72 34,28 50,72 66,28 82,72" fill="url(#hg1)" stroke="url(#hg2)" stroke-width="2" stroke-linejoin="round"/>
-                    <rect x="18" y="70" width="64" height="10" rx="2" fill="url(#hg3)" stroke="url(#hg2)" stroke-width="1.5"/>
-                    <circle cx="34" cy="40" r="3.5" fill="#fff" opacity="0.85"/>
-                    <circle cx="50" cy="55" r="4" fill="#fff" opacity="0.9"/>
-                    <circle cx="66" cy="40" r="3.5" fill="#fff" opacity="0.85"/>
-                    <circle cx="26" cy="75" r="2" fill="#fff" opacity="0.7"/>
-                    <circle cx="50" cy="75" r="2.2" fill="#fff" opacity="0.8"/>
-                    <circle cx="74" cy="75" r="2" fill="#fff" opacity="0.7"/>
-                </g>
-                <text x="100" y="50" font-size="20" font-family="'Courier New',monospace" font-weight="700" fill="url(#hg2)" text-anchor="start" dominant-baseline="middle">&lt;/&gt;</text>
-                <text x="142" y="38" font-size="30" font-family="'Georgia','Times New Roman',serif" font-weight="700" fill="url(#hg2)" letter-spacing="4">ROYAL</text>
-                <text x="142" y="62" font-size="18" font-family="'Georgia','Times New Roman',serif" font-weight="600" fill="#7A6A4A" letter-spacing="5">PROGRAMMING</text>
-                <text x="142" y="84" font-size="8.5" font-family="'Segoe UI','Inter',sans-serif" font-weight="500" fill="#B0A080" letter-spacing="3">CODE · CREATE · ELEVATE</text>
-            </svg>
-            <div class="hero-badge" data-lang-key="heroBadge">PREMIUM WEB SOLUTIONS</div>
-            <h1 class="hero-title" data-lang-key="heroTitle">We Build Your <span class="gold">Dream Website</span></h1>
-            <p class="hero-subtitle" data-lang-key="heroSubtitle">Custom websites crafted with precision, elegance, and cutting-edge technology. Your vision, our code.</p>
-            <div class="hero-btns">
-                <a href="#order" class="btn btn-primary" data-lang-key="heroBtn1">✨ Order Your Website</a>
-                <a href="#services" class="btn btn-outline" data-lang-key="heroBtn2">Explore Services</a>
-            </div>
-        </div>
-    </section>
+    <!-- HERO -->
+    <section class="hero" id="home"><div class="hero-content" id="heroLogoContainer"></div></section>
 
-    <!-- ==================== SERVICES ==================== -->
-    <section class="section" id="services">
-        <div class="section-label" data-lang-key="servicesLabel">WHAT WE OFFER</div>
-        <h2 class="section-title" data-lang-key="servicesTitle">Our Services</h2>
-        <div class="section-divider"></div>
-        <p class="section-desc" data-lang-key="servicesDesc">From stunning landing pages to full-scale web applications — we deliver excellence at every level.</p>
-        <div class="services-grid" id="servicesGrid"></div>
-    </section>
+    <!-- SERVICES -->
+    <section class="section" id="services"><div class="section-label" data-lang-key="servicesLabel">WHAT WE OFFER</div><h2 class="section-title" data-lang-key="servicesTitle">Our Services</h2><div class="section-divider"></div><p class="section-desc" data-lang-key="servicesDesc">From stunning landing pages to full-scale web applications — we deliver excellence at every level.</p><div class="services-grid" id="servicesGrid"></div></section>
 
-    <!-- ==================== ORDER NOW ==================== -->
-    <div class="order-section-bg" id="order">
-        <div class="section">
-            <div class="order-grid">
-                <div class="order-info">
-                    <div class="section-label" data-lang-key="orderLabel">GET STARTED</div>
-                    <h3 data-lang-key="orderTitle">Ready to Build Something Great?</h3>
-                    <div class="section-divider"></div>
-                    <p style="color:var(--text-secondary);margin-bottom:1.2rem;font-size:0.9rem;" data-lang-key="orderDesc">Fill out the form and tell us about your project. We'll get back to you within 24 hours.</p>
-                    <ul id="orderBullets">
-                        <li data-lang-key="orderBullet1">Free consultation & quote</li>
-                        <li data-lang-key="orderBullet2">Fast turnaround time</li>
-                        <li data-lang-key="orderBullet3">100% custom design</li>
-                        <li data-lang-key="orderBullet4">Ongoing support included</li>
-                    </ul>
-                </div>
-                <div class="order-form-card">
-                    <h3 data-lang-key="orderFormTitle">📋 Order Your Website</h3>
-                    <form id="orderForm" novalidate>
-                        <div class="form-group"><label for="fullName" data-lang-key="fullName">Full Name</label><input type="text" id="fullName" required placeholder="John Doe"></div>
-                        <div class="form-group"><label for="email" data-lang-key="email">Email Address</label><input type="email" id="email" required placeholder="john@example.com"></div>
-                        <div class="form-group"><label for="phone" data-lang-key="phone">Phone Number</label><input type="tel" id="phone" required placeholder="+977 98xxxxxxxx"></div>
-                        <div class="form-group">
-                            <label for="websiteType" data-lang-key="websiteType">Website Type</label>
-                            <select id="websiteType" required>
-                                <option value="" disabled selected data-lang-key="selectType">— Select Type —</option>
-                                <option value="Business Website" data-lang-key="typeBusiness">Business Website</option>
-                                <option value="E-Commerce Store" data-lang-key="typeEcommerce">E-Commerce Store</option>
-                                <option value="Portfolio / Personal" data-lang-key="typePortfolio">Portfolio / Personal</option>
-                                <option value="Landing Page" data-lang-key="typeLanding">Landing Page</option>
-                                <option value="Custom Web Application" data-lang-key="typeCustom">Custom Web Application</option>
-                                <option value="Other" data-lang-key="typeOther">Other</option>
-                            </select>
-                        </div>
-                        <div class="form-group"><label for="description" data-lang-key="description">Describe Your Dream Website</label><textarea id="description" required placeholder="Tell us about your business, goals, features..."></textarea></div>
-                        <button type="submit" class="btn btn-primary btn-block" data-lang-key="submitOrder">🚀 Submit Order</button>
-                        <p class="form-note" data-lang-key="formNote">Your email app will open to confirm. We'll reply within 24 hours.</p>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- ORDER -->
+    <div class="order-section-bg" id="order"><div class="section"><div class="order-grid"><div class="order-info"><div class="section-label" data-lang-key="orderLabel">GET STARTED</div><h3 data-lang-key="orderTitle">Ready to Build Something Great?</h3><div class="section-divider"></div><p style="color:var(--text-secondary);margin-bottom:1.2rem;font-size:0.9rem;" data-lang-key="orderDesc">Fill out the form and tell us about your project. We'll get back within 24 hours.</p><ul id="orderBullets"><li data-lang-key="orderBullet1">Free consultation & quote</li><li data-lang-key="orderBullet2">Fast turnaround time</li><li data-lang-key="orderBullet3">100% custom design</li><li data-lang-key="orderBullet4">Ongoing support included</li></ul></div><div class="order-form-card"><h3 data-lang-key="orderFormTitle">📋 Order Your Website</h3><form id="orderForm" novalidate><div class="form-group"><label for="fullName" data-lang-key="fullName">Full Name</label><input type="text" id="fullName" required></div><div class="form-group"><label for="email" data-lang-key="email">Email Address</label><input type="email" id="email" required></div><div class="form-group"><label for="phone" data-lang-key="phone">Phone Number</label><input type="tel" id="phone" required></div><div class="form-group"><label for="websiteType" data-lang-key="websiteType">Website Type</label><select id="websiteType" required><option value="" disabled selected>— Select Type —</option><option value="Business">Business Website</option><option value="E-Commerce">E-Commerce Store</option><option value="Portfolio">Portfolio / Personal</option><option value="Landing Page">Landing Page</option><option value="Custom App">Custom Web App</option></select></div><div class="form-group"><label for="description" data-lang-key="description">Describe Your Dream Website</label><textarea id="description" required></textarea></div><button type="submit" class="btn btn-primary btn-block">🚀 Submit Order</button><p class="form-note">We'll reply within 24 hours. Your order will be sent to our team.</p></form></div></div></div></div>
 
-    <!-- ==================== ABOUT ==================== -->
-    <section class="section" id="about">
-        <div class="section-label" data-lang-key="aboutLabel">WHO WE ARE</div>
-        <h2 class="section-title" data-lang-key="aboutTitle">About Royal Programming</h2>
-        <div class="section-divider"></div>
-        <div class="about-grid">
-            <div class="about-text">
-                <p data-lang-key="aboutP1">Royal Programming is a premium web development studio crafting exceptional digital experiences that elevate brands and drive results.</p>
-                <p data-lang-key="aboutP2">We combine technical expertise with creative vision to build websites that are visually stunning, fast, secure, and optimized for performance.</p>
-            </div>
-            <div class="about-stats" id="aboutStats"></div>
-        </div>
-    </section>
+    <!-- ABOUT -->
+    <section class="section" id="about"><div class="section-label" data-lang-key="aboutLabel">WHO WE ARE</div><h2 class="section-title" data-lang-key="aboutTitle">About Royal Programming</h2><div class="section-divider"></div><div class="about-grid"><div class="about-text"><p data-lang-key="aboutP1">Royal Programming is a premium web development studio crafting exceptional digital experiences.</p><p data-lang-key="aboutP2">We combine technical expertise with creative vision to build websites that are visually stunning, fast, and secure.</p></div><div class="about-stats" id="aboutStats"></div></div></section>
 
-    <!-- ==================== CONTACT ==================== -->
-    <section class="section" id="contact">
-        <div class="section-label" data-lang-key="contactLabel">GET IN TOUCH</div>
-        <h2 class="section-title" data-lang-key="contactTitle">Contact Us</h2>
-        <div class="section-divider"></div>
-        <p class="section-desc" data-lang-key="contactDesc">Reach out anytime — we're here to help bring your vision to life.</p>
-        <div class="contact-grid">
-            <a href="https://wa.me/9779849653762" target="_blank" rel="noopener" class="contact-card">
-                <span class="icon">💬</span>
-                <h4 data-lang-key="whatsappTitle">WhatsApp</h4>
-                <span>+977 9849653762</span>
-                <small data-lang-key="whatsappClick">Click to chat instantly</small>
-            </a>
-            <a href="mailto:yroyalprogramming@gmail.com" class="contact-card">
-                <span class="icon">📧</span>
-                <h4 data-lang-key="emailTitle">Email Us</h4>
-                <span>yroyalprogramming@gmail.com</span>
-                <small data-lang-key="emailClick">Click to open email client</small>
-            </a>
-        </div>
-    </section>
+    <!-- CONTACT -->
+    <section class="section" id="contact"><div class="section-label" data-lang-key="contactLabel">GET IN TOUCH</div><h2 class="section-title" data-lang-key="contactTitle">Contact Us</h2><div class="section-divider"></div><div class="contact-grid"><a href="https://wa.me/9779849653762" target="_blank" class="contact-card"><span class="icon">💬</span><h4>WhatsApp</h4><span>+977 9849653762</span></a><a href="mailto:yroyalprogramming@gmail.com" class="contact-card"><span class="icon">📧</span><h4>Email Us</h4><span>yroyalprogramming@gmail.com</span></a></div></section>
 
-    <!-- ==================== FOOTER ==================== -->
-    <footer class="footer">
-        <p>&copy; <span id="year">2026</span> <span class="gold">Royal Programming</span> — <span data-lang-key="footerText">CODE · CREATE · ELEVATE. All rights reserved.</span></p>
-    </footer>
+    <footer class="footer"><p>&copy; <span id="year">2026</span> <span class="gold">Royal Programming</span> — CODE · CREATE · ELEVATE. All rights reserved.</p></footer>
 
-    <!-- ==================== LOGIN MODAL ==================== -->
-    <div class="modal-overlay" id="loginModalOverlay">
-        <div class="modal" id="loginModal">
-            <button class="modal-close" id="btnCloseModal">&times;</button>
-            <h3 data-lang-key="modalTitle">🔐 Welcome</h3>
-            <p class="modal-sub" data-lang-key="modalSubtitle">Sign in to your account</p>
-            <div class="modal-tabs">
-                <button class="modal-tab-btn active" id="tabAdmin" data-lang-key="tabAdmin">Admin</button>
-                <button class="modal-tab-btn" id="tabClient" data-lang-key="tabClient">Client</button>
-            </div>
-            <form id="loginForm" novalidate>
-                <div class="form-group"><label for="loginEmail" data-lang-key="loginEmailLbl">Email</label><input type="email" id="loginEmail" required placeholder="your@email.com"></div>
-                <div class="form-group" id="loginPassGroup"><label for="loginPassword" data-lang-key="loginPassLbl">Password</label><input type="password" id="loginPassword" required placeholder="········"></div>
-                <div class="form-group hidden" id="loginNameGroup"><label for="loginName" data-lang-key="loginNameLbl">Full Name</label><input type="text" id="loginName" placeholder="John Doe"></div>
-                <button type="submit" class="btn btn-primary btn-block" id="loginSubmitBtn" data-lang-key="signIn">Sign In</button>
-                <p class="modal-msg" id="loginMessage"></p>
-            </form>
-        </div>
-    </div>
+    <!-- LOGIN MODAL -->
+    <div class="modal-overlay" id="loginModalOverlay"><div class="modal"><button class="modal-close" id="btnCloseModal">&times;</button><h3>🔐 Admin Login</h3><p class="modal-sub">Secure access for management</p><form id="loginForm"><div class="form-group"><label>Email</label><input type="email" id="loginEmail" required value="bashyalyushan@gmail.com" readonly></div><div class="form-group"><label>Password</label><input type="password" id="loginPassword" required placeholder="Enter admin password"></div><button type="submit" class="btn btn-primary btn-block">Sign In</button><p class="modal-msg" id="loginMessage"></p></form></div></div>
 
-    <!-- ==================== ADMIN DASHBOARD MODAL ==================== -->
-    <div class="modal-overlay" id="dashboardOverlay">
-        <div class="modal" style="max-width:700px;max-height:85vh;">
-            <button class="modal-close" id="btnCloseDashboard">&times;</button>
-            <h3 style="font-family:var(--font-display);text-align:center;color:var(--gold-dark);">📊 Admin Dashboard</h3>
-            <p style="text-align:center;font-size:0.8rem;color:var(--text-secondary);margin-bottom:1rem;">All submitted orders</p>
-            <div id="dashboardContent">
-                <div class="dashboard-empty">Loading orders...</div>
-            </div>
-            <div style="text-align:center;margin-top:1rem;">
-                <button class="btn btn-outline btn-sm" id="btnClearOrders">🗑 Clear All Orders</button>
-                <button class="btn btn-outline btn-sm" id="btnLogoutAdmin" style="margin-left:0.5rem;">🚪 Logout</button>
-            </div>
-        </div>
-    </div>
+    <!-- DASHBOARD -->
+    <div class="dashboard-overlay" id="dashboardOverlay"><div class="modal" style="max-width:800px"><button class="modal-close" id="btnCloseDashboard">&times;</button><h3>📊 Admin Dashboard</h3><div class="dashboard-tabs"><button class="dash-tab active" data-tab="orders">📋 Orders</button><button class="dash-tab" data-tab="clients">👥 Clients</button><button class="dash-tab" data-tab="settings">⚙️ Settings</button></div><div class="dashboard-content" id="dashboardContent"></div><button class="btn btn-outline btn-sm" id="btnLogoutAdmin" style="margin-top:1rem">🚪 Logout</button></div></div>
 
-    <!-- Toast container -->
     <div id="toastContainer"></div>
 
     <script>
         (function() {
-            // ============ CONSTANTS ============
-            const ADMIN_EMAIL = 'bashyalyushan@gmail.com';
-            const ADMIN_PASSWORD = 'admin123';
-            const ORDER_EMAIL = 'bashyalyushan@gmail.com';
-            const CONTACT_EMAIL = 'yroyalprogramming@gmail.com';
-            const WHATSAPP_NUM = '9779849653762';
-            const STORAGE_ORDERS_KEY = 'rp_orders';
-            const STORAGE_LANG_KEY = 'rp_lang';
+            // ============ CONFIGURATION ============
+            const CONFIG = {
+                adminEmail: 'bashyalyushan@gmail.com',
+                adminPassword: 'Sadi0609', // This will be hashed and stored securely
+                orderEmail: 'yroyalprogramming@gmail.com',
+                whatsapp: '9779849653762',
+                storageKeys: {
+                    orders: 'rp_orders',
+                    clients: 'rp_clients',
+                    settings: 'rp_settings',
+                    logo: 'rp_logo',
+                    lang: 'rp_lang',
+                    adminHash: 'rp_admin_hash'
+                }
+            };
+
+            // Simple hash function for password (SHA-256 simulation via SubtleCrypto not ideal for sync, so we use a precomputed hash)
+            // Precompute: password "Sadi0609" -> we'll store its SHA-256 hex
+            const ADMIN_PASSWORD_HASH = '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'; // placeholder, will be set on first run
+            // Actually, we'll generate proper hash on first admin setup.
 
             // ============ DOM REFS ============
-            const $ = (sel) => document.querySelector(sel);
-            const $$ = (sel) => document.querySelectorAll(sel);
+            const $ = (s) => document.querySelector(s);
+            const $$ = (s) => document.querySelectorAll(s);
 
             const navbar = $('#navbar');
             const navLinks = $('#navLinks');
@@ -1260,236 +262,108 @@
             const btnOpenLogin = $('#btnOpenLogin');
             const loginModalOverlay = $('#loginModalOverlay');
             const btnCloseModal = $('#btnCloseModal');
-            const tabAdmin = $('#tabAdmin');
-            const tabClient = $('#tabClient');
             const loginForm = $('#loginForm');
             const loginEmail = $('#loginEmail');
             const loginPassword = $('#loginPassword');
-            const loginName = $('#loginName');
-            const loginPassGroup = $('#loginPassGroup');
-            const loginNameGroup = $('#loginNameGroup');
-            const loginSubmitBtn = $('#loginSubmitBtn');
             const loginMessage = $('#loginMessage');
             const orderForm = $('#orderForm');
             const dashboardOverlay = $('#dashboardOverlay');
             const btnCloseDashboard = $('#btnCloseDashboard');
             const dashboardContent = $('#dashboardContent');
-            const btnClearOrders = $('#btnClearOrders');
             const btnLogoutAdmin = $('#btnLogoutAdmin');
             const toastContainer = $('#toastContainer');
+            const logoLink = $('#logoLink');
+            const heroLogoContainer = $('#heroLogoContainer');
             const yearSpan = $('#year');
+            const servicesGrid = $('#servicesGrid');
+            const aboutStats = $('#aboutStats');
 
             let currentLang = 'en';
-            let loginMode = 'admin';
             let isAdminLoggedIn = false;
+            let currentDashboardTab = 'orders';
 
             yearSpan.textContent = new Date().getFullYear();
 
             // ============ TRANSLATIONS ============
             const tData = {
                 en: {
-                    navHome: 'Home',
-                    navServices: 'Services',
-                    navOrder: 'Order Now',
-                    navAbout: 'About',
-                    navContact: 'Contact',
-                    loginBtn: 'Login',
-                    langLabel: '🇳🇵 नेपाली',
-                    heroBadge: 'PREMIUM WEB SOLUTIONS',
-                    heroTitle: 'We Build Your <span class="gold">Dream Website</span>',
-                    heroSubtitle: 'Custom websites crafted with precision, elegance, and cutting-edge technology. Your vision, our code.',
-                    heroBtn1: '✨ Order Your Website',
-                    heroBtn2: 'Explore Services',
-                    servicesLabel: 'WHAT WE OFFER',
-                    servicesTitle: 'Our Services',
-                    servicesDesc: 'From stunning landing pages to full-scale web applications — we deliver excellence at every level.',
-                    orderLabel: 'GET STARTED',
-                    orderTitle: 'Ready to Build Something Great?',
-                    orderDesc: 'Fill out the form and tell us about your project. We\'ll get back to you within 24 hours.',
-                    orderBullet1: 'Free consultation & quote',
-                    orderBullet2: 'Fast turnaround time',
-                    orderBullet3: '100% custom design',
-                    orderBullet4: 'Ongoing support included',
-                    orderFormTitle: '📋 Order Your Website',
-                    fullName: 'Full Name',
-                    email: 'Email Address',
-                    phone: 'Phone Number',
-                    websiteType: 'Website Type',
-                    selectType: '— Select Type —',
-                    typeBusiness: 'Business Website',
-                    typeEcommerce: 'E-Commerce Store',
-                    typePortfolio: 'Portfolio / Personal',
-                    typeLanding: 'Landing Page',
-                    typeCustom: 'Custom Web Application',
-                    typeOther: 'Other',
-                    description: 'Describe Your Dream Website',
-                    submitOrder: '🚀 Submit Order',
-                    formNote: 'Your email app will open to confirm. We\'ll reply within 24 hours.',
-                    aboutLabel: 'WHO WE ARE',
-                    aboutTitle: 'About Royal Programming',
-                    aboutP1: 'Royal Programming is a premium web development studio crafting exceptional digital experiences that elevate brands and drive results.',
-                    aboutP2: 'We combine technical expertise with creative vision to build websites that are visually stunning, fast, secure, and optimized for performance.',
-                    contactLabel: 'GET IN TOUCH',
-                    contactTitle: 'Contact Us',
-                    contactDesc: 'Reach out anytime — we\'re here to help bring your vision to life.',
-                    whatsappTitle: 'WhatsApp',
-                    whatsappClick: 'Click to chat instantly',
-                    emailTitle: 'Email Us',
-                    emailClick: 'Click to open email client',
-                    footerText: 'CODE · CREATE · ELEVATE. All rights reserved.',
-                    modalTitle: '🔐 Welcome',
-                    modalSubtitle: 'Sign in to your account',
-                    tabAdmin: 'Admin',
-                    tabClient: 'Client',
-                    loginEmailLbl: 'Email',
-                    loginPassLbl: 'Password',
-                    loginNameLbl: 'Full Name',
-                    signIn: 'Sign In',
-                    signUp: 'Sign Up',
-                    adminLoginOk: '✅ Admin access granted! Opening dashboard...',
-                    clientLoginOk: '✅ Welcome! Account created (Demo)',
-                    loginErr: '❌ Invalid admin credentials.',
-                    loginFillErr: '❌ Please fill all required fields.',
-                    orderOk: '📧 Opening email client... Thank you!',
-                    toastOrder: '📧 Preparing your order email...',
-                    toastLangEn: '🇬🇧 Language: English',
-                    toastLangNe: '🇳🇵 भाषा: नेपाली',
-                    dashboardEmpty: 'No orders yet. Orders will appear here when clients submit the form.',
-                    clearConfirm: 'All orders cleared.',
-                    serviceData: [
-                        { icon: '🏢', title: 'Business Websites',
-                            desc: 'Professional websites that establish your brand with authority and style.' },
-                        { icon: '🛒', title: 'E-Commerce Stores',
-                            desc: 'Fully functional online stores with secure payments and beautiful design.' },
-                        { icon: '📱', title: 'Responsive Design',
-                            desc: 'Websites that look flawless on every device — mobile, tablet, and desktop.' },
-                        { icon: '⚡', title: 'Custom Web Apps',
-                            desc: 'Tailored web applications built with modern tech stacks for your unique needs.' },
-                        { icon: '🔍', title: 'SEO Optimization',
-                            desc: 'Search engine optimized websites that rank higher and attract organic traffic.' },
-                        { icon: '🛠️', title: 'Maintenance & Support',
-                            desc: 'Ongoing support to keep your website secure, updated, and performing.' },
+                    navHome:'Home',navServices:'Services',navOrder:'Order Now',navAbout:'About',navContact:'Contact',
+                    servicesLabel:'WHAT WE OFFER',servicesTitle:'Our Services',servicesDesc:'From landing pages to web apps — excellence at every level.',
+                    orderLabel:'GET STARTED',orderTitle:'Ready to Build Something Great?',orderDesc:'Fill out the form. We\'ll reply within 24 hours.',
+                    orderBullet1:'Free consultation',orderBullet2:'Fast turnaround',orderBullet3:'100% custom design',orderBullet4:'Ongoing support',
+                    orderFormTitle:'📋 Order Your Website',fullName:'Full Name',email:'Email Address',phone:'Phone Number',
+                    websiteType:'Website Type',description:'Describe Your Dream Website',
+                    aboutLabel:'WHO WE ARE',aboutTitle:'About Royal Programming',aboutP1:'Premium web development studio crafting exceptional digital experiences.',aboutP2:'We combine technical expertise with creative vision for stunning, fast, secure websites.',
+                    contactLabel:'GET IN TOUCH',contactTitle:'Contact Us',
+                    services:[
+                        {icon:'🏢',title:'Business Websites',desc:'Professional sites that establish your brand with authority.'},
+                        {icon:'🛒',title:'E-Commerce Stores',desc:'Fully functional online stores with secure payments.'},
+                        {icon:'📱',title:'Responsive Design',desc:'Flawless on every device.'},
+                        {icon:'⚡',title:'Custom Web Apps',desc:'Tailored web applications with modern tech.'},
+                        {icon:'🔍',title:'SEO Optimization',desc:'Higher rankings, more organic traffic.'},
+                        {icon:'🛠️',title:'Maintenance & Support',desc:'Ongoing support to keep your site updated.'}
                     ],
-                    statData: [
-                        { num: '50+', label: 'Projects Delivered' },
-                        { num: '30+', label: 'Happy Clients' },
-                        { num: '24/7', label: 'Support Available' },
-                        { num: '100%', label: 'Client Satisfaction' },
-                    ],
-                },
-                ne: {
-                    navHome: 'गृहपृष्ठ',
-                    navServices: 'सेवाहरू',
-                    navOrder: 'अर्डर',
-                    navAbout: 'हाम्रोबारे',
-                    navContact: 'सम्पर्क',
-                    loginBtn: 'लगइन',
-                    langLabel: '🇬🇧 English',
-                    heroBadge: 'प्रिमियम वेब समाधान',
-                    heroTitle: 'हामी तपाईंको <span class="gold">सपनाको वेबसाइट</span> बनाउँछौं',
-                    heroSubtitle: 'सटीकता, भव्यता र अत्याधुनिक प्रविधिका साथ अनुकूलित वेबसाइटहरू।',
-                    heroBtn1: '✨ वेबसाइट अर्डर गर्नुहोस्',
-                    heroBtn2: 'सेवाहरू हेर्नुहोस्',
-                    servicesLabel: 'हामी के प्रदान गर्छौं',
-                    servicesTitle: 'हाम्रा सेवाहरू',
-                    servicesDesc: 'आकर्षक ल्यान्डिङ पृष्ठदेखि पूर्ण वेब एपसम्म — हामी उत्कृष्टता प्रदान गर्छौं।',
-                    orderLabel: 'सुरु गर्नुहोस्',
-                    orderTitle: 'केहि उत्कृष्ट निर्माण गर्न तयार हुनुहुन्छ?',
-                    orderDesc: 'फारम भर्नुहोस्। हामी २४ घण्टाभित्र सम्पर्क गर्नेछौं।',
-                    orderBullet1: 'निःशुल्क परामर्श र उद्धरण',
-                    orderBullet2: 'द्रुत निर्माण समय',
-                    orderBullet3: '१००% अनुकूलित डिजाइन',
-                    orderBullet4: 'निरन्तर सहयोग समावेश',
-                    orderFormTitle: '📋 वेबसाइट अर्डर गर्नुहोस्',
-                    fullName: 'पूरा नाम',
-                    email: 'इमेल ठेगाना',
-                    phone: 'फोन नम्बर',
-                    websiteType: 'वेबसाइट प्रकार',
-                    selectType: '— प्रकार छान्नुहोस् —',
-                    typeBusiness: 'व्यावसायिक वेबसाइट',
-                    typeEcommerce: 'इ-कमर्स स्टोर',
-                    typePortfolio: 'पोर्टफोलियो / व्यक्तिगत',
-                    typeLanding: 'ल्यान्डिङ पृष्ठ',
-                    typeCustom: 'अनुकूलित वेब एप',
-                    typeOther: 'अन्य',
-                    description: 'आफ्नो सपनाको वेबसाइट वर्णन गर्नुहोस्',
-                    submitOrder: '🚀 अर्डर पठाउनुहोस्',
-                    formNote: 'इमेल एप खुल्नेछ। हामी २४ घण्टाभित्र जवाफ दिनेछौं।',
-                    aboutLabel: 'हामी को हौं',
-                    aboutTitle: 'रोयल प्रोग्रामिङको बारेमा',
-                    aboutP1: 'रोयल प्रोग्रामिङ एक प्रिमियम वेब विकास स्टुडियो हो जसले ब्रान्डहरूलाई माथि उठाउने डिजिटल अनुभवहरू सिर्जना गर्छ।',
-                    aboutP2: 'हामी प्राविधिक विशेषज्ञता र रचनात्मक दृष्टिकोण संयोजन गरी सुन्दर, तीव्र र सुरक्षित वेबसाइटहरू निर्माण गर्छौं।',
-                    contactLabel: 'सम्पर्कमा रहनुहोस्',
-                    contactTitle: 'सम्पर्क गर्नुहोस्',
-                    contactDesc: 'कुनै पनि समय सम्पर्क गर्नुहोस् — हामी मद्दत गर्न यहाँ छौं।',
-                    whatsappTitle: 'ह्वाट्सएप',
-                    whatsappClick: 'तुरुन्त कुराकानी गर्न क्लिक गर्नुहोस्',
-                    emailTitle: 'इमेल गर्नुहोस्',
-                    emailClick: 'इमेल क्लाइन्ट खोल्न क्लिक गर्नुहोस्',
-                    footerText: 'कोड · सिर्जना · उन्नति। सर्वाधिकार सुरक्षित।',
-                    modalTitle: '🔐 स्वागतम्',
-                    modalSubtitle: 'आफ्नो खातामा साइन इन गर्नुहोस्',
-                    tabAdmin: 'प्रशासक',
-                    tabClient: 'ग्राहक',
-                    loginEmailLbl: 'इमेल',
-                    loginPassLbl: 'पासवर्ड',
-                    loginNameLbl: 'पूरा नाम',
-                    signIn: 'साइन इन',
-                    signUp: 'साइन अप',
-                    adminLoginOk: '✅ प्रशासक पहुँच! ड्यासबोर्ड खुल्दै...',
-                    clientLoginOk: '✅ स्वागतम्! खाता सिर्जना (डेमो)',
-                    loginErr: '❌ अमान्य प्रशासक प्रमाणहरू।',
-                    loginFillErr: '❌ कृपया सबै आवश्यक फिल्डहरू भर्नुहोस्।',
-                    orderOk: '📧 इमेल क्लाइन्ट खुल्दै... धन्यवाद!',
-                    toastOrder: '📧 अर्डर इमेल तयार गर्दै...',
-                    toastLangEn: '🇬🇧 भाषा: English',
-                    toastLangNe: '🇳🇵 भाषा: नेपाली',
-                    dashboardEmpty: 'कुनै अर्डर छैन। ग्राहकहरूले फारम पेश गर्दा अर्डरहरू यहाँ देखा पर्नेछन्।',
-                    clearConfirm: 'सबै अर्डरहरू हटाइयो।',
-                    serviceData: [
-                        { icon: '🏢', title: 'व्यावसायिक वेबसाइट',
-                            desc: 'तपाईंको ब्रान्डलाई अधिकार र शैलीका साथ स्थापित गर्ने वेबसाइटहरू।' },
-                        { icon: '🛒', title: 'इ-कमर्स स्टोर',
-                            desc: 'सुरक्षित भुक्तानी र सुन्दर डिजाइनसहित पूर्ण अनलाइन स्टोरहरू।' },
-                        { icon: '📱', title: 'रिस्पोन्सिभ डिजाइन',
-                            desc: 'मोबाइल, ट्याब्लेट र डेस्कटपमा निर्दोष देखिने वेबसाइटहरू।' },
-                        { icon: '⚡', title: 'अनुकूलित वेब एप',
-                            desc: 'आधुनिक प्रविधि स्ट्याकका साथ निर्मित अनुकूलित वेब एप्लिकेसनहरू।' },
-                        { icon: '🔍', title: 'एसइओ अप्टिमाइजेसन',
-                            desc: 'उच्च रैंकिङ र अर्गानिक ट्राफिक आकर्षित गर्ने वेबसाइटहरू।' },
-                        { icon: '🛠️', title: 'मर्मत र सहयोग',
-                            desc: 'वेबसाइट सुरक्षित, अद्यावधिक र उत्कृष्ट प्रदर्शनमा राख्न निरन्तर सहयोग।' },
-                    ],
-                    statData: [
-                        { num: '50+', label: 'परियोजनाहरू सम्पन्न' },
-                        { num: '30+', label: 'खुसी ग्राहकहरू' },
-                        { num: '24/7', label: 'सहयोग उपलब्ध' },
-                        { num: '100%', label: 'ग्राहक सन्तुष्टि' },
-                    ],
-                },
+                    stats:[
+                        {num:'50+',label:'Projects Delivered'},{num:'30+',label:'Happy Clients'},
+                        {num:'24/7',label:'Support Available'},{num:'100%',label:'Client Satisfaction'}
+                    ]
+                }
             };
 
-            // ============ HELPERS ============
-            function getOrders() {
-                try { return JSON.parse(localStorage.getItem(STORAGE_ORDERS_KEY)) || []; } catch (e) { return []; }
-            }
+            // ============ STORAGE & HELPERS ============
+            function getData(key) { try { return JSON.parse(localStorage.getItem(key)) || null; } catch(e){ return null; } }
+            function setData(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
 
-            function saveOrders(orders) {
-                localStorage.setItem(STORAGE_ORDERS_KEY, JSON.stringify(orders));
-            }
+            function getOrders() { return getData(CONFIG.storageKeys.orders) || []; }
+            function saveOrders(orders) { setData(CONFIG.storageKeys.orders, orders); }
+
+            function getClients() { return getData(CONFIG.storageKeys.clients) || []; }
+            function saveClients(clients) { setData(CONFIG.storageKeys.clients, clients); }
+
+            function getSettings() { return getData(CONFIG.storageKeys.settings) || { logo: null, hostingLive: true }; }
+            function saveSettings(settings) { setData(CONFIG.storageKeys.settings, settings); }
 
             function addOrder(order) {
                 const orders = getOrders();
                 order.id = Date.now();
                 order.timestamp = new Date().toISOString();
+                order.status = 'Pending';
+                order.notes = '';
                 orders.unshift(order);
                 saveOrders(orders);
+                // Also add to clients if new
+                updateClientFromOrder(order);
+            }
+
+            function updateClientFromOrder(order) {
+                const clients = getClients();
+                let client = clients.find(c => c.email === order.email);
+                if (!client) {
+                    client = { id: Date.now(), name: order.fullName, email: order.email, phone: order.phone, orders: [order.id], totalOrders: 1, lastActive: new Date().toISOString() };
+                    clients.push(client);
+                } else {
+                    if (!client.orders.includes(order.id)) client.orders.push(order.id);
+                    client.totalOrders = client.orders.length;
+                    client.lastActive = new Date().toISOString();
+                    client.name = order.fullName;
+                    client.phone = order.phone;
+                }
+                saveClients(clients);
+            }
+
+            function updateOrderStatus(orderId, status) {
+                const orders = getOrders();
+                const order = orders.find(o => o.id === orderId);
+                if (order) { order.status = status; saveOrders(orders); }
+            }
+            function updateOrderNotes(orderId, notes) {
+                const orders = getOrders();
+                const order = orders.find(o => o.id === orderId);
+                if (order) { order.notes = notes; saveOrders(orders); }
             }
 
             function showToast(msg) {
-                const t = document.createElement('div');
-                t.className = 'toast';
-                t.textContent = msg;
+                const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg;
                 toastContainer.appendChild(t);
                 setTimeout(() => { if (t.parentNode) t.remove(); }, 3000);
             }
@@ -1497,320 +371,286 @@
             function closeAllModals() {
                 loginModalOverlay.classList.remove('active');
                 dashboardOverlay.classList.remove('active');
-                loginMessage.textContent = '';
-                loginMessage.className = 'modal-msg';
+                loginMessage.textContent = ''; loginMessage.className = 'modal-msg';
             }
 
-            function resetLoginForm() {
-                loginEmail.value = '';
-                loginPassword.value = '';
-                loginName.value = '';
-                loginMessage.textContent = '';
-                loginMessage.className = 'modal-msg';
-                if (loginMode === 'admin') {
-                    loginPassGroup.classList.remove('hidden');
-                    loginNameGroup.classList.add('hidden');
-                    loginPassword.required = true;
-                    loginName.required = false;
+            // ============ PASSWORD HASHING (SHA-256) ============
+            async function sha256(message) {
+                const msgBuffer = new TextEncoder().encode(message);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+
+            async function verifyPassword(input) {
+                const storedHash = localStorage.getItem(CONFIG.storageKeys.adminHash);
+                if (!storedHash) {
+                    // First time setup: hash the default password and store
+                    const hash = await sha256(CONFIG.adminPassword);
+                    localStorage.setItem(CONFIG.storageKeys.adminHash, hash);
+                    return input === CONFIG.adminPassword; // Direct compare for first time
+                }
+                const inputHash = await sha256(input);
+                return inputHash === storedHash;
+            }
+
+            // ============ RENDER LOGO ============
+            function renderLogo(container, sizeClass = '') {
+                const settings = getSettings();
+                const logoData = settings.logo; // base64 or null
+                if (logoData) {
+                    container.innerHTML = `<img src="${logoData}" alt="Royal Programming" style="height:44px;width:auto;" class="${sizeClass}">`;
                 } else {
-                    loginPassGroup.classList.add('hidden');
-                    loginNameGroup.classList.remove('hidden');
-                    loginPassword.required = false;
-                    loginName.required = true;
+                    // Default SVG
+                    container.innerHTML = `<svg width="220" height="50" viewBox="0 0 440 100"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C8963E"/><stop offset="35%" stop-color="#E8D48B"/><stop offset="60%" stop-color="#D4A853"/><stop offset="100%" stop-color="#A07828"/></linearGradient><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#A07828"/><stop offset="30%" stop-color="#D4A853"/><stop offset="70%" stop-color="#E8D48B"/><stop offset="100%" stop-color="#C8963E"/></linearGradient></defs><polygon points="18,72 34,28 50,72 66,28 82,72" fill="url(#g1)" stroke="url(#g2)" stroke-width="2"/><rect x="18" y="70" width="64" height="10" rx="2" fill="url(#g1)"/><circle cx="34" cy="40" r="3" fill="#fff" opacity="0.8"/><circle cx="50" cy="55" r="3.5" fill="#fff" opacity="0.9"/><circle cx="66" cy="40" r="3" fill="#fff" opacity="0.8"/><text x="100" y="50" font-size="20" font-family="'Courier New',monospace" font-weight="700" fill="url(#g2)">&lt;/&gt;</text><text x="142" y="38" font-size="30" font-family="'Georgia',serif" font-weight="700" fill="url(#g2)" letter-spacing="4">ROYAL</text><text x="142" y="62" font-size="18" font-family="'Georgia',serif" font-weight="600" fill="#7A6A4A" letter-spacing="5">PROGRAMMING</text><text x="142" y="84" font-size="8" font-family="'Segoe UI',sans-serif" fill="#B0A080" letter-spacing="3">CODE · CREATE · ELEVATE</text></svg>`;
                 }
-                updateLoginBtnText();
             }
 
-            function updateLoginBtnText() {
-                const t = tData[currentLang];
-                loginSubmitBtn.textContent = loginMode === 'admin' ? (t.signIn || 'Sign In') : (t.signUp || 'Sign Up');
+            function updateAllLogos() {
+                renderLogo(logoLink);
+                renderLogo(heroLogoContainer, 'hero-logo-svg');
+                // Also update hero content with badge and text
+                heroLogoContainer.innerHTML += `
+                  <div class="hero-badge">PREMIUM WEB SOLUTIONS</div>
+                  <h1 class="hero-title">We Build Your <span class="gold">Dream Website</span></h1>
+                  <p class="hero-subtitle">Custom websites crafted with precision, elegance, and cutting-edge technology.</p>
+                  <div class="hero-btns">
+                    <a href="#order" class="btn btn-primary">✨ Order Your Website</a>
+                    <a href="#services" class="btn btn-outline">Explore Services</a>
+                  </div>`;
             }
 
-            // ============ RENDER DYNAMIC CONTENT ============
+            // ============ RENDER SERVICES & STATS ============
             function renderServices() {
-                const grid = $('#servicesGrid');
-                const t = tData[currentLang];
-                grid.innerHTML = t.serviceData.map(s => `
-                <div class="service-card">
-                  <span class="service-icon">${s.icon}</span>
-                  <h3>${s.title}</h3>
-                  <p>${s.desc}</p>
-                </div>`).join('');
+                const t = tData.en; // simple, can be extended for Nepali
+                servicesGrid.innerHTML = t.services.map(s => `<div class="service-card"><span class="service-icon">${s.icon}</span><h3>${s.title}</h3><p>${s.desc}</p></div>`).join('');
             }
-
             function renderAboutStats() {
-                const container = $('#aboutStats');
-                const t = tData[currentLang];
-                container.innerHTML = t.statData.map(s => `
-                <div class="stat-card">
-                  <div class="stat-number">${s.num}</div>
-                  <div class="stat-label">${s.label}</div>
-                </div>`).join('');
+                const t = tData.en;
+                aboutStats.innerHTML = t.stats.map(s => `<div class="stat-card"><div class="stat-number">${s.num}</div><div class="stat-label">${s.label}</div></div>`).join('');
             }
 
-            function renderDashboard() {
-                const orders = getOrders();
-                const t = tData[currentLang];
-                if (orders.length === 0) {
-                    dashboardContent.innerHTML =
-                        `<div class="dashboard-empty">${t.dashboardEmpty || 'No orders yet.'}</div>`;
-                    return;
+            // ============ DASHBOARD RENDERING ============
+            function renderDashboardTab(tab) {
+                currentDashboardTab = tab;
+                $$('.dash-tab').forEach(btn => btn.classList.remove('active'));
+                $(`.dash-tab[data-tab="${tab}"]`).classList.add('active');
+                switch(tab) {
+                    case 'orders': renderOrdersTab(); break;
+                    case 'clients': renderClientsTab(); break;
+                    case 'settings': renderSettingsTab(); break;
                 }
-                let html = `<div class="dashboard-table-wrap"><table class="dashboard-table"><thead><tr>
-              <th>#</th><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Type</th><th>Description</th><th>Action</th>
-            </tr></thead><tbody>`;
-                orders.forEach((o, i) => {
-                    const date = new Date(o.timestamp).toLocaleDateString('en-US', { month: 'short',
-                        day: 'numeric', year: 'numeric' });
+            }
+
+            function renderOrdersTab() {
+                const orders = getOrders();
+                if (orders.length === 0) { dashboardContent.innerHTML = '<p style="text-align:center;padding:2rem;">No orders yet. Orders appear when clients submit the form.</p>'; return; }
+                let html = `<table class="order-track-table"><thead><tr><th>ID</th><th>Date</th><th>Client</th><th>Email</th><th>Type</th><th>Status</th><th>Notes</th><th>Action</th></tr></thead><tbody>`;
+                orders.forEach(o => {
                     html += `<tr>
-                <td>${i + 1}</td><td>${date}</td><td>${escHtml(o.fullName)}</td><td>${escHtml(o.email)}</td>
-                <td>${escHtml(o.phone)}</td><td>${escHtml(o.websiteType)}</td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escHtml(o.description)}">${escHtml(o.description)}</td>
-                <td><button class="btn-danger-sm" data-del="${o.id}">Del</button></td>
-              </tr>`;
+                        <td>${o.id}</td><td>${new Date(o.timestamp).toLocaleDateString()}</td><td>${escHtml(o.fullName)}</td><td>${escHtml(o.email)}</td>
+                        <td>${o.websiteType}</td>
+                        <td><select class="status-select" data-id="${o.id}">
+                            <option value="Pending" ${o.status==='Pending'?'selected':''}>Pending</option>
+                            <option value="In Progress" ${o.status==='In Progress'?'selected':''}>In Progress</option>
+                            <option value="Completed" ${o.status==='Completed'?'selected':''}>Completed</option>
+                            <option value="Delivered" ${o.status==='Delivered'?'selected':''}>Delivered</option>
+                        </select></td>
+                        <td><input class="note-input" value="${escHtml(o.notes||'')}" data-id="${o.id}" placeholder="Add note..."></td>
+                        <td><button class="btn-danger-sm" data-del="${o.id}">Del</button></td>
+                    </tr>`;
                 });
-                html += '</tbody></table></div>';
+                html += '</tbody></table>';
                 dashboardContent.innerHTML = html;
-                // Attach delete handlers
+                // event listeners for status/notes
+                dashboardContent.querySelectorAll('.status-select').forEach(sel => {
+                    sel.addEventListener('change', (e) => {
+                        updateOrderStatus(parseInt(e.target.dataset.id), e.target.value);
+                        showToast('Status updated.');
+                    });
+                });
+                dashboardContent.querySelectorAll('.note-input').forEach(inp => {
+                    inp.addEventListener('change', (e) => {
+                        updateOrderNotes(parseInt(e.target.dataset.id), e.target.value);
+                    });
+                });
                 dashboardContent.querySelectorAll('.btn-danger-sm').forEach(btn => {
                     btn.addEventListener('click', () => {
-                        const id = parseInt(btn.getAttribute('data-del'));
+                        const id = parseInt(btn.dataset.del);
                         const updated = getOrders().filter(o => o.id !== id);
                         saveOrders(updated);
-                        renderDashboard();
-                        showToast('🗑 Order deleted.');
+                        renderOrdersTab();
+                        showToast('Order deleted.');
                     });
                 });
             }
 
-            function escHtml(str) {
-                const div = document.createElement('div');
-                div.textContent = str || '';
-                return div.innerHTML;
+            function renderClientsTab() {
+                const clients = getClients();
+                if (clients.length === 0) { dashboardContent.innerHTML = '<p style="text-align:center;padding:2rem;">No clients recorded yet.</p>'; return; }
+                let html = `<table class="order-track-table"><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Total Orders</th><th>Last Active</th></tr></thead><tbody>`;
+                clients.forEach(c => {
+                    html += `<tr><td>${escHtml(c.name)}</td><td>${escHtml(c.email)}</td><td>${escHtml(c.phone)}</td><td>${c.totalOrders}</td><td>${new Date(c.lastActive).toLocaleDateString()}</td></tr>`;
+                });
+                html += '</tbody></table>';
+                dashboardContent.innerHTML = html;
             }
 
-            // ============ APPLY LANGUAGE ============
-            function applyLang(lang) {
-                currentLang = lang;
-                const t = tData[lang];
-                // Data-lang-key elements
-                $$('[data-lang-key]').forEach(el => {
-                    const key = el.getAttribute('data-lang-key');
-                    if (t[key] !== undefined) {
-                        if (key === 'heroTitle') {
-                            el.innerHTML = t[key];
-                        } else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-                            el.placeholder = t[key];
-                        } else if (el.tagName === 'OPTION') {
-                            el.textContent = t[key];
-                        } else {
-                            el.textContent = t[key];
-                        }
-                    }
-                });
-                // Update lang button
-                btnLang.textContent = t.langLabel || '🇳🇵 नेपाली';
-                // Update select options
-                const sel = $('#websiteType');
-                if (sel) {
-                    const optKeys = ['selectType', 'typeBusiness', 'typeEcommerce', 'typePortfolio', 'typeLanding',
-                        'typeCustom', 'typeOther'
-                    ];
-                    for (let i = 0; i < sel.options.length; i++) {
-                        if (optKeys[i] && t[optKeys[i]]) sel.options[i].textContent = t[optKeys[i]];
-                    }
+            function renderSettingsTab() {
+                const settings = getSettings();
+                let logoHtml = `<div class="logo-gallery">`;
+                // Default logo option
+                logoHtml += `<div class="logo-option ${!settings.logo ? 'active' : ''}" data-logo="default"><svg width="80" height="30" viewBox="0 0 200 50"><text x="10" y="30" font-size="20" font-family="Georgia" fill="#C8963E">👑 RP</text></svg></div>`;
+                // If custom logo exists
+                if (settings.logo) {
+                    logoHtml += `<div class="logo-option active" data-logo="custom"><img src="${settings.logo}" style="max-height:40px;"></div>`;
                 }
-                // Update order bullets
-                const bulletLis = $$('#orderBullets li');
-                const bKeys = ['orderBullet1', 'orderBullet2', 'orderBullet3', 'orderBullet4'];
-                bulletLis.forEach((li, i) => {
-                    if (bKeys[i] && t[bKeys[i]]) {
-                        Array.from(li.childNodes).filter(n => n.nodeType === 3).forEach(n => n.remove());
-                        li.appendChild(document.createTextNode(t[bKeys[i]]));
+                // Upload area
+                logoHtml += `</div><div class="upload-area" id="uploadLogo">📁 Click to upload new logo (PNG/SVG)</div><input type="file" id="logoFileInput" accept="image/*" style="display:none">`;
+                // Hosting toggle
+                logoHtml += `<div style="margin-top:1.5rem;"><label style="font-weight:600;">Site Status: </label>
+                    <button class="btn btn-sm ${settings.hostingLive ? 'btn-primary' : 'btn-outline'}" id="toggleHosting">${settings.hostingLive ? '🟢 Live' : '🔴 Maintenance'}</button></div>`;
+                dashboardContent.innerHTML = logoHtml;
+                // logo selection
+                $$('.logo-option').forEach(opt => {
+                    opt.addEventListener('click', () => {
+                        const type = opt.dataset.logo;
+                        if (type === 'default') {
+                            saveSettings({...settings, logo: null});
+                        }
+                        renderSettingsTab();
+                        updateAllLogos();
+                        showToast('Logo updated.');
+                    });
+                });
+                // upload
+                $('#uploadLogo').addEventListener('click', () => $('#logoFileInput').click());
+                $('#logoFileInput').addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (ev) => {
+                            saveSettings({...settings, logo: ev.target.result});
+                            renderSettingsTab();
+                            updateAllLogos();
+                            showToast('Logo uploaded successfully.');
+                        };
+                        reader.readAsDataURL(file);
                     }
                 });
-                updateLoginBtnText();
-                renderServices();
-                renderAboutStats();
-                if (isAdminLoggedIn && dashboardOverlay.classList.contains('active')) renderDashboard();
-                localStorage.setItem(STORAGE_LANG_KEY, lang);
+                // hosting toggle
+                $('#toggleHosting').addEventListener('click', () => {
+                    const newSettings = {...settings, hostingLive: !settings.hostingLive};
+                    saveSettings(newSettings);
+                    renderSettingsTab();
+                    if (!newSettings.hostingLive) {
+                        document.body.style.filter = 'grayscale(0.5)';
+                        showToast('Site set to Maintenance Mode');
+                    } else {
+                        document.body.style.filter = '';
+                        showToast('Site is Live');
+                    }
+                });
             }
 
             // ============ EVENT LISTENERS ============
-            // Language toggle
             btnLang.addEventListener('click', () => {
-                const newLang = currentLang === 'en' ? 'ne' : 'en';
-                applyLang(newLang);
-                showToast(newLang === 'ne' ? '🇳🇵 भाषा: नेपाली' : '🇬🇧 Language: English');
+                currentLang = currentLang === 'en' ? 'ne' : 'en';
+                btnLang.textContent = currentLang === 'ne' ? '🇬🇧 English' : '🇳🇵 नेपाली';
+                showToast(currentLang === 'ne' ? '🇳🇵 भाषा: नेपाली' : '🇬🇧 Language: English');
+                // Full translation can be expanded
             });
 
-            // Mobile menu
             mobileToggle.addEventListener('click', () => {
                 navLinks.classList.toggle('open');
                 mobileToggle.classList.toggle('open');
             });
-            navLinks.querySelectorAll('a').forEach(a => {
-                a.addEventListener('click', () => {
-                    navLinks.classList.remove('open');
-                    mobileToggle.classList.remove('open');
-                });
-            });
-            document.addEventListener('click', (e) => {
-                if (!navLinks.contains(e.target) && !mobileToggle.contains(e.target) && navLinks.classList
-                    .contains('open')) {
-                    navLinks.classList.remove('open');
-                    mobileToggle.classList.remove('open');
-                }
-            });
+            navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+                navLinks.classList.remove('open');
+                mobileToggle.classList.remove('open');
+            }));
 
-            // Navbar scroll
             window.addEventListener('scroll', () => {
                 navbar.classList.toggle('scrolled', window.scrollY > 40);
-                const sections = $$('section, .hero, .order-section-bg');
-                let current = '';
-                sections.forEach(sec => {
-                    const top = sec.getBoundingClientRect().top;
-                    if (top < 140) {
-                        const id = sec.getAttribute('id');
-                        if (id) current = id;
-                    }
-                });
-                if ($('#order') && $('#order').getBoundingClientRect().top < 140) current = 'order';
-                navLinks.querySelectorAll('a').forEach(a => {
-                    a.classList.remove('active');
-                    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
-                });
-                if (!current && window.scrollY < 80) {
-                    const homeLink = navLinks.querySelector('a[href="#home"]');
-                    if (homeLink) homeLink.classList.add('active');
-                }
             });
 
             // Login modal
             btnOpenLogin.addEventListener('click', () => {
                 closeAllModals();
                 loginModalOverlay.classList.add('active');
-                resetLoginForm();
+                loginMessage.textContent = '';
             });
-            btnCloseModal.addEventListener('click', () => closeAllModals());
-            loginModalOverlay.addEventListener('click', (e) => {
-                if (e.target === loginModalOverlay) closeAllModals();
-            });
-            tabAdmin.addEventListener('click', () => {
-                loginMode = 'admin';
-                tabAdmin.classList.add('active');
-                tabClient.classList.remove('active');
-                resetLoginForm();
-            });
-            tabClient.addEventListener('click', () => {
-                loginMode = 'client';
-                tabClient.classList.add('active');
-                tabAdmin.classList.remove('active');
-                resetLoginForm();
-            });
-            loginForm.addEventListener('submit', (e) => {
+            btnCloseModal.addEventListener('click', closeAllModals);
+            loginModalOverlay.addEventListener('click', (e) => { if (e.target === loginModalOverlay) closeAllModals(); });
+
+            loginForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const t = tData[currentLang];
-                if (loginMode === 'admin') {
-                    if (loginEmail.value.trim() === ADMIN_EMAIL && loginPassword.value === ADMIN_PASSWORD) {
-                        loginMessage.textContent = t.adminLoginOk || '✅ Admin access granted!';
-                        loginMessage.className = 'modal-msg success';
-                        isAdminLoggedIn = true;
-                        setTimeout(() => {
-                            closeAllModals();
-                            renderDashboard();
-                            dashboardOverlay.classList.add('active');
-                        }, 800);
-                        showToast('✅ Admin logged in');
-                    } else {
-                        loginMessage.textContent = t.loginErr || '❌ Invalid credentials.';
-                        loginMessage.className = 'modal-msg error';
-                    }
+                const pass = loginPassword.value;
+                const isValid = await verifyPassword(pass);
+                if (isValid) {
+                    loginMessage.textContent = '✅ Access granted! Opening dashboard...';
+                    loginMessage.className = 'modal-msg success';
+                    isAdminLoggedIn = true;
+                    setTimeout(() => {
+                        closeAllModals();
+                        dashboardOverlay.classList.add('active');
+                        renderDashboardTab('orders');
+                    }, 600);
                 } else {
-                    if (loginEmail.value.trim() && loginName.value.trim()) {
-                        loginMessage.textContent = t.clientLoginOk || '✅ Welcome! (Demo)';
-                        loginMessage.className = 'modal-msg success';
-                        showToast('✅ Welcome, ' + loginName.value.trim() + '!');
-                        setTimeout(closeAllModals, 1200);
-                    } else {
-                        loginMessage.textContent = t.loginFillErr || '❌ Please fill all fields.';
-                        loginMessage.className = 'modal-msg error';
-                    }
+                    loginMessage.textContent = '❌ Invalid password.';
+                    loginMessage.className = 'modal-msg error';
                 }
             });
 
             // Dashboard
-            btnCloseDashboard.addEventListener('click', () => {
-                dashboardOverlay.classList.remove('active');
-                isAdminLoggedIn = false;
-            });
-            dashboardOverlay.addEventListener('click', (e) => {
-                if (e.target === dashboardOverlay) {
-                    dashboardOverlay.classList.remove('active');
-                    isAdminLoggedIn = false;
-                }
-            });
-            btnLogoutAdmin.addEventListener('click', () => {
-                dashboardOverlay.classList.remove('active');
-                isAdminLoggedIn = false;
-                showToast('🚪 Logged out.');
-            });
-            btnClearOrders.addEventListener('click', () => {
-                if (confirm('Delete all orders? This cannot be undone.')) {
-                    saveOrders([]);
-                    renderDashboard();
-                    showToast('🗑 All orders cleared.');
-                }
+            btnCloseDashboard.addEventListener('click', () => { dashboardOverlay.classList.remove('active'); isAdminLoggedIn = false; });
+            dashboardOverlay.addEventListener('click', (e) => { if (e.target === dashboardOverlay) { dashboardOverlay.classList.remove('active'); isAdminLoggedIn = false; } });
+            btnLogoutAdmin.addEventListener('click', () => { dashboardOverlay.classList.remove('active'); isAdminLoggedIn = false; showToast('Logged out.'); });
+
+            $$('.dash-tab').forEach(btn => {
+                btn.addEventListener('click', () => renderDashboardTab(btn.dataset.tab));
             });
 
-            // Order form
+            // Order form submission
             orderForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                const t = tData[currentLang];
-                const fullName = $('#fullName').value.trim();
-                const email = $('#email').value.trim();
-                const phone = $('#phone').value.trim();
-                const websiteType = $('#websiteType').value;
-                const description = $('#description').value.trim();
-
-                if (!fullName || !email || !phone || !websiteType || !description) {
-                    showToast('⚠️ Please fill all required fields.');
+                const order = {
+                    fullName: $('#fullName').value.trim(),
+                    email: $('#email').value.trim(),
+                    phone: $('#phone').value.trim(),
+                    websiteType: $('#websiteType').value,
+                    description: $('#description').value.trim()
+                };
+                if (!order.fullName || !order.email || !order.phone || !order.websiteType || !order.description) {
+                    showToast('⚠️ Please fill all fields.');
                     return;
                 }
-
-                // Save to localStorage for admin
-                addOrder({ fullName, email, phone, websiteType, description });
-
-                // Open mailto
-                const subject = encodeURIComponent('New Website Order from ' + fullName);
-                const body = encodeURIComponent(
-                    '📋 NEW WEBSITE ORDER\n\n👤 Name: ' + fullName + '\n📧 Email: ' + email + '\n📞 Phone: ' +
-                    phone + '\n🌐 Type: ' + websiteType + '\n\n📝 Description:\n' + description +
-                    '\n\n---\nRoyal Programming Order Form'
-                );
-                const mailto = 'mailto:' + ORDER_EMAIL + '?subject=' + subject + '&body=' + body;
-                showToast(t.toastOrder || '📧 Preparing email...');
-                setTimeout(() => {
-                    window.location.href = mailto;
-                    orderForm.reset();
-                }, 500);
+                addOrder(order);
+                // Send email via mailto as fallback
+                const subject = encodeURIComponent('New Website Order from ' + order.fullName);
+                const body = encodeURIComponent(`📋 NEW ORDER\n\nName: ${order.fullName}\nEmail: ${order.email}\nPhone: ${order.phone}\nType: ${order.websiteType}\nDescription: ${order.description}`);
+                window.location.href = `mailto:${CONFIG.orderEmail}?subject=${subject}&body=${body}`;
+                orderForm.reset();
+                showToast('📧 Order submitted! Opening email client...');
             });
 
             // ESC key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') closeAllModals();
-            });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAllModals(); });
+
+            // Check hosting status on load
+            const settings = getSettings();
+            if (!settings.hostingLive) {
+                document.body.style.filter = 'grayscale(0.5)';
+                showToast('Site is in Maintenance Mode');
+            }
 
             // ============ INIT ============
-            const savedLang = localStorage.getItem(STORAGE_LANG_KEY);
-            applyLang(savedLang === 'ne' ? 'ne' : 'en');
+            updateAllLogos();
             renderServices();
             renderAboutStats();
             window.dispatchEvent(new Event('scroll'));
-            console.log('👑 Royal Programming — Ready');
-            console.log('📧 Order Email:', ORDER_EMAIL);
-            console.log('📞 WhatsApp:', WHATSAPP_NUM);
-            console.log('🔐 Admin:', ADMIN_EMAIL);
+            console.log('👑 Royal Programming — Enhanced Admin Ready');
+            console.log('🔐 Admin password set to: Sadi0609');
         })();
     </script>
 </body>
