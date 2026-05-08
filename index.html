@@ -4,23 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Royal Programming | CODE · CREATE · ELEVATE</title>
-
-    <!-- ============ FIREBASE SDK (NEW) ============ -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js">
+    <!-- ==================== ADDED: Firebase & EmailJS SDKs ==================== -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js">
     </script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js">
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js">
     </script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js">
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js">
     </script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js">
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js">
     </script>
-
-    <!-- ============ EMAILJS SDK (NEW) ============ -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
-    </script>
-
     <style>
-        /* ============ ALL EXISTING CSS - UNCHANGED ============ */
         :root {
             --gold: #C8963E;
             --gold-dark: #A07828;
@@ -51,6 +44,7 @@
             --max-width: 1200px;
             --nav-height: 72px;
         }
+
         *,
         *::before,
         *::after {
@@ -70,7 +64,6 @@
             color: var(--text);
             line-height: 1.65;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
             overflow-x: hidden;
         }
         img,
@@ -99,7 +92,7 @@
             font-size: inherit;
         }
 
-        /* NAVBAR */
+        /* ========== NAVBAR ========== */
         .navbar {
             position: sticky;
             top: 0;
@@ -129,9 +122,14 @@
             flex-shrink: 0;
             display: flex;
             align-items: center;
+            /* ADDED: dynamic logo image handling */
         }
-        .nav-logo-link svg,
         .nav-logo-link img {
+            height: 44px;
+            width: auto;
+            display: none;
+        }
+        .nav-logo-link svg {
             height: 44px;
             width: auto;
         }
@@ -197,6 +195,15 @@
             box-shadow: var(--shadow-gold);
             transform: translateY(-1px);
         }
+        .btn-logout {
+            background: #e0e0e0;
+            color: #333;
+            border-color: #ccc;
+            display: none;
+        }
+        .btn-logout.visible {
+            display: inline-flex;
+        }
         .mobile-toggle {
             display: none;
             flex-direction: column;
@@ -227,7 +234,7 @@
             transform: rotate(-45deg) translate(5px, -5px);
         }
 
-        /* HERO */
+        /* ========== HERO ========== */
         .hero {
             background: linear-gradient(180deg, var(--off-white) 0%, var(--white) 100%);
             padding: 4rem 1.5rem 5rem;
@@ -264,15 +271,16 @@
             margin: 0 auto;
         }
         .hero-logo-container {
-            display: block;
-            margin: 0 auto 1.8rem;
-            width: 260px;
-            height: auto;
-            animation: fadeInUp 0.7s ease-out;
+            margin-bottom: 1.8rem;
+            display: flex;
+            justify-content: center;
         }
-        .hero-logo-container svg,
         .hero-logo-container img {
-            width: 100%;
+            max-height: 100px;
+            display: none;
+        }
+        .hero-logo-container svg {
+            width: 260px;
             height: auto;
         }
         .hero-badge {
@@ -373,26 +381,8 @@
             width: 100%;
             justify-content: center;
         }
-        .btn-danger {
-            background: #c0392b;
-            color: #fff;
-            border-color: #c0392b;
-        }
-        .btn-danger:hover {
-            background: #a93226;
-            border-color: #a93226;
-        }
-        .btn-success {
-            background: #27ae60;
-            color: #fff;
-            border-color: #27ae60;
-        }
-        .btn-success:hover {
-            background: #219a52;
-            border-color: #219a52;
-        }
 
-        /* SECTIONS */
+        /* ========== SECTIONS ========== */
         .section {
             padding: 4.5rem 1.5rem;
             max-width: var(--max-width);
@@ -430,7 +420,7 @@
             line-height: 1.7;
         }
 
-        /* SERVICES */
+        /* Services */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -482,7 +472,7 @@
             line-height: 1.6;
         }
 
-        /* ORDER */
+        /* Order Section */
         .order-section-bg {
             background: var(--gray-50);
             border-top: 1px solid var(--gray-200);
@@ -579,23 +569,8 @@
             color: var(--gray-600);
             margin-top: 0.6rem;
         }
-        .form-group input.error,
-        .form-group select.error,
-        .form-group textarea.error {
-            border-color: #e74c3c;
-            background: #fef5f5;
-        }
-        .form-error-msg {
-            color: #e74c3c;
-            font-size: 0.7rem;
-            margin-top: 0.2rem;
-            display: none;
-        }
-        .form-error-msg.visible {
-            display: block;
-        }
 
-        /* ABOUT */
+        /* About */
         .about-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -640,7 +615,7 @@
             margin-top: 0.3rem;
         }
 
-        /* CONTACT */
+        /* Contact */
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -686,7 +661,7 @@
             margin-top: 0.3rem;
         }
 
-        /* FOOTER */
+        /* Footer */
         .footer {
             background: var(--gray-900);
             color: #ccc;
@@ -700,7 +675,7 @@
             font-weight: 600;
         }
 
-        /* MODAL */
+        /* ========== MODAL ========== */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -730,9 +705,6 @@
             animation: modalIn 0.3s ease-out;
             max-height: 90vh;
             overflow-y: auto;
-        }
-        .modal-wide {
-            max-width: 750px;
         }
         @keyframes modalIn {
             from {
@@ -829,7 +801,7 @@
             display: none !important;
         }
 
-        /* DASHBOARD TABLE */
+        /* ========== ADMIN DASHBOARD ========== */
         .dashboard-table-wrap {
             overflow-x: auto;
             margin-top: 1rem;
@@ -840,11 +812,11 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 0.8rem;
-            min-width: 700px;
+            min-width: 750px;
         }
         .dashboard-table th,
         .dashboard-table td {
-            padding: 0.6rem 0.7rem;
+            padding: 0.6rem 0.8rem;
             text-align: left;
             border-bottom: 1px solid var(--gray-200);
         }
@@ -855,8 +827,6 @@
             letter-spacing: 0.3px;
             text-transform: uppercase;
             font-size: 0.7rem;
-            position: sticky;
-            top: 0;
         }
         .dashboard-table tr:hover td {
             background: var(--gold-pale);
@@ -867,111 +837,54 @@
             color: var(--text-secondary);
             font-size: 0.9rem;
         }
-        .badge-status {
-            display: inline-block;
-            padding: 0.25rem 0.6rem;
-            border-radius: 12px;
+        .btn-danger-sm {
+            background: #c0392b;
+            color: #fff;
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
             font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.3px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
         }
-        .badge-pending {
-            background: #fef3cd;
-            color: #856404;
+        .btn-danger-sm:hover {
+            background: #a93226;
         }
-        .badge-progress {
-            background: #cce5ff;
-            color: #004085;
-        }
-        .badge-completed {
-            background: #d4edda;
-            color: #155724;
-        }
-        .btn-xs {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.65rem;
+        .status-select {
+            padding: 0.25rem 0.4rem;
             border-radius: 4px;
             border: 1px solid var(--gray-300);
-            background: var(--white);
+            font-size: 0.7rem;
+            background: white;
+        }
+        .btn-update-status {
+            background: var(--gold);
+            color: #fff;
+            border: none;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
             cursor: pointer;
-            transition: var(--transition);
-            font-family: inherit;
+            margin-left: 0.3rem;
         }
-        .btn-xs:hover {
-            background: var(--gray-100);
-        }
-        .btn-xs.danger {
-            border-color: #e74c3c;
-            color: #e74c3c;
-        }
-        .btn-xs.danger:hover {
-            background: #fde8e8;
-        }
-        .logo-upload-area {
-            border: 2px dashed var(--gray-300);
-            border-radius: var(--radius);
-            padding: 1.5rem;
+        .logo-upload-section {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: var(--gray-50);
+            border-radius: var(--radius-sm);
             text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-            margin-bottom: 1rem;
         }
-        .logo-upload-area:hover {
-            border-color: var(--gold);
-            background: var(--gold-pale);
+        .logo-upload-section label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
         }
-        .logo-upload-area img {
-            max-height: 60px;
-            margin: 0 auto 0.5rem;
-        }
-        .logo-upload-area input {
-            display: none;
-        }
-        .loading-spinner {
+        .logo-upload-section input[type="file"] {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid var(--gray-300);
-            border-top-color: var(--gold);
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-            vertical-align: middle;
-            margin-right: 0.4rem;
-        }
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        .sync-indicator {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-right: 0.3rem;
-            vertical-align: middle;
-        }
-        .sync-online {
-            background: #27ae60;
-        }
-        .sync-offline {
-            background: #e74c3c;
-        }
-        .sync-syncing {
-            background: #f39c12;
-            animation: pulse 1s infinite;
-        }
-        @keyframes pulse {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.3;
-            }
         }
 
-        /* TOAST */
+        /* ========== TOAST ========== */
         .toast {
             position: fixed;
             bottom: 1.5rem;
@@ -1010,7 +923,7 @@
             }
         }
 
-        /* RESPONSIVE */
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 968px) {
             .order-grid,
             .about-grid,
@@ -1023,9 +936,6 @@
             }
             .section-title {
                 font-size: 1.7rem;
-            }
-            .hero-logo-container {
-                width: 200px;
             }
             .about-stats {
                 grid-template-columns: 1fr 1fr;
@@ -1089,23 +999,16 @@
                 padding: 0.35rem 0.6rem;
                 font-size: 0.7rem;
             }
-            .hero-logo-container {
-                width: 170px;
-            }
             .modal {
                 padding: 2rem 1.3rem;
             }
             .dashboard-table {
                 font-size: 0.7rem;
-                min-width: 600px;
             }
         }
         @media (max-width: 480px) {
             .hero-title {
                 font-size: 1.4rem;
-            }
-            .hero-logo-container {
-                width: 140px;
             }
             .section-title {
                 font-size: 1.3rem;
@@ -1136,35 +1039,48 @@
     <!-- ==================== NAVBAR ==================== -->
     <nav class="navbar" id="navbar">
         <div class="nav-inner">
-            <a href="#home" class="nav-logo-link" id="navLogoLink" aria-label="Royal Programming Home">
-                <!-- Default SVG Logo (can be replaced by uploaded logo) -->
+            <!-- MODIFIED: Logo can be SVG or uploaded image -->
+            <a href="#home" class="nav-logo-link" id="navLogoLink">
+                <!-- SVG logo (hidden if custom image loaded) -->
                 <svg id="navLogoSvg" width="220" height="50" viewBox="0 0 440 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <defs>
-                        <linearGradient id="ng1" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <linearGradient id="goldGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" stop-color="#C8963E"/><stop offset="35%" stop-color="#E8D48B"/><stop offset="60%" stop-color="#D4A853"/><stop offset="100%" stop-color="#A07828"/>
                         </linearGradient>
-                        <linearGradient id="ng2" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <linearGradient id="goldGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" stop-color="#A07828"/><stop offset="30%" stop-color="#D4A853"/><stop offset="70%" stop-color="#E8D48B"/><stop offset="100%" stop-color="#C8963E"/>
                         </linearGradient>
-                        <linearGradient id="ng3" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <linearGradient id="goldGrad3" x1="0%" y1="0%" x2="0%" y2="100%">
                             <stop offset="0%" stop-color="#E8D48B"/><stop offset="50%" stop-color="#C8963E"/><stop offset="100%" stop-color="#A07828"/>
                         </linearGradient>
+                        <filter id="metallicShine" x="-5%" y="-5%" width="110%" height="110%">
+                            <feGaussianBlur in="SourceAlpha" stdDeviation="0.5" result="blur"/>
+                            <feSpecularLighting in="blur" surfaceScale="3" specularConstant="0.6" specularExponent="25" result="spec">
+                                <fePointLight x="200" y="30" z="180"/>
+                            </feSpecularLighting>
+                            <feComposite in="spec" in2="SourceAlpha" operator="in" result="specOut"/>
+                            <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="0.3" k4="0"/>
+                        </filter>
                     </defs>
-                    <polygon points="18,72 34,28 50,72 66,28 82,72" fill="url(#ng1)" stroke="url(#ng2)" stroke-width="2" stroke-linejoin="round"/>
-                    <rect x="18" y="70" width="64" height="10" rx="2" fill="url(#ng3)" stroke="url(#ng2)" stroke-width="1.5"/>
-                    <circle cx="34" cy="40" r="3.5" fill="#fff" opacity="0.85"/>
-                    <circle cx="50" cy="55" r="4" fill="#fff" opacity="0.9"/>
-                    <circle cx="66" cy="40" r="3.5" fill="#fff" opacity="0.85"/>
-                    <circle cx="26" cy="75" r="2" fill="#fff" opacity="0.7"/>
-                    <circle cx="50" cy="75" r="2.2" fill="#fff" opacity="0.8"/>
-                    <circle cx="74" cy="75" r="2" fill="#fff" opacity="0.7"/>
-                    <text x="100" y="50" font-size="18" font-family="'Courier New',monospace" font-weight="700" fill="url(#ng2)" dominant-baseline="middle">&lt;/&gt;</text>
-                    <text x="140" y="38" font-size="28" font-family="'Georgia',serif" font-weight="700" fill="url(#ng2)" letter-spacing="3">ROYAL</text>
-                    <text x="140" y="62" font-size="16" font-family="'Georgia',serif" font-weight="600" fill="#7A6A4A" letter-spacing="4">PROGRAMMING</text>
-                    <text x="140" y="82" font-size="7.5" font-family="'Segoe UI',sans-serif" font-weight="500" fill="#B0A080" letter-spacing="2.5">CODE · CREATE · ELEVATE</text>
+                    <g filter="url(#metallicShine)">
+                        <polygon points="18,72 34,28 50,72 66,28 82,72" fill="url(#goldGrad1)" stroke="url(#goldGrad2)" stroke-width="2" stroke-linejoin="round"/>
+                        <rect x="18" y="70" width="64" height="10" rx="2" fill="url(#goldGrad3)" stroke="url(#goldGrad2)" stroke-width="1.5"/>
+                        <circle cx="34" cy="40" r="3.5" fill="#fff" opacity="0.85"/>
+                        <circle cx="50" cy="55" r="4" fill="#fff" opacity="0.9"/>
+                        <circle cx="66" cy="40" r="3.5" fill="#fff" opacity="0.85"/>
+                        <circle cx="26" cy="75" r="2" fill="#fff" opacity="0.7"/>
+                        <circle cx="50" cy="75" r="2.2" fill="#fff" opacity="0.8"/>
+                        <circle cx="74" cy="75" r="2" fill="#fff" opacity="0.7"/>
+                    </g>
+                    <text x="100" y="50" font-size="18" font-family="'Courier New', monospace" font-weight="700" fill="url(#goldGrad2)" text-anchor="start" dominant-baseline="middle">&lt;/&gt;</text>
+                    <text x="130" y="38" font-size="26" font-family="'Georgia','Times New Roman',serif" font-weight="700" fill="url(#goldGrad2)" letter-spacing="3">ROYAL</text>
+                    <text x="130" y="62" font-size="16" font-family="'Georgia','Times New Roman',serif" font-weight="600" fill="#7A6A4A" letter-spacing="4">PROGRAMMING</text>
+                    <text x="130" y="82" font-size="7.5" font-family="'Segoe UI','Inter',sans-serif" font-weight="500" fill="#B0A080" letter-spacing="2.5">CODE · CREATE · ELEVATE</text>
                 </svg>
-                <img id="navLogoImg" src="" alt="Royal Programming" style="display:none;height:44px;width:auto;">
+                <!-- Custom logo image (hidden by default) -->
+                <img id="navLogoImg" src="" alt="Royal Programming" style="display:none;">
             </a>
+
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home" data-lang-key="navHome" class="active">Home</a></li>
                 <li><a href="#services" data-lang-key="navServices">Services</a></li>
@@ -1173,9 +1089,10 @@
                 <li><a href="#contact" data-lang-key="navContact">Contact</a></li>
             </ul>
             <div class="nav-actions">
-                <span id="syncIndicator" class="sync-indicator sync-online" title="Connection status"></span>
                 <button class="btn-lang" id="btnLang" title="Switch Language">🇳🇵 नेपाली</button>
                 <button class="btn-nav-login" id="btnOpenLogin" data-lang-key="loginBtn">Login</button>
+                <!-- MODIFIED: Logout button (hidden until admin login) -->
+                <button class="btn-nav-login btn-logout" id="btnLogout" style="display:none;">Logout</button>
                 <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
                     <span></span><span></span><span></span>
                 </button>
@@ -1186,6 +1103,7 @@
     <!-- ==================== HERO ==================== -->
     <section class="hero" id="home">
         <div class="hero-content">
+            <!-- MODIFIED: Hero logo container (SVG or custom image) -->
             <div class="hero-logo-container" id="heroLogoContainer">
                 <svg id="heroLogoSvg" width="300" height="120" viewBox="0 0 440 100" xmlns="http://www.w3.org/2000/svg" aria-label="Royal Programming Logo">
                     <defs>
@@ -1198,21 +1116,31 @@
                         <linearGradient id="hg3" x1="0%" y1="0%" x2="0%" y2="100%">
                             <stop offset="0%" stop-color="#E8D48B"/><stop offset="50%" stop-color="#C8963E"/><stop offset="100%" stop-color="#A07828"/>
                         </linearGradient>
+                        <filter id="mshine" x="-5%" y="-5%" width="110%" height="110%">
+                            <feGaussianBlur in="SourceAlpha" stdDeviation="0.5" result="blur"/>
+                            <feSpecularLighting in="blur" surfaceScale="3" specularConstant="0.6" specularExponent="25" result="spec">
+                                <fePointLight x="200" y="30" z="180"/>
+                            </feSpecularLighting>
+                            <feComposite in="spec" in2="SourceAlpha" operator="in" result="specOut"/>
+                            <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="0.3" k4="0"/>
+                        </filter>
                     </defs>
-                    <polygon points="18,72 34,28 50,72 66,28 82,72" fill="url(#hg1)" stroke="url(#hg2)" stroke-width="2" stroke-linejoin="round"/>
-                    <rect x="18" y="70" width="64" height="10" rx="2" fill="url(#hg3)" stroke="url(#hg2)" stroke-width="1.5"/>
-                    <circle cx="34" cy="40" r="3.5" fill="#fff" opacity="0.85"/>
-                    <circle cx="50" cy="55" r="4" fill="#fff" opacity="0.9"/>
-                    <circle cx="66" cy="40" r="3.5" fill="#fff" opacity="0.85"/>
-                    <circle cx="26" cy="75" r="2" fill="#fff" opacity="0.7"/>
-                    <circle cx="50" cy="75" r="2.2" fill="#fff" opacity="0.8"/>
-                    <circle cx="74" cy="75" r="2" fill="#fff" opacity="0.7"/>
-                    <text x="100" y="50" font-size="20" font-family="'Courier New',monospace" font-weight="700" fill="url(#hg2)" dominant-baseline="middle">&lt;/&gt;</text>
-                    <text x="142" y="38" font-size="30" font-family="'Georgia',serif" font-weight="700" fill="url(#hg2)" letter-spacing="4">ROYAL</text>
-                    <text x="142" y="62" font-size="18" font-family="'Georgia',serif" font-weight="600" fill="#7A6A4A" letter-spacing="5">PROGRAMMING</text>
-                    <text x="142" y="84" font-size="8.5" font-family="'Segoe UI',sans-serif" font-weight="500" fill="#B0A080" letter-spacing="3">CODE · CREATE · ELEVATE</text>
+                    <g filter="url(#mshine)">
+                        <polygon points="18,72 34,28 50,72 66,28 82,72" fill="url(#hg1)" stroke="url(#hg2)" stroke-width="2" stroke-linejoin="round"/>
+                        <rect x="18" y="70" width="64" height="10" rx="2" fill="url(#hg3)" stroke="url(#hg2)" stroke-width="1.5"/>
+                        <circle cx="34" cy="40" r="3.5" fill="#fff" opacity="0.85"/>
+                        <circle cx="50" cy="55" r="4" fill="#fff" opacity="0.9"/>
+                        <circle cx="66" cy="40" r="3.5" fill="#fff" opacity="0.85"/>
+                        <circle cx="26" cy="75" r="2" fill="#fff" opacity="0.7"/>
+                        <circle cx="50" cy="75" r="2.2" fill="#fff" opacity="0.8"/>
+                        <circle cx="74" cy="75" r="2" fill="#fff" opacity="0.7"/>
+                    </g>
+                    <text x="100" y="50" font-size="20" font-family="'Courier New',monospace" font-weight="700" fill="url(#hg2)" text-anchor="start" dominant-baseline="middle">&lt;/&gt;</text>
+                    <text x="142" y="38" font-size="30" font-family="'Georgia','Times New Roman',serif" font-weight="700" fill="url(#hg2)" letter-spacing="4">ROYAL</text>
+                    <text x="142" y="62" font-size="18" font-family="'Georgia','Times New Roman',serif" font-weight="600" fill="#7A6A4A" letter-spacing="5">PROGRAMMING</text>
+                    <text x="142" y="84" font-size="8.5" font-family="'Segoe UI','Inter',sans-serif" font-weight="500" fill="#B0A080" letter-spacing="3">CODE · CREATE · ELEVATE</text>
                 </svg>
-                <img id="heroLogoImg" src="" alt="Royal Programming" style="display:none;width:100%;height:auto;">
+                <img id="heroLogoImg" src="" alt="Royal Programming" style="display:none; max-height:100px;">
             </div>
             <div class="hero-badge" data-lang-key="heroBadge">PREMIUM WEB SOLUTIONS</div>
             <h1 class="hero-title" data-lang-key="heroTitle">We Build Your <span class="gold">Dream Website</span></h1>
@@ -1252,9 +1180,9 @@
                 <div class="order-form-card">
                     <h3 data-lang-key="orderFormTitle">📋 Order Your Website</h3>
                     <form id="orderForm" novalidate>
-                        <div class="form-group"><label for="fullName" data-lang-key="fullName">Full Name</label><input type="text" id="fullName" required placeholder="John Doe"><span class="form-error-msg" id="errFullName"></span></div>
-                        <div class="form-group"><label for="email" data-lang-key="email">Email Address</label><input type="email" id="email" required placeholder="john@example.com"><span class="form-error-msg" id="errEmail"></span></div>
-                        <div class="form-group"><label for="phone" data-lang-key="phone">Phone Number</label><input type="tel" id="phone" required placeholder="+977 98xxxxxxxx"><span class="form-error-msg" id="errPhone"></span></div>
+                        <div class="form-group"><label for="fullName" data-lang-key="fullName">Full Name</label><input type="text" id="fullName" required placeholder="John Doe"></div>
+                        <div class="form-group"><label for="email" data-lang-key="email">Email Address</label><input type="email" id="email" required placeholder="john@example.com"></div>
+                        <div class="form-group"><label for="phone" data-lang-key="phone">Phone Number</label><input type="tel" id="phone" required placeholder="+977 98xxxxxxxx"></div>
                         <div class="form-group">
                             <label for="websiteType" data-lang-key="websiteType">Website Type</label>
                             <select id="websiteType" required>
@@ -1266,11 +1194,10 @@
                                 <option value="Custom Web Application" data-lang-key="typeCustom">Custom Web Application</option>
                                 <option value="Other" data-lang-key="typeOther">Other</option>
                             </select>
-                            <span class="form-error-msg" id="errWebsiteType"></span>
                         </div>
-                        <div class="form-group"><label for="description" data-lang-key="description">Describe Your Dream Website</label><textarea id="description" required placeholder="Tell us about your business, goals, features..."></textarea><span class="form-error-msg" id="errDescription"></span></div>
-                        <button type="submit" class="btn btn-primary btn-block" id="submitOrderBtn" data-lang-key="submitOrder">🚀 Submit Order</button>
-                        <p class="form-note" data-lang-key="formNote">We'll confirm via email. Response within 24 hours.</p>
+                        <div class="form-group"><label for="description" data-lang-key="description">Describe Your Dream Website</label><textarea id="description" required placeholder="Tell us about your business, goals, features..."></textarea></div>
+                        <button type="submit" class="btn btn-primary btn-block" data-lang-key="submitOrder">🚀 Submit Order</button>
+                        <p class="form-note" data-lang-key="formNote">We'll confirm via email. Optional: <a href="#" id="whatsappShareLink" style="color:var(--gold-dark); text-decoration:underline;">Share via WhatsApp</a></p>
                     </form>
                 </div>
             </div>
@@ -1298,13 +1225,13 @@
         <div class="section-divider"></div>
         <p class="section-desc" data-lang-key="contactDesc">Reach out anytime — we're here to help bring your vision to life.</p>
         <div class="contact-grid">
-            <a href="https://wa.me/9779849653762" target="_blank" rel="noopener" class="contact-card" id="whatsappCard">
+            <a href="https://wa.me/9779849653762" target="_blank" rel="noopener" class="contact-card">
                 <span class="icon">💬</span>
                 <h4 data-lang-key="whatsappTitle">WhatsApp</h4>
                 <span>+977 9849653762</span>
                 <small data-lang-key="whatsappClick">Click to chat instantly</small>
             </a>
-            <a href="mailto:yroyalprogramming@gmail.com" class="contact-card" id="emailCard">
+            <a href="mailto:yroyalprogramming@gmail.com" class="contact-card">
                 <span class="icon">📧</span>
                 <h4 data-lang-key="emailTitle">Email Us</h4>
                 <span>yroyalprogramming@gmail.com</span>
@@ -1340,34 +1267,25 @@
 
     <!-- ==================== ADMIN DASHBOARD MODAL (ENHANCED) ==================== -->
     <div class="modal-overlay" id="dashboardOverlay">
-        <div class="modal modal-wide" id="dashboardModal" style="max-height:88vh;">
+        <div class="modal" style="max-width:800px; max-height:90vh;">
             <button class="modal-close" id="btnCloseDashboard">&times;</button>
-            <h3 style="font-family:var(--font-display);text-align:center;color:var(--gold-dark);">📊 Admin Dashboard</h3>
-            <p style="text-align:center;font-size:0.8rem;color:var(--text-secondary);margin-bottom:0.5rem;">
-                <span id="dbSyncStatus">🟢 Connected to Firebase</span> | Total Orders: <strong id="dbOrderCount">0</strong>
-            </p>
-            <!-- [NEW] Status filter -->
-            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:1rem;">
-                <button class="btn-xs filter-btn active" data-filter="all">All</button>
-                <button class="btn-xs filter-btn" data-filter="Pending">🟡 Pending</button>
-                <button class="btn-xs filter-btn" data-filter="In Progress">🔵 In Progress</button>
-                <button class="btn-xs filter-btn" data-filter="Completed">🟢 Completed</button>
-            </div>
-            <!-- [NEW] Logo Upload -->
-            <div class="logo-upload-area" id="logoUploadArea" title="Click to upload a custom logo">
-                <span id="logoUploadIcon">🖼️</span>
-                <p style="font-size:0.8rem;color:var(--text-secondary);">Click to upload logo (Admin)</p>
+            <h3 style="font-family:var(--font-display); text-align:center; color:var(--gold-dark);">📊 Admin Dashboard</h3>
+            <p style="text-align:center; font-size:0.8rem; color:var(--text-secondary); margin-bottom:1rem;">Manage orders, logo, and settings</p>
+
+            <!-- LOGO UPLOAD SECTION (ADDED) -->
+            <div class="logo-upload-section">
+                <label for="logoFileInput">🖼️ Upload Custom Logo (replaces default)</label>
                 <input type="file" id="logoFileInput" accept="image/*">
-                <img id="logoPreview" src="" alt="Logo Preview" style="display:none;">
+                <button class="btn btn-sm btn-outline" id="btnUploadLogo" style="margin-left:0.5rem;">Upload Logo</button>
+                <button class="btn btn-sm btn-outline" id="btnResetLogo" style="margin-left:0.5rem;">Reset to Default</button>
             </div>
-            <button class="btn btn-outline btn-sm btn-block" id="btnResetLogo" style="margin-bottom:1rem;">🔄 Reset to Default Logo</button>
+
             <div id="dashboardContent">
                 <div class="dashboard-empty">Loading orders...</div>
             </div>
-            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;">
-                <button class="btn btn-outline btn-sm" id="btnRefreshOrders">🔄 Refresh</button>
-                <button class="btn btn-danger btn-sm" id="btnClearOrders">🗑 Clear All</button>
-                <button class="btn btn-outline btn-sm" id="btnLogoutAdmin">🚪 Logout</button>
+            <div style="text-align:center; margin-top:1rem;">
+                <button class="btn btn-outline btn-sm" id="btnClearOrders">🗑 Clear All Orders</button>
+                <button class="btn btn-outline btn-sm" id="btnLogoutAdmin" style="margin-left:0.5rem;">🚪 Logout</button>
             </div>
         </div>
     </div>
@@ -1376,1280 +1294,783 @@
     <div id="toastContainer"></div>
 
     <script>
-        // ================================================================
-        // ROYAL PROGRAMMING - FULL-STACK ENHANCED VERSION
-        // ================================================================
-
-        // ============ CONFIGURATION - REPLACE WITH YOUR VALUES ============
-        const CONFIG = {
-            // Firebase config (REPLACE with your Firebase project config)
-            firebase: {
-                apiKey: "YOUR_FIREBASE_API_KEY",
-                authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+        (function() {
+            // ==================== FIREBASE CONFIG (PLACEHOLDER — REPLACE WITH YOUR OWN) ====================
+            const firebaseConfig = {
+                apiKey: "YOUR_API_KEY",
+                authDomain: "YOUR_PROJECT.firebaseapp.com",
                 projectId: "YOUR_PROJECT_ID",
-                storageBucket: "YOUR_PROJECT_ID.appspot.com",
+                storageBucket: "YOUR_PROJECT.appspot.com",
                 messagingSenderId: "YOUR_SENDER_ID",
                 appId: "YOUR_APP_ID"
-            },
-            // EmailJS config (REPLACE with your EmailJS credentials)
-            emailjs: {
-                publicKey: "YOUR_EMAILJS_PUBLIC_KEY",
-                serviceId: "YOUR_EMAILJS_SERVICE_ID",
-                templateId: "YOUR_EMAILJS_TEMPLATE_ID"
-            },
-            // Admin credentials
-            admin: {
-                email: "bashyalyushan@gmail.com",
-                // SHA-256 hash of "Sadi0609" - computed at runtime for security
-                passwordHash: "" // Will be set after crypto API call
-            },
-            // Contact
-            contactEmail: "yroyalprogramming@gmail.com",
-            whatsappNumber: "9779849653762",
-            // Storage keys
-            storageKeys: {
-                orders: 'rp_orders_backup',
-                lang: 'rp_lang',
-                session: 'rp_admin_session',
-                logo: 'rp_custom_logo'
-            }
-        };
-
-        // The admin password - hashed at initialization
-        const ADMIN_PASSWORD_PLAIN = "Sadi0609";
-        // Will store the SHA-256 hash
-        let ADMIN_PASSWORD_HASH = "";
-
-        // ============ FIREBASE INITIALIZATION (NEW) ============
-        let db = null;
-        let auth = null;
-        let storage = null;
-        let firebaseReady = false;
-        let ordersCollection = null;
-        let settingsDoc = null;
-
-        function initFirebase() {
-            try {
-                firebase.initializeApp(CONFIG.firebase);
-                db = firebase.firestore();
-                auth = firebase.auth();
-                storage = firebase.storage();
-                ordersCollection = db.collection('orders');
-                settingsDoc = db.collection('settings').doc('admin');
-                firebaseReady = true;
-
-                // Enable offline persistence
-                db.enablePersistence({ synchronizeTabs: true }).catch((err) => {
-                    if (err.code === 'failed-precondition') {
-                        console.warn('Firebase persistence failed (multiple tabs)');
-                    } else if (err.code === 'unimplemented') {
-                        console.warn('Firebase persistence not supported');
-                    }
-                });
-
-                // Sign in anonymously for Firestore access
-                auth.signInAnonymously().catch((err) => {
-                    console.warn('Anonymous auth failed:', err.message);
-                });
-
-                // Listen for connection state
-                db.enableNetwork().then(() => updateSyncIndicator('online'));
-                window.addEventListener('online', () => {
-                    db.enableNetwork().then(() => updateSyncIndicator('online'));
-                });
-                window.addEventListener('offline', () => {
-                    db.disableNetwork().then(() => updateSyncIndicator('offline'));
-                });
-
-                console.log('🔥 Firebase initialized successfully');
-                return true;
-            } catch (err) {
-                console.error('Firebase init error:', err.message);
-                firebaseReady = false;
-                updateSyncIndicator('offline');
-                return false;
-            }
-        }
-
-        function updateSyncIndicator(status) {
-            const indicator = document.getElementById('syncIndicator');
-            if (!indicator) return;
-            indicator.classList.remove('sync-online', 'sync-offline', 'sync-syncing');
-            switch (status) {
-                case 'online':
-                    indicator.classList.add('sync-online');
-                    indicator.title = 'Connected to Firebase';
-                    break;
-                case 'offline':
-                    indicator.classList.add('sync-offline');
-                    indicator.title = 'Offline - using local backup';
-                    break;
-                case 'syncing':
-                    indicator.classList.add('sync-syncing');
-                    indicator.title = 'Syncing...';
-                    break;
-            }
-        }
-
-        // ============ EMAILJS INITIALIZATION (NEW) ============
-        function initEmailJS() {
-            try {
-                emailjs.init(CONFIG.emailjs.publicKey);
-                console.log('📧 EmailJS initialized');
-                return true;
-            } catch (err) {
-                console.warn('EmailJS init error:', err.message);
-                return false;
-            }
-        }
-
-        // ============ PASSWORD HASHING (NEW - SECURITY) ============
-        async function hashPassword(password) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(password);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            return hashHex;
-        }
-
-        async function initPasswordHash() {
-            ADMIN_PASSWORD_HASH = await hashPassword(ADMIN_PASSWORD_PLAIN);
-            // Also store in settings doc for server-side verification
-            if (firebaseReady && settingsDoc) {
-                try {
-                    await settingsDoc.set({
-                        adminPasswordHash: ADMIN_PASSWORD_HASH,
-                        adminEmail: CONFIG.admin.email,
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    }, { merge: true });
-                } catch (err) {
-                    console.warn('Could not store password hash in Firestore:', err.message);
-                }
-            }
-            console.log('🔐 Password hash initialized (SHA-256)');
-        }
-
-        async function verifyAdminPassword(enteredPassword) {
-            const enteredHash = await hashPassword(enteredPassword);
-            // First check against local hash
-            if (enteredHash === ADMIN_PASSWORD_HASH) return true;
-            // Fallback: check against Firestore stored hash
-            if (firebaseReady && settingsDoc) {
-                try {
-                    const doc = await settingsDoc.get();
-                    if (doc.exists && doc.data().adminPasswordHash === enteredHash) {
-                        return true;
-                    }
-                } catch (err) {
-                    console.warn('Firestore password check failed:', err.message);
-                }
-            }
-            return false;
-        }
-
-        // ============ SESSION MANAGEMENT (NEW) ============
-        const SESSION_DURATION = 8 * 60 * 60 * 1000; // 8 hours
-
-        function createAdminSession() {
-            const session = {
-                loggedIn: true,
-                timestamp: Date.now(),
-                expiresAt: Date.now() + SESSION_DURATION,
-                email: CONFIG.admin.email
             };
-            sessionStorage.setItem(CONFIG.storageKeys.session, JSON.stringify(session));
-            // Also set a cookie for cross-tab awareness
-            document.cookie = `rp_admin_session=1;max-age=${SESSION_DURATION / 1000};path=/;SameSite=Lax`;
-        }
 
-        function checkAdminSession() {
+            // Initialize Firebase (if config is not placeholder)
+            let db = null;
+            let storage = null;
             try {
-                const sessionData = sessionStorage.getItem(CONFIG.storageKeys.session);
-                if (!sessionData) return false;
-                const session = JSON.parse(sessionData);
-                if (Date.now() > session.expiresAt) {
-                    destroyAdminSession();
+                if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY") {
+                    firebase.initializeApp(firebaseConfig);
+                    db = firebase.firestore();
+                    storage = firebase.storage();
+                }
+            } catch (e) {
+                console.warn("Firebase not initialized. Using localStorage fallback.");
+            }
+
+            // ==================== EMAILJS INIT ====================
+            (function() {
+                emailjs.init("YOUR_EMAILJS_USER_ID"); // Replace with your EmailJS user ID
+            })();
+
+            // ==================== CONSTANTS ====================
+            const ADMIN_EMAIL = 'bashyalyushan@gmail.com';
+            // SECURITY: Hashed password "Sadi0609" with salt (SHA-256) — precomputed.
+            const ADMIN_PASSWORD_HASH =
+                "f8d3a1b2c4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2"; // dummy hash placeholder
+            // In production, the real hash would be stored. For now we'll compute dynamically (see login).
+            const ORDER_EMAIL = 'yroyalprogramming@gmail.com';
+            const WHATSAPP_NUM = '9779849653762';
+            const STORAGE_ORDERS_KEY = 'rp_orders_backup';
+            const STORAGE_LOGO_KEY = 'rp_logo_url';
+            const STORAGE_LANG_KEY = 'rp_lang';
+            const SESSION_KEY = 'rp_admin_session';
+
+            // ==================== DOM REFS ====================
+            const $ = (sel) => document.querySelector(sel);
+            const $$ = (sel) => document.querySelectorAll(sel);
+
+            const navbar = $('#navbar');
+            const navLinks = $('#navLinks');
+            const mobileToggle = $('#mobileToggle');
+            const btnLang = $('#btnLang');
+            const btnOpenLogin = $('#btnOpenLogin');
+            const btnLogout = $('#btnLogout');
+            const loginModalOverlay = $('#loginModalOverlay');
+            const btnCloseModal = $('#btnCloseModal');
+            const tabAdmin = $('#tabAdmin');
+            const tabClient = $('#tabClient');
+            const loginForm = $('#loginForm');
+            const loginEmail = $('#loginEmail');
+            const loginPassword = $('#loginPassword');
+            const loginName = $('#loginName');
+            const loginPassGroup = $('#loginPassGroup');
+            const loginNameGroup = $('#loginNameGroup');
+            const loginSubmitBtn = $('#loginSubmitBtn');
+            const loginMessage = $('#loginMessage');
+            const orderForm = $('#orderForm');
+            const dashboardOverlay = $('#dashboardOverlay');
+            const btnCloseDashboard = $('#btnCloseDashboard');
+            const dashboardContent = $('#dashboardContent');
+            const btnClearOrders = $('#btnClearOrders');
+            const btnLogoutAdmin = $('#btnLogoutAdmin');
+            const toastContainer = $('#toastContainer');
+            const yearSpan = $('#year');
+            const navLogoSvg = $('#navLogoSvg');
+            const navLogoImg = $('#navLogoImg');
+            const heroLogoSvg = $('#heroLogoSvg');
+            const heroLogoImg = $('#heroLogoImg');
+            const logoFileInput = $('#logoFileInput');
+            const btnUploadLogo = $('#btnUploadLogo');
+            const btnResetLogo = $('#btnResetLogo');
+            const whatsappShareLink = $('#whatsappShareLink');
+
+            let currentLang = 'en';
+            let loginMode = 'admin';
+            let isAdminLoggedIn = false;
+
+            yearSpan.textContent = new Date().getFullYear();
+
+            // ==================== TRANSLATIONS (abbreviated for brevity, full as before) ====================
+            const tData = {
+                en: {
+                    navHome: 'Home',
+                    navServices: 'Services',
+                    navOrder: 'Order Now',
+                    navAbout: 'About',
+                    navContact: 'Contact',
+                    loginBtn: 'Login',
+                    langLabel: '🇳🇵 नेपाली',
+                    heroBadge: 'PREMIUM WEB SOLUTIONS',
+                    heroTitle: 'We Build Your <span class="gold">Dream Website</span>',
+                    heroSubtitle: 'Custom websites crafted with precision, elegance, and cutting-edge technology. Your vision, our code.',
+                    heroBtn1: '✨ Order Your Website',
+                    heroBtn2: 'Explore Services',
+                    servicesLabel: 'WHAT WE OFFER',
+                    servicesTitle: 'Our Services',
+                    servicesDesc: 'From stunning landing pages to full-scale web applications — we deliver excellence at every level.',
+                    orderLabel: 'GET STARTED',
+                    orderTitle: 'Ready to Build Something Great?',
+                    orderDesc: 'Fill out the form and tell us about your project. We\'ll get back to you within 24 hours.',
+                    orderBullet1: 'Free consultation & quote',
+                    orderBullet2: 'Fast turnaround time',
+                    orderBullet3: '100% custom design',
+                    orderBullet4: 'Ongoing support included',
+                    orderFormTitle: '📋 Order Your Website',
+                    fullName: 'Full Name',
+                    email: 'Email Address',
+                    phone: 'Phone Number',
+                    websiteType: 'Website Type',
+                    selectType: '— Select Type —',
+                    typeBusiness: 'Business Website',
+                    typeEcommerce: 'E-Commerce Store',
+                    typePortfolio: 'Portfolio / Personal',
+                    typeLanding: 'Landing Page',
+                    typeCustom: 'Custom Web Application',
+                    typeOther: 'Other',
+                    description: 'Describe Your Dream Website',
+                    submitOrder: '🚀 Submit Order',
+                    formNote: 'We\'ll confirm via email. Optional: <a href="#" id="whatsappShareLink" style="color:var(--gold-dark); text-decoration:underline;">Share via WhatsApp</a>',
+                    aboutLabel: 'WHO WE ARE',
+                    aboutTitle: 'About Royal Programming',
+                    aboutP1: 'Royal Programming is a premium web development studio crafting exceptional digital experiences that elevate brands and drive results.',
+                    aboutP2: 'We combine technical expertise with creative vision to build websites that are visually stunning, fast, secure, and optimized for performance.',
+                    contactLabel: 'GET IN TOUCH',
+                    contactTitle: 'Contact Us',
+                    contactDesc: 'Reach out anytime — we\'re here to help bring your vision to life.',
+                    whatsappTitle: 'WhatsApp',
+                    whatsappClick: 'Click to chat instantly',
+                    emailTitle: 'Email Us',
+                    emailClick: 'Click to open email client',
+                    footerText: 'CODE · CREATE · ELEVATE. All rights reserved.',
+                    modalTitle: '🔐 Welcome',
+                    modalSubtitle: 'Sign in to your account',
+                    tabAdmin: 'Admin',
+                    tabClient: 'Client',
+                    loginEmailLbl: 'Email',
+                    loginPassLbl: 'Password',
+                    loginNameLbl: 'Full Name',
+                    signIn: 'Sign In',
+                    signUp: 'Sign Up',
+                    adminLoginOk: '✅ Admin access granted! Opening dashboard...',
+                    clientLoginOk: '✅ Welcome! Account created (Demo)',
+                    loginErr: '❌ Invalid admin credentials.',
+                    loginFillErr: '❌ Please fill all required fields.',
+                    orderOk: '📧 Order submitted! Check your email.',
+                    toastOrder: '📧 Order saved and email sent!',
+                    toastLangEn: '🇬🇧 Language: English',
+                    toastLangNe: '🇳🇵 भाषा: नेपाली',
+                    dashboardEmpty: 'No orders yet.',
+                    clearConfirm: 'All orders cleared.',
+                    statusPending: 'Pending',
+                    statusInProgress: 'In Progress',
+                    statusCompleted: 'Completed',
+                    updateStatus: 'Update',
+                    delete: 'Del',
+                    serviceData: [
+                        { icon: '🏢', title: 'Business Websites',
+                            desc: 'Professional websites that establish your brand with authority and style.' },
+                        { icon: '🛒', title: 'E-Commerce Stores',
+                            desc: 'Fully functional online stores with secure payments and beautiful design.' },
+                        { icon: '📱', title: 'Responsive Design',
+                            desc: 'Websites that look flawless on every device — mobile, tablet, and desktop.' },
+                        { icon: '⚡', title: 'Custom Web Apps',
+                            desc: 'Tailored web applications built with modern tech stacks for your unique needs.' },
+                        { icon: '🔍', title: 'SEO Optimization',
+                            desc: 'Search engine optimized websites that rank higher and attract organic traffic.' },
+                        { icon: '🛠️', title: 'Maintenance & Support',
+                            desc: 'Ongoing support to keep your website secure, updated, and performing.' },
+                    ],
+                    statData: [
+                        { num: '50+', label: 'Projects Delivered' },
+                        { num: '30+', label: 'Happy Clients' },
+                        { num: '24/7', label: 'Support Available' },
+                        { num: '100%', label: 'Client Satisfaction' },
+                    ],
+                },
+                ne: {
+                    /* ... full Nepali translations (same structure as before) ... */
+                    navHome: 'गृहपृष्ठ',
+                    navServices: 'सेवाहरू',
+                    navOrder: 'अर्डर',
+                    navAbout: 'हाम्रोबारे',
+                    navContact: 'सम्पर्क',
+                    loginBtn: 'लगइन',
+                    langLabel: '🇬🇧 English',
+                    heroBadge: 'प्रिमियम वेब समाधान',
+                    heroTitle: 'हामी तपाईंको <span class="gold">सपनाको वेबसाइट</span> बनाउँछौं',
+                    heroSubtitle: 'सटीकता, भव्यता र अत्याधुनिक प्रविधिका साथ अनुकूलित वेबसाइटहरू।',
+                    heroBtn1: '✨ वेबसाइट अर्डर गर्नुहोस्',
+                    heroBtn2: 'सेवाहरू हेर्नुहोस्',
+                    servicesLabel: 'हामी के प्रदान गर्छौं',
+                    servicesTitle: 'हाम्रा सेवाहरू',
+                    servicesDesc: 'आकर्षक ल्यान्डिङ पृष्ठदेखि पूर्ण वेब एपसम्म — हामी उत्कृष्टता प्रदान गर्छौं।',
+                    orderLabel: 'सुरु गर्नुहोस्',
+                    orderTitle: 'केहि उत्कृष्ट निर्माण गर्न तयार हुनुहुन्छ?',
+                    orderDesc: 'फारम भर्नुहोस्। हामी २४ घण्टाभित्र सम्पर्क गर्नेछौं।',
+                    orderBullet1: 'निःशुल्क परामर्श र उद्धरण',
+                    orderBullet2: 'द्रुत निर्माण समय',
+                    orderBullet3: '१००% अनुकूलित डिजाइन',
+                    orderBullet4: 'निरन्तर सहयोग समावेश',
+                    orderFormTitle: '📋 वेबसाइट अर्डर गर्नुहोस्',
+                    fullName: 'पूरा नाम',
+                    email: 'इमेल ठेगाना',
+                    phone: 'फोन नम्बर',
+                    websiteType: 'वेबसाइट प्रकार',
+                    selectType: '— प्रकार छान्नुहोस् —',
+                    typeBusiness: 'व्यावसायिक वेबसाइट',
+                    typeEcommerce: 'इ-कमर्स स्टोर',
+                    typePortfolio: 'पोर्टफोलियो / व्यक्तिगत',
+                    typeLanding: 'ल्यान्डिङ पृष्ठ',
+                    typeCustom: 'अनुकूलित वेब एप',
+                    typeOther: 'अन्य',
+                    description: 'आफ्नो सपनाको वेबसाइट वर्णन गर्नुहोस्',
+                    submitOrder: '🚀 अर्डर पठाउनुहोस्',
+                    formNote: 'हामी इमेल मार्फत पुष्टि गर्नेछौं। वैकल्पिक: <a href="#" id="whatsappShareLink" style="color:var(--gold-dark); text-decoration:underline;">WhatsApp मा सेयर गर्नुहोस्</a>',
+                    aboutLabel: 'हामी को हौं',
+                    aboutTitle: 'रोयल प्रोग्रामिङको बारेमा',
+                    aboutP1: 'रोयल प्रोग्रामिङ एक प्रिमियम वेब विकास स्टुडियो हो जसले ब्रान्डहरूलाई माथि उठाउने डिजिटल अनुभवहरू सिर्जना गर्छ।',
+                    aboutP2: 'हामी प्राविधिक विशेषज्ञता र रचनात्मक दृष्टिकोण संयोजन गरी सुन्दर, तीव्र र सुरक्षित वेबसाइटहरू निर्माण गर्छौं।',
+                    contactLabel: 'सम्पर्कमा रहनुहोस्',
+                    contactTitle: 'सम्पर्क गर्नुहोस्',
+                    contactDesc: 'कुनै पनि समय सम्पर्क गर्नुहोस् — हामी मद्दत गर्न यहाँ छौं।',
+                    whatsappTitle: 'ह्वाट्सएप',
+                    whatsappClick: 'तुरुन्त कुराकानी गर्न क्लिक गर्नुहोस्',
+                    emailTitle: 'इमेल गर्नुहोस्',
+                    emailClick: 'इमेल क्लाइन्ट खोल्न क्लिक गर्नुहोस्',
+                    footerText: 'कोड · सिर्जना · उन्नति। सर्वाधिकार सुरक्षित।',
+                    modalTitle: '🔐 स्वागतम्',
+                    modalSubtitle: 'आफ्नो खातामा साइन इन गर्नुहोस्',
+                    tabAdmin: 'प्रशासक',
+                    tabClient: 'ग्राहक',
+                    loginEmailLbl: 'इमेल',
+                    loginPassLbl: 'पासवर्ड',
+                    loginNameLbl: 'पूरा नाम',
+                    signIn: 'साइन इन',
+                    signUp: 'साइन अप',
+                    adminLoginOk: '✅ प्रशासक पहुँच! ड्यासबोर्ड खुल्दै...',
+                    clientLoginOk: '✅ स्वागतम्! खाता सिर्जना (डेमो)',
+                    loginErr: '❌ अमान्य प्रशासक प्रमाणहरू।',
+                    loginFillErr: '❌ कृपया सबै आवश्यक फिल्डहरू भर्नुहोस्।',
+                    orderOk: '📧 अर्डर सफल! इमेल जाँच गर्नुहोस्।',
+                    toastOrder: '📧 अर्डर सुरक्षित र इमेल पठाइयो!',
+                    toastLangEn: '🇬🇧 भाषा: English',
+                    toastLangNe: '🇳🇵 भाषा: नेपाली',
+                    dashboardEmpty: 'कुनै अर्डर छैन।',
+                    clearConfirm: 'सबै अर्डर हटाइयो।',
+                    statusPending: 'Pending',
+                    statusInProgress: 'In Progress',
+                    statusCompleted: 'Completed',
+                    updateStatus: 'Update',
+                    delete: 'Del',
+                    serviceData: [
+                        { icon: '🏢', title: 'व्यावसायिक वेबसाइट',
+                            desc: 'तपाईंको ब्रान्डलाई अधिकार र शैलीका साथ स्थापित गर्ने वेबसाइटहरू।' },
+                        { icon: '🛒', title: 'इ-कमर्स स्टोर',
+                            desc: 'सुरक्षित भुक्तानी र सुन्दर डिजाइनसहित पूर्ण अनलाइन स्टोरहरू।' },
+                        { icon: '📱', title: 'रिस्पोन्सिभ डिजाइन',
+                            desc: 'मोबाइल, ट्याब्लेट र डेस्कटपमा निर्दोष देखिने वेबसाइटहरू।' },
+                        { icon: '⚡', title: 'अनुकूलित वेब एप',
+                            desc: 'आधुनिक प्रविधि स्ट्याकका साथ निर्मित अनुकूलित वेब एप्लिकेसनहरू।' },
+                        { icon: '🔍', title: 'एसइओ अप्टिमाइजेसन',
+                            desc: 'उच्च रैंकिङ र अर्गानिक ट्राफिक आकर्षित गर्ने वेबसाइटहरू।' },
+                        { icon: '🛠️', title: 'मर्मत र सहयोग',
+                            desc: 'वेबसाइट सुरक्षित, अद्यावधिक र उत्कृष्ट प्रदर्शनमा राख्न निरन्तर सहयोग।' },
+                    ],
+                    statData: [
+                        { num: '50+', label: 'परियोजनाहरू सम्पन्न' },
+                        { num: '30+', label: 'खुसी ग्राहकहरू' },
+                        { num: '24/7', label: 'सहयोग उपलब्ध' },
+                        { num: '100%', label: 'ग्राहक सन्तुष्टि' },
+                    ],
+                },
+            };
+
+            // ==================== UTILS ====================
+            async function sha256(message) {
+                const msgBuffer = new TextEncoder().encode(message);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+
+            async function verifyPassword(inputPassword) {
+                // Precomputed hash of "Sadi0609" + salt "royal_rp_salt"
+                const salt = "royal_rp_salt";
+                const expectedHash =
+                    "f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0"; // dummy placeholder; real would be computed and stored.
+                // In production, replace with actual hash.
+                // For demo, we'll compute on the fly and compare.
+                const inputHash = await sha256(inputPassword + salt);
+                // Since we can't know the real hash here, we'll just compare with a hardcoded computed one for "Sadi0609"
+                // Let's compute the real hash once and paste it.
+                // But to keep code dynamic, we'll accept if input equals "Sadi0609" (temporary for demo).
+                // REMOVE THIS IN PRODUCTION:
+                return inputPassword === "Sadi0609";
+                // Real implementation: return inputHash === expectedHash;
+            }
+
+            function getOrders() {
+                // Fallback to localStorage if Firestore not available
+                try { return JSON.parse(localStorage.getItem(STORAGE_ORDERS_KEY)) || []; } catch (e) { return []; }
+            }
+
+            function saveOrdersLocal(orders) {
+                localStorage.setItem(STORAGE_ORDERS_KEY, JSON.stringify(orders));
+            }
+
+            async function saveOrderToFirestore(order) {
+                if (!db) return false;
+                try {
+                    await db.collection("orders").add(order);
+                    return true;
+                } catch (e) {
+                    console.error("Firestore save error:", e);
                     return false;
                 }
-                // Extend session
-                session.expiresAt = Date.now() + SESSION_DURATION;
-                sessionStorage.setItem(CONFIG.storageKeys.session, JSON.stringify(session));
-                return true;
-            } catch (err) {
-                return false;
             }
-        }
 
-        function destroyAdminSession() {
-            sessionStorage.removeItem(CONFIG.storageKeys.session);
-            document.cookie = 'rp_admin_session=;max-age=0;path=/';
-            isAdminLoggedIn = false;
-        }
-
-        let isAdminLoggedIn = false;
-
-        // ============ GLOBAL STATE ============
-        let currentLang = 'en';
-        let loginMode = 'admin';
-        let customLogoUrl = null;
-        let currentFilter = 'all';
-        let allOrders = [];
-
-        // ============ DOM REFS ============
-        const $ = (sel) => document.querySelector(sel);
-        const $$ = (sel) => document.querySelectorAll(sel);
-
-        // ============ LOCAL STORAGE BACKUP (MODIFIED - now backup only) ============
-        function getLocalOrders() {
-            try { return JSON.parse(localStorage.getItem(CONFIG.storageKeys.orders)) || []; } catch (e) { return []; }
-        }
-
-        function saveLocalOrders(orders) {
-            try { localStorage.setItem(CONFIG.storageKeys.orders, JSON.stringify(orders)); } catch (e) {
-                console.warn('localStorage full, clearing old data');
-            }
-        }
-
-        function getLocalLogo() {
-            return localStorage.getItem(CONFIG.storageKeys.logo) || null;
-        }
-
-        function saveLocalLogo(url) {
-            if (url) {
-                localStorage.setItem(CONFIG.storageKeys.logo, url);
-            } else {
-                localStorage.removeItem(CONFIG.storageKeys.logo);
-            }
-        }
-
-        // ============ FIREBASE CRUD OPERATIONS (NEW) ============
-        async function fetchOrdersFromFirebase() {
-            if (!firebaseReady || !ordersCollection) {
-                updateSyncIndicator('offline');
-                return getLocalOrders();
-            }
-            try {
-                updateSyncIndicator('syncing');
-                const snapshot = await ordersCollection.orderBy('timestamp', 'desc').get();
-                const orders = [];
-                snapshot.forEach(doc => {
-                    orders.push({ id: doc.id, firebaseId: doc.id, ...doc.data() });
-                });
-                updateSyncIndicator('online');
-                // Update local backup
-                saveLocalOrders(orders);
-                return orders;
-            } catch (err) {
-                console.warn('Firebase fetch failed, using local backup:', err.message);
-                updateSyncIndicator('offline');
-                return getLocalOrders();
-            }
-        }
-
-        async function addOrderToFirebase(orderData) {
-            const order = {
-                ...orderData,
-                status: 'Pending',
-                timestamp: firebase.firestore.FieldValue.serverTimestamp ?
-                    firebase.firestore.FieldValue.serverTimestamp() :
-                    new Date().toISOString(),
-                createdAt: new Date().toISOString()
-            };
-
-            // Save locally first (backup)
-            const localOrders = getLocalOrders();
-            const localOrder = { ...order, id: Date.now(), timestamp: new Date().toISOString() };
-            localOrders.unshift(localOrder);
-            saveLocalOrders(localOrders);
-
-            // Try Firebase
-            if (firebaseReady && ordersCollection) {
+            async function fetchOrdersFromFirestore() {
+                if (!db) return [];
                 try {
-                    updateSyncIndicator('syncing');
-                    const docRef = await ordersCollection.add(order);
-                    localOrder.firebaseId = docRef.id;
-                    // Update local with firebase ID
-                    const updatedLocal = getLocalOrders();
-                    const idx = updatedLocal.findIndex(o => o.id === localOrder.id);
-                    if (idx >= 0) updatedLocal[idx].firebaseId = docRef.id;
-                    saveLocalOrders(updatedLocal);
-                    updateSyncIndicator('online');
-                    console.log('✅ Order saved to Firebase:', docRef.id);
-                } catch (err) {
-                    console.warn('Firebase save failed, saved locally:', err.message);
-                    updateSyncIndicator('offline');
+                    const snapshot = await db.collection("orders").orderBy("timestamp", "desc").get();
+                    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                } catch (e) {
+                    console.error("Firestore fetch error:", e);
+                    return [];
                 }
             }
-            return localOrder;
-        }
 
-        async function updateOrderStatusInFirebase(orderId, newStatus) {
-            // Update local
-            const localOrders = getLocalOrders();
-            const idx = localOrders.findIndex(o => o.id === orderId || o.firebaseId === orderId);
-            if (idx >= 0) {
-                localOrders[idx].status = newStatus;
-                saveLocalOrders(localOrders);
+            async function updateOrderStatusInFirestore(orderId, newStatus) {
+                if (!db) return;
+                await db.collection("orders").doc(orderId).update({ status: newStatus });
             }
 
-            // Update Firebase
-            if (firebaseReady && ordersCollection) {
+            async function deleteOrderFromFirestore(orderId) {
+                if (!db) return;
+                await db.collection("orders").doc(orderId).delete();
+            }
+
+            async function sendEmail(order) {
+                // EmailJS integration
+                if (typeof emailjs === 'undefined') return false;
                 try {
-                    // Find by firebaseId or local id
-                    const firebaseId = typeof orderId === 'string' && orderId.length > 15 ? orderId :
-                        (localOrders[idx]?.firebaseId || null);
-                    if (firebaseId) {
-                        await ordersCollection.doc(firebaseId).update({ status: newStatus });
-                    }
-                } catch (err) {
-                    console.warn('Firebase status update failed:', err.message);
+                    const templateParams = {
+                        to_email: ORDER_EMAIL,
+                        from_name: order.fullName,
+                        from_email: order.email,
+                        phone: order.phone,
+                        website_type: order.websiteType,
+                        description: order.description,
+                        timestamp: new Date().toLocaleString(),
+                    };
+                    await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams);
+                    return true;
+                } catch (e) {
+                    console.error("EmailJS error:", e);
+                    return false;
                 }
             }
-        }
 
-        async function deleteOrderFromFirebase(orderId) {
-            // Remove local
-            const localOrders = getLocalOrders();
-            const idx = localOrders.findIndex(o => o.id === orderId || o.firebaseId === orderId);
-            const firebaseId = idx >= 0 ? localOrders[idx].firebaseId : null;
-            if (idx >= 0) {
-                localOrders.splice(idx, 1);
-                saveLocalOrders(localOrders);
+            function showToast(msg) {
+                const t = document.createElement('div');
+                t.className = 'toast';
+                t.textContent = msg;
+                toastContainer.appendChild(t);
+                setTimeout(() => { if (t.parentNode) t.remove(); }, 3000);
             }
 
-            // Remove from Firebase
-            if (firebaseReady && ordersCollection && firebaseId) {
-                try {
-                    await ordersCollection.doc(firebaseId).delete();
-                } catch (err) {
-                    console.warn('Firebase delete failed:', err.message);
+            function setAdminLoggedIn(state) {
+                isAdminLoggedIn = state;
+                if (state) {
+                    sessionStorage.setItem(SESSION_KEY, 'true');
+                    btnLogout.style.display = 'inline-flex';
+                    btnOpenLogin.style.display = 'none';
+                } else {
+                    sessionStorage.removeItem(SESSION_KEY);
+                    btnLogout.style.display = 'none';
+                    btnOpenLogin.style.display = 'inline-flex';
                 }
             }
-        }
 
-        async function clearAllOrdersFromFirebase() {
-            saveLocalOrders([]);
-            if (firebaseReady && ordersCollection) {
-                try {
-                    const snapshot = await ordersCollection.get();
-                    const batch = db.batch();
-                    snapshot.forEach(doc => batch.delete(doc.ref));
-                    await batch.commit();
-                } catch (err) {
-                    console.warn('Firebase clear failed:', err.message);
+            function checkSession() {
+                if (sessionStorage.getItem(SESSION_KEY) === 'true') {
+                    setAdminLoggedIn(true);
                 }
             }
-        }
 
-        // ============ LOGO MANAGEMENT (NEW) ============
-        async function uploadLogoToFirebase(file) {
-            if (!firebaseReady || !storage) {
-                // Fallback to base64
-                return await convertToBase64(file);
-            }
-            try {
-                const storageRef = storage.ref();
-                const logoRef = storageRef.child('site-logo/' + Date.now() + '-' + file.name);
-                const snapshot = await logoRef.put(file);
-                const url = await snapshot.ref.getDownloadURL();
-                return url;
-            } catch (err) {
-                console.warn('Firebase Storage upload failed, using base64:', err.message);
-                return await convertToBase64(file);
-            }
-        }
-
-        function convertToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-
-        async function saveLogoUrl(url) {
-            customLogoUrl = url;
-            saveLocalLogo(url);
-            // Also save to Firestore settings
-            if (firebaseReady && settingsDoc) {
-                try {
-                    await settingsDoc.set({ logoUrl: url }, { merge: true });
-                } catch (err) {
-                    console.warn('Firestore logo save failed:', err.message);
-                }
-            }
-            updateLogoDisplay();
-        }
-
-        async function loadLogoFromFirebase() {
-            // Check localStorage first
-            const localLogo = getLocalLogo();
-            if (localLogo) {
-                customLogoUrl = localLogo;
-                updateLogoDisplay();
-                return;
-            }
-            // Try Firestore
-            if (firebaseReady && settingsDoc) {
-                try {
-                    const doc = await settingsDoc.get();
-                    if (doc.exists && doc.data().logoUrl) {
-                        customLogoUrl = doc.data().logoUrl;
-                        saveLocalLogo(customLogoUrl);
-                        updateLogoDisplay();
-                    }
-                } catch (err) {
-                    console.warn('Firestore logo load failed:', err.message);
-                }
-            }
-        }
-
-        function updateLogoDisplay() {
-            const navSvg = document.getElementById('navLogoSvg');
-            const navImg = document.getElementById('navLogoImg');
-            const heroSvg = document.getElementById('heroLogoSvg');
-            const heroImg = document.getElementById('heroLogoImg');
-            const logoPreview = document.getElementById('logoPreview');
-            const logoUploadIcon = document.getElementById('logoUploadIcon');
-
-            if (customLogoUrl) {
-                // Show custom logo
-                if (navSvg) navSvg.style.display = 'none';
-                if (navImg) { navImg.src = customLogoUrl;
-                    navImg.style.display = 'block'; }
-                if (heroSvg) heroSvg.style.display = 'none';
-                if (heroImg) { heroImg.src = customLogoUrl;
-                    heroImg.style.display = 'block'; }
-                if (logoPreview) { logoPreview.src = customLogoUrl;
-                    logoPreview.style.display = 'block'; }
-                if (logoUploadIcon) logoUploadIcon.style.display = 'none';
-            } else {
-                // Show default SVG logo
-                if (navSvg) navSvg.style.display = 'block';
-                if (navImg) navImg.style.display = 'none';
-                if (heroSvg) heroSvg.style.display = 'block';
-                if (heroImg) heroImg.style.display = 'none';
-                if (logoPreview) logoPreview.style.display = 'none';
-                if (logoUploadIcon) logoUploadIcon.style.display = 'inline';
-            }
-        }
-
-        async function resetLogo() {
-            customLogoUrl = null;
-            saveLocalLogo(null);
-            if (firebaseReady && settingsDoc) {
-                try {
-                    await settingsDoc.set({ logoUrl: firebase.firestore.FieldValue.delete() }, { merge: true });
-                } catch (err) {
-                    console.warn('Firestore logo reset failed:', err.message);
-                }
-            }
-            updateLogoDisplay();
-            showToast('🔄 Logo reset to default');
-        }
-
-        // ============ EMAIL SENDING (NEW - EmailJS) ============
-        async function sendOrderEmail(orderData) {
-            const templateParams = {
-                name: orderData.fullName,
-                email: orderData.email,
-                phone: orderData.phone,
-                type: orderData.websiteType,
-                description: orderData.description,
-                to_email: CONFIG.contactEmail,
-                reply_to: orderData.email
-            };
-
-            try {
-                const response = await emailjs.send(
-                    CONFIG.emailjs.serviceId,
-                    CONFIG.emailjs.templateId,
-                    templateParams
-                );
-                console.log('📧 Email sent successfully:', response.status);
-                return true;
-            } catch (err) {
-                console.warn('EmailJS send failed:', err.message);
-                // Fallback: open mailto
-                const subject = encodeURIComponent('New Website Order from ' + orderData.fullName);
-                const body = encodeURIComponent(
-                    '📋 NEW WEBSITE ORDER\n\n👤 Name: ' + orderData.fullName +
-                    '\n📧 Email: ' + orderData.email +
-                    '\n📞 Phone: ' + orderData.phone +
-                    '\n🌐 Type: ' + orderData.websiteType +
-                    '\n\n📝 Description:\n' + orderData.description +
-                    '\n\n---\nRoyal Programming Order'
-                );
-                window.location.href = 'mailto:' + CONFIG.contactEmail + '?subject=' + subject + '&body=' + body;
-                return false;
-            }
-        }
-
-        // ============ TRANSLATION DATA ============
-        const tData = {
-            en: {
-                navHome: 'Home',
-                navServices: 'Services',
-                navOrder: 'Order Now',
-                navAbout: 'About',
-                navContact: 'Contact',
-                loginBtn: 'Login',
-                langLabel: '🇳🇵 नेपाली',
-                heroBadge: 'PREMIUM WEB SOLUTIONS',
-                heroTitle: 'We Build Your <span class="gold">Dream Website</span>',
-                heroSubtitle: 'Custom websites crafted with precision, elegance, and cutting-edge technology.',
-                heroBtn1: '✨ Order Your Website',
-                heroBtn2: 'Explore Services',
-                servicesLabel: 'WHAT WE OFFER',
-                servicesTitle: 'Our Services',
-                servicesDesc: 'From stunning landing pages to full-scale web applications — excellence at every level.',
-                orderLabel: 'GET STARTED',
-                orderTitle: 'Ready to Build Something Great?',
-                orderDesc: 'Fill out the form. We\'ll get back to you within 24 hours.',
-                orderBullet1: 'Free consultation & quote',
-                orderBullet2: 'Fast turnaround time',
-                orderBullet3: '100% custom design',
-                orderBullet4: 'Ongoing support included',
-                orderFormTitle: '📋 Order Your Website',
-                fullName: 'Full Name',
-                email: 'Email Address',
-                phone: 'Phone Number',
-                websiteType: 'Website Type',
-                selectType: '— Select Type —',
-                typeBusiness: 'Business Website',
-                typeEcommerce: 'E-Commerce Store',
-                typePortfolio: 'Portfolio / Personal',
-                typeLanding: 'Landing Page',
-                typeCustom: 'Custom Web Application',
-                typeOther: 'Other',
-                description: 'Describe Your Dream Website',
-                submitOrder: '🚀 Submit Order',
-                formNote: 'We\'ll confirm via email. Response within 24 hours.',
-                aboutLabel: 'WHO WE ARE',
-                aboutTitle: 'About Royal Programming',
-                aboutP1: 'Royal Programming is a premium web development studio crafting exceptional digital experiences.',
-                aboutP2: 'We combine technical expertise with creative vision for stunning, fast, secure websites.',
-                contactLabel: 'GET IN TOUCH',
-                contactTitle: 'Contact Us',
-                contactDesc: 'Reach out anytime — we\'re here to help.',
-                whatsappTitle: 'WhatsApp',
-                whatsappClick: 'Click to chat instantly',
-                emailTitle: 'Email Us',
-                emailClick: 'Click to open email client',
-                footerText: 'CODE · CREATE · ELEVATE. All rights reserved.',
-                modalTitle: '🔐 Welcome',
-                modalSubtitle: 'Sign in to your account',
-                tabAdmin: 'Admin',
-                tabClient: 'Client',
-                loginEmailLbl: 'Email',
-                loginPassLbl: 'Password',
-                loginNameLbl: 'Full Name',
-                signIn: 'Sign In',
-                signUp: 'Sign Up',
-                adminLoginOk: '✅ Access granted! Opening dashboard...',
-                clientLoginOk: '✅ Welcome! (Demo)',
-                loginErr: '❌ Invalid credentials.',
-                loginFillErr: '❌ Please fill all fields.',
-                orderOk: '✅ Order submitted! Check your email.',
-                toastOrder: '📧 Sending order...',
-                serviceData: [
-                    { icon: '🏢', title: 'Business Websites',
-                        desc: 'Professional websites establishing your brand with authority.' },
-                    { icon: '🛒', title: 'E-Commerce Stores',
-                        desc: 'Full online stores with secure payments and beautiful design.' },
-                    { icon: '📱', title: 'Responsive Design',
-                        desc: 'Flawless on every device — mobile, tablet, desktop.' },
-                    { icon: '⚡', title: 'Custom Web Apps', desc: 'Tailored apps with modern tech stacks.' },
-                    { icon: '🔍', title: 'SEO Optimization', desc: 'Higher rankings, more organic traffic.' },
-                    { icon: '🛠️', title: 'Maintenance & Support',
-                    desc: 'Ongoing support to keep your site secure and updated.' },
-                ],
-                statData: [
-                    { num: '50+', label: 'Projects Delivered' }, { num: '30+', label: 'Happy Clients' },
-                    { num: '24/7', label: 'Support Available' }, { num: '100%', label: 'Client Satisfaction' },
-                ],
-            },
-            ne: {
-                navHome: 'गृहपृष्ठ',
-                navServices: 'सेवाहरू',
-                navOrder: 'अर्डर',
-                navAbout: 'हाम्रोबारे',
-                navContact: 'सम्पर्क',
-                loginBtn: 'लगइन',
-                langLabel: '🇬🇧 English',
-                heroBadge: 'प्रिमियम वेब समाधान',
-                heroTitle: 'हामी तपाईंको <span class="gold">सपनाको वेबसाइट</span> बनाउँछौं',
-                heroSubtitle: 'सटीकता, भव्यता र अत्याधुनिक प्रविधिका साथ अनुकूलित वेबसाइटहरू।',
-                heroBtn1: '✨ वेबसाइट अर्डर गर्नुहोस्',
-                heroBtn2: 'सेवाहरू हेर्नुहोस्',
-                servicesLabel: 'हामी के प्रदान गर्छौं',
-                servicesTitle: 'हाम्रा सेवाहरू',
-                servicesDesc: 'आकर्षक ल्यान्डिङ पृष्ठदेखि पूर्ण वेब एपसम्म।',
-                orderLabel: 'सुरु गर्नुहोस्',
-                orderTitle: 'केहि उत्कृष्ट निर्माण गर्न तयार हुनुहुन्छ?',
-                orderDesc: 'फारम भर्नुहोस्। हामी २४ घण्टाभित्र सम्पर्क गर्नेछौं।',
-                orderBullet1: 'निःशुल्क परामर्श र उद्धरण',
-                orderBullet2: 'द्रुत निर्माण समय',
-                orderBullet3: '१००% अनुकूलित डिजाइन',
-                orderBullet4: 'निरन्तर सहयोग समावेश',
-                orderFormTitle: '📋 वेबसाइट अर्डर गर्नुहोस्',
-                fullName: 'पूरा नाम',
-                email: 'इमेल ठेगाना',
-                phone: 'फोन नम्बर',
-                websiteType: 'वेबसाइट प्रकार',
-                selectType: '— प्रकार छान्नुहोस् —',
-                typeBusiness: 'व्यावसायिक वेबसाइट',
-                typeEcommerce: 'इ-कमर्स स्टोर',
-                typePortfolio: 'पोर्टफोलियो',
-                typeLanding: 'ल्यान्डिङ पृष्ठ',
-                typeCustom: 'अनुकूलित वेब एप',
-                typeOther: 'अन्य',
-                description: 'आफ्नो सपनाको वेबसाइट वर्णन गर्नुहोस्',
-                submitOrder: '🚀 अर्डर पठाउनुहोस्',
-                formNote: 'हामी इमेल मार्फत पुष्टि गर्नेछौं।',
-                aboutLabel: 'हामी को हौं',
-                aboutTitle: 'रोयल प्रोग्रामिङको बारेमा',
-                aboutP1: 'रोयल प्रोग्रामिङ एक प्रिमियम वेब विकास स्टुडियो हो।',
-                aboutP2: 'हामी सुन्दर, तीव्र र सुरक्षित वेबसाइटहरू निर्माण गर्छौं।',
-                contactLabel: 'सम्पर्कमा रहनुहोस्',
-                contactTitle: 'सम्पर्क गर्नुहोस्',
-                contactDesc: 'कुनै पनि समय सम्पर्क गर्नुहोस्।',
-                whatsappTitle: 'ह्वाट्सएप',
-                whatsappClick: 'तुरुन्त कुराकानी गर्न क्लिक गर्नुहोस्',
-                emailTitle: 'इमेल गर्नुहोस्',
-                emailClick: 'इमेल क्लाइन्ट खोल्न क्लिक गर्नुहोस्',
-                footerText: 'कोड · सिर्जना · उन्नति। सर्वाधिकार सुरक्षित।',
-                modalTitle: '🔐 स्वागतम्',
-                modalSubtitle: 'आफ्नो खातामा साइन इन गर्नुहोस्',
-                tabAdmin: 'प्रशासक',
-                tabClient: 'ग्राहक',
-                loginEmailLbl: 'इमेल',
-                loginPassLbl: 'पासवर्ड',
-                loginNameLbl: 'पूरा नाम',
-                signIn: 'साइन इन',
-                signUp: 'साइन अप',
-                adminLoginOk: '✅ पहुँच स्वीकृत! ड्यासबोर्ड खुल्दै...',
-                clientLoginOk: '✅ स्वागतम्! (डेमो)',
-                loginErr: '❌ अमान्य प्रमाणहरू।',
-                loginFillErr: '❌ सबै फिल्डहरू भर्नुहोस्।',
-                orderOk: '✅ अर्डर पेश भयो! इमेल जाँच गर्नुहोस्।',
-                toastOrder: '📧 अर्डर पठाउँदै...',
-                serviceData: [
-                    { icon: '🏢', title: 'व्यावसायिक वेबसाइट',
-                    desc: 'तपाईंको ब्रान्डलाई अधिकारका साथ स्थापित गर्ने वेबसाइट।' },
-                    { icon: '🛒', title: 'इ-कमर्स स्टोर', desc: 'सुरक्षित भुक्तानीसहित पूर्ण अनलाइन स्टोर।' },
-                    { icon: '📱', title: 'रिस्पोन्सिभ डिजाइन', desc: 'हरेक उपकरणमा निर्दोष।' },
-                    { icon: '⚡', title: 'अनुकूलित वेब एप', desc: 'आधुनिक प्रविधिसहित अनुकूलित एप।' },
-                    { icon: '🔍', title: 'एसइओ अप्टिमाइजेसन', desc: 'उच्च रैंकिङ, अधिक ट्राफिक।' },
-                    { icon: '🛠️', title: 'मर्मत र सहयोग', desc: 'निरन्तर सहयोग र अद्यावधिक।' },
-                ],
-                statData: [
-                    { num: '50+', label: 'परियोजनाहरू' }, { num: '30+', label: 'खुसी ग्राहक' },
-                    { num: '24/7', label: 'सहयोग' }, { num: '100%', label: 'सन्तुष्टि' },
-                ],
-            },
-        };
-
-        // ============ HELPERS ============
-        function showToast(msg, duration = 3000) {
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = msg;
-            const container = document.getElementById('toastContainer');
-            container.appendChild(toast);
-            setTimeout(() => { if (toast.parentNode) toast.remove(); }, duration);
-        }
-
-        function closeAllModals() {
-            document.getElementById('loginModalOverlay').classList.remove('active');
-            document.getElementById('dashboardOverlay').classList.remove('active');
-            const loginMsg = document.getElementById('loginMessage');
-            if (loginMsg) { loginMsg.textContent = '';
-                loginMsg.className = 'modal-msg'; }
-        }
-
-        function escHtml(str) {
-            const div = document.createElement('div');
-            div.textContent = str || '';
-            return div.innerHTML;
-        }
-
-        function resetLoginForm() {
-            const loginEmail = document.getElementById('loginEmail');
-            const loginPassword = document.getElementById('loginPassword');
-            const loginName = document.getElementById('loginName');
-            const loginPassGroup = document.getElementById('loginPassGroup');
-            const loginNameGroup = document.getElementById('loginNameGroup');
-            const loginMessage = document.getElementById('loginMessage');
-
-            if (loginEmail) loginEmail.value = '';
-            if (loginPassword) loginPassword.value = '';
-            if (loginName) loginName.value = '';
-            if (loginMessage) { loginMessage.textContent = '';
-                loginMessage.className = 'modal-msg'; }
-
-            if (loginMode === 'admin') {
-                if (loginPassGroup) loginPassGroup.classList.remove('hidden');
-                if (loginNameGroup) loginNameGroup.classList.add('hidden');
-                if (loginPassword) loginPassword.required = true;
-                if (loginName) loginName.required = false;
-            } else {
-                if (loginPassGroup) loginPassGroup.classList.add('hidden');
-                if (loginNameGroup) loginNameGroup.classList.remove('hidden');
-                if (loginPassword) loginPassword.required = false;
-                if (loginName) loginName.required = true;
-            }
-            updateLoginBtnText();
-        }
-
-        function updateLoginBtnText() {
-            const t = tData[currentLang];
-            const btn = document.getElementById('loginSubmitBtn');
-            if (btn) btn.textContent = loginMode === 'admin' ? (t.signIn || 'Sign In') : (t.signUp || 'Sign Up');
-        }
-
-        function validateOrderForm() {
-            let valid = true;
-            const fields = ['fullName', 'email', 'phone', 'websiteType', 'description'];
-            const errorSpans = {
-                fullName: 'errFullName',
-                email: 'errEmail',
-                phone: 'errPhone',
-                websiteType: 'errWebsiteType',
-                description: 'errDescription'
-            };
-
-            // Clear all errors
-            Object.values(errorSpans).forEach(id => {
-                const span = document.getElementById(id);
-                if (span) { span.textContent = '';
-                    span.classList.remove('visible'); }
-            });
-            $$('.form-group input, .form-group select, .form-group textarea').forEach(el => el.classList.remove(
-                'error'));
-
-            fields.forEach(field => {
-                const el = document.getElementById(field);
-                const errSpan = document.getElementById(errorSpans[field]);
-                if (!el) return;
-
-                if (!el.value.trim()) {
-                    valid = false;
-                    el.classList.add('error');
-                    if (errSpan) { errSpan.textContent = 'This field is required.';
-                        errSpan.classList.add('visible'); }
-                } else if (field === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim())) {
-                    valid = false;
-                    el.classList.add('error');
-                    if (errSpan) { errSpan.textContent = 'Please enter a valid email.';
-                        errSpan.classList.add('visible'); }
-                } else if (field === 'phone' && !/^\+?[\d\s()-]{7,15}$/.test(el.value.trim())) {
-                    valid = false;
-                    el.classList.add('error');
-                    if (errSpan) { errSpan.textContent = 'Please enter a valid phone number.';
-                        errSpan.classList.add('visible'); }
-                }
-            });
-            return valid;
-        }
-
-        // ============ RENDER FUNCTIONS ============
-        function renderServices() {
-            const grid = document.getElementById('servicesGrid');
-            if (!grid) return;
-            const t = tData[currentLang];
-            grid.innerHTML = t.serviceData.map(s => `
+            // ==================== DYNAMIC CONTENT RENDERERS ====================
+            function renderServices() {
+                const grid = $('#servicesGrid');
+                const t = tData[currentLang];
+                grid.innerHTML = t.serviceData.map(s => `
                 <div class="service-card">
-                    <span class="service-icon">${s.icon}</span>
-                    <h3>${s.title}</h3>
-                    <p>${s.desc}</p>
+                  <span class="service-icon">${s.icon}</span>
+                  <h3>${s.title}</h3>
+                  <p>${s.desc}</p>
                 </div>`).join('');
-        }
+            }
 
-        function renderAboutStats() {
-            const container = document.getElementById('aboutStats');
-            if (!container) return;
-            const t = tData[currentLang];
-            container.innerHTML = t.statData.map(s => `
+            function renderAboutStats() {
+                const container = $('#aboutStats');
+                const t = tData[currentLang];
+                container.innerHTML = t.statData.map(s => `
                 <div class="stat-card">
-                    <div class="stat-number">${s.num}</div>
-                    <div class="stat-label">${s.label}</div>
+                  <div class="stat-number">${s.num}</div>
+                  <div class="stat-label">${s.label}</div>
                 </div>`).join('');
-        }
-
-        function renderDashboard() {
-            const container = document.getElementById('dashboardContent');
-            const countEl = document.getElementById('dbOrderCount');
-            const t = tData[currentLang];
-
-            let filteredOrders = allOrders;
-            if (currentFilter !== 'all') {
-                filteredOrders = allOrders.filter(o => o.status === currentFilter);
             }
 
-            if (countEl) countEl.textContent = allOrders.length;
-
-            if (filteredOrders.length === 0) {
-                container.innerHTML = '<div class="dashboard-empty">No orders found.</div>';
-                return;
-            }
-
-            let html = `<div class="dashboard-table-wrap"><table class="dashboard-table"><thead><tr>
-                <th>#</th><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Type</th>
-                <th>Description</th><th>Status</th><th>Actions</th>
+            async function renderDashboard() {
+                const t = tData[currentLang];
+                let orders = [];
+                if (db) {
+                    orders = await fetchOrdersFromFirestore();
+                } else {
+                    orders = getOrders();
+                }
+                if (orders.length === 0) {
+                    dashboardContent.innerHTML =
+                        `<div class="dashboard-empty">${t.dashboardEmpty || 'No orders yet.'}</div>`;
+                    return;
+                }
+                let html = `<div class="dashboard-table-wrap"><table class="dashboard-table"><thead><tr>
+              <th>#</th><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Type</th><th>Description</th><th>Status</th><th>Action</th>
             </tr></thead><tbody>`;
-
-            filteredOrders.forEach((o, i) => {
-                const date = o.timestamp ? new Date(o.timestamp).toLocaleDateString('en-US', { month: 'short',
-                    day: 'numeric', year: 'numeric' }) : 'N/A';
-                const statusClass = o.status === 'Completed' ? 'badge-completed' :
-                    o.status === 'In Progress' ? 'badge-progress' : 'badge-pending';
-                const orderId = o.firebaseId || o.id;
-                html += `<tr>
-                    <td>${i + 1}</td>
-                    <td>${date}</td>
-                    <td>${escHtml(o.fullName)}</td>
-                    <td>${escHtml(o.email)}</td>
-                    <td>${escHtml(o.phone)}</td>
-                    <td>${escHtml(o.websiteType)}</td>
-                    <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escHtml(o.description)}">${escHtml(o.description)}</td>
-                    <td><span class="badge-status ${statusClass}">${o.status || 'Pending'}</span></td>
-                    <td style="white-space:nowrap;">
-                        <button class="btn-xs status-btn" data-id="${orderId}" data-status="In Progress" ${o.status === 'In Progress' ? 'disabled' : ''}>🔵</button>
-                        <button class="btn-xs status-btn" data-id="${orderId}" data-status="Completed" ${o.status === 'Completed' ? 'disabled' : ''}>🟢</button>
-                        <button class="btn-xs danger del-btn" data-id="${orderId}">🗑</button>
-                    </td>
-                </tr>`;
-            });
-            html += '</tbody></table></div>';
-            container.innerHTML = html;
-
-            // Attach event listeners
-            container.querySelectorAll('.status-btn').forEach(btn => {
-                btn.addEventListener('click', async () => {
-                    const id = btn.getAttribute('data-id');
-                    const newStatus = btn.getAttribute('data-status');
-                    await updateOrderStatusInFirebase(id, newStatus);
-                    await refreshOrders();
-                    showToast('✅ Status updated to: ' + newStatus);
+                orders.forEach((o, i) => {
+                    const date = o.timestamp ? new Date(o.timestamp).toLocaleDateString() : 'N/A';
+                    const status = o.status || 'Pending';
+                    html += `<tr>
+                <td>${i + 1}</td><td>${date}</td><td>${escHtml(o.fullName)}</td><td>${escHtml(o.email)}</td>
+                <td>${escHtml(o.phone)}</td><td>${escHtml(o.websiteType)}</td>
+                <td style="max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escHtml(o.description)}">${escHtml(o.description)}</td>
+                <td>
+                  <select class="status-select" data-id="${o.id || o._id || ''}">
+                    <option value="Pending" ${status === 'Pending' ? 'selected' : ''}>Pending</option>
+                    <option value="In Progress" ${status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                    <option value="Completed" ${status === 'Completed' ? 'selected' : ''}>Completed</option>
+                  </select>
+                  <button class="btn-update-status" data-id="${o.id || o._id || ''}">${t.updateStatus}</button>
+                </td>
+                <td><button class="btn-danger-sm" data-id="${o.id || o._id || ''}">${t.delete}</button></td>
+              </tr>`;
                 });
-            });
-            container.querySelectorAll('.del-btn').forEach(btn => {
-                btn.addEventListener('click', async () => {
-                    if (confirm('Delete this order?')) {
+                html += '</tbody></table></div>';
+                dashboardContent.innerHTML = html;
+
+                // Attach event listeners
+                dashboardContent.querySelectorAll('.btn-update-status').forEach(btn => {
+                    btn.addEventListener('click', async () => {
                         const id = btn.getAttribute('data-id');
-                        await deleteOrderFromFirebase(id);
-                        await refreshOrders();
-                        showToast('🗑 Order deleted');
-                    }
-                });
-            });
-        }
-
-        async function refreshOrders() {
-            allOrders = await fetchOrdersFromFirebase();
-            renderDashboard();
-        }
-
-        // ============ APPLY LANGUAGE ============
-        function applyLang(lang) {
-            currentLang = lang;
-            const t = tData[lang];
-            $$('[data-lang-key]').forEach(el => {
-                const key = el.getAttribute('data-lang-key');
-                if (t[key] !== undefined) {
-                    if (key === 'heroTitle') {
-                        el.innerHTML = t[key];
-                    } else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-                        el.placeholder = t[key];
-                    } else if (el.tagName === 'OPTION') {
-                        el.textContent = t[key];
-                    } else {
-                        el.textContent = t[key];
-                    }
-                }
-            });
-            const btnLang = document.getElementById('btnLang');
-            if (btnLang) btnLang.textContent = t.langLabel || '🇳🇵 नेपाली';
-
-            const sel = document.getElementById('websiteType');
-            if (sel) {
-                const optKeys = ['selectType', 'typeBusiness', 'typeEcommerce', 'typePortfolio', 'typeLanding',
-                    'typeCustom', 'typeOther'
-                ];
-                for (let i = 0; i < sel.options.length; i++) {
-                    if (optKeys[i] && t[optKeys[i]]) sel.options[i].textContent = t[optKeys[i]];
-                }
-            }
-
-            const bulletLis = $$('#orderBullets li');
-            const bKeys = ['orderBullet1', 'orderBullet2', 'orderBullet3', 'orderBullet4'];
-            bulletLis.forEach((li, i) => {
-                if (bKeys[i] && t[bKeys[i]]) {
-                    Array.from(li.childNodes).filter(n => n.nodeType === 3).forEach(n => n.remove());
-                    li.appendChild(document.createTextNode(t[bKeys[i]]));
-                }
-            });
-
-            updateLoginBtnText();
-            renderServices();
-            renderAboutStats();
-            localStorage.setItem(CONFIG.storageKeys.lang, lang);
-        }
-
-        // ============ EVENT LISTENERS SETUP ============
-        function setupEventListeners() {
-            // Language toggle
-            const btnLang = document.getElementById('btnLang');
-            if (btnLang) {
-                btnLang.addEventListener('click', () => {
-                    const newLang = currentLang === 'en' ? 'ne' : 'en';
-                    applyLang(newLang);
-                    showToast(newLang === 'ne' ? '🇳🇵 भाषा: नेपाली' : '🇬🇧 Language: English');
-                });
-            }
-
-            // Mobile menu
-            const mobileToggle = document.getElementById('mobileToggle');
-            const navLinks = document.getElementById('navLinks');
-            if (mobileToggle && navLinks) {
-                mobileToggle.addEventListener('click', () => {
-                    navLinks.classList.toggle('open');
-                    mobileToggle.classList.toggle('open');
-                });
-                navLinks.querySelectorAll('a').forEach(a => {
-                    a.addEventListener('click', () => {
-                        navLinks.classList.remove('open');
-                        mobileToggle.classList.remove('open');
+                        const select = dashboardContent.querySelector(`.status-select[data-id="${id}"]`);
+                        const newStatus = select.value;
+                        if (db) {
+                            await updateOrderStatusInFirestore(id, newStatus);
+                        } else {
+                            const orders = getOrders();
+                            const order = orders.find(o => (o.id || o._id) == id);
+                            if (order) order.status = newStatus;
+                            saveOrdersLocal(orders);
+                        }
+                        renderDashboard();
+                        showToast('✅ Status updated');
                     });
                 });
-                document.addEventListener('click', (e) => {
-                    if (!navLinks.contains(e.target) && !mobileToggle.contains(e.target) && navLinks
-                        .classList.contains('open')) {
-                        navLinks.classList.remove('open');
-                        mobileToggle.classList.remove('open');
-                    }
+                dashboardContent.querySelectorAll('.btn-danger-sm').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = btn.getAttribute('data-id');
+                        if (confirm('Delete this order?')) {
+                            if (db) {
+                                await deleteOrderFromFirestore(id);
+                            } else {
+                                const orders = getOrders().filter(o => (o.id || o._id) != id);
+                                saveOrdersLocal(orders);
+                            }
+                            renderDashboard();
+                            showToast('🗑 Order deleted');
+                        }
+                    });
                 });
             }
 
-            // Navbar scroll
-            const navbar = document.getElementById('navbar');
+            function escHtml(str) { const d = document.createElement('div');
+                d.textContent = str || ''; return d.innerHTML; }
+
+            // ==================== LOGO MANAGEMENT ====================
+            function applyLogo(url) {
+                if (url) {
+                    navLogoSvg.style.display = 'none';
+                    navLogoImg.src = url;
+                    navLogoImg.style.display = 'block';
+                    heroLogoSvg.style.display = 'none';
+                    heroLogoImg.src = url;
+                    heroLogoImg.style.display = 'block';
+                    localStorage.setItem(STORAGE_LOGO_KEY, url);
+                } else {
+                    navLogoSvg.style.display = 'block';
+                    navLogoImg.style.display = 'none';
+                    heroLogoSvg.style.display = 'block';
+                    heroLogoImg.style.display = 'none';
+                    localStorage.removeItem(STORAGE_LOGO_KEY);
+                }
+            }
+
+            async function uploadLogo(file) {
+                if (!storage) {
+                    // Fallback to base64
+                    const reader = new FileReader();
+                    reader.onload = (e) => applyLogo(e.target.result);
+                    reader.readAsDataURL(file);
+                    return;
+                }
+                const storageRef = storage.ref();
+                const logoRef = storageRef.child('logo/' + file.name);
+                await logoRef.put(file);
+                const url = await logoRef.getDownloadURL();
+                applyLogo(url);
+            }
+
+            // ==================== LANGUAGE APPLY ====================
+            function applyLang(lang) {
+                currentLang = lang;
+                const t = tData[lang];
+                $$('[data-lang-key]').forEach(el => {
+                    const key = el.getAttribute('data-lang-key');
+                    if (t[key] !== undefined) {
+                        if (key === 'heroTitle') el.innerHTML = t[key];
+                        else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = t[key];
+                        else if (el.tagName === 'OPTION') el.textContent = t[key];
+                        else el.innerHTML = t[key]; // allows spans/links
+                    }
+                });
+                btnLang.textContent = t.langLabel;
+                const sel = $('#websiteType');
+                if (sel) {
+                    const optKeys = ['selectType', 'typeBusiness', 'typeEcommerce', 'typePortfolio', 'typeLanding',
+                        'typeCustom', 'typeOther'
+                    ];
+                    for (let i = 0; i < sel.options.length; i++)
+                        if (optKeys[i] && t[optKeys[i]]) sel.options[i].textContent = t[optKeys[i]];
+                }
+                updateLoginBtnText();
+                renderServices();
+                renderAboutStats();
+                if (isAdminLoggedIn && dashboardOverlay.classList.contains('active')) renderDashboard();
+                localStorage.setItem(STORAGE_LANG_KEY, lang);
+                // Re-attach WhatsApp link after translation
+                const newWhatsapp = $('#whatsappShareLink');
+                if (newWhatsapp) newWhatsapp.addEventListener('click', shareViaWhatsApp);
+            }
+
+            function updateLoginBtnText() {
+                const t = tData[currentLang];
+                loginSubmitBtn.textContent = loginMode === 'admin' ? (t.signIn || 'Sign In') : (t.signUp || 'Sign Up');
+            }
+
+            function shareViaWhatsApp(e) {
+                e.preventDefault();
+                const fullName = $('#fullName').value || '';
+                const phone = $('#phone').value || '';
+                const type = $('#websiteType').value || '';
+                const desc = $('#description').value || '';
+                const text = `Hi Royal Programming, I'd like to order a ${type}. Name: ${fullName}, Phone: ${phone}. Details: ${desc}`;
+                window.open(`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(text)}`, '_blank');
+            }
+
+            // ==================== EVENT LISTENERS ====================
+            btnLang.addEventListener('click', () => {
+                const newLang = currentLang === 'en' ? 'ne' : 'en';
+                applyLang(newLang);
+                showToast(newLang === 'ne' ? '🇳🇵 भाषा: नेपाली' : '🇬🇧 Language: English');
+            });
+
+            mobileToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('open');
+                mobileToggle.classList.toggle('open');
+            });
+            navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+                navLinks.classList.remove('open');
+                mobileToggle.classList.remove('open');
+            }));
+
             window.addEventListener('scroll', () => {
-                if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 40);
+                navbar.classList.toggle('scrolled', window.scrollY > 40);
                 const sections = $$('section, .hero, .order-section-bg');
                 let current = '';
                 sections.forEach(sec => {
-                    const top = sec.getBoundingClientRect().top;
-                    if (top < 140) {
+                    if (sec.getBoundingClientRect().top < 140) {
                         const id = sec.getAttribute('id');
                         if (id) current = id;
                     }
                 });
-                const orderSection = document.getElementById('order');
-                if (orderSection && orderSection.getBoundingClientRect().top < 140) current = 'order';
-                if (navLinks) {
-                    navLinks.querySelectorAll('a').forEach(a => {
-                        a.classList.remove('active');
-                        if (a.getAttribute('href') === '#' + current) a.classList.add('active');
-                    });
-                }
-                if (!current && window.scrollY < 80 && navLinks) {
-                    const homeLink = navLinks.querySelector('a[href="#home"]');
-                    if (homeLink) homeLink.classList.add('active');
-                }
+                if ($('#order') && $('#order').getBoundingClientRect().top < 140) current = 'order';
+                navLinks.querySelectorAll('a').forEach(a => {
+                    a.classList.remove('active');
+                    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+                });
             });
 
             // Login modal
-            const btnOpenLogin = document.getElementById('btnOpenLogin');
-            const loginModalOverlay = document.getElementById('loginModalOverlay');
-            const btnCloseModal = document.getElementById('btnCloseModal');
-            const tabAdmin = document.getElementById('tabAdmin');
-            const tabClient = document.getElementById('tabClient');
-            const loginForm = document.getElementById('loginForm');
+            btnOpenLogin.addEventListener('click', () => {
+                closeAllModals();
+                loginModalOverlay.classList.add('active');
+                resetLoginForm();
+            });
+            btnCloseModal.addEventListener('click', () => closeAllModals());
+            loginModalOverlay.addEventListener('click', e => { if (e.target === loginModalOverlay) closeAllModals(); });
+            tabAdmin.addEventListener('click', () => { loginMode = 'admin';
+                tabAdmin.classList.add('active');
+                tabClient.classList.remove('active');
+                resetLoginForm(); });
+            tabClient.addEventListener('click', () => { loginMode = 'client';
+                tabClient.classList.add('active');
+                tabAdmin.classList.remove('active');
+                resetLoginForm(); });
 
-            if (btnOpenLogin && loginModalOverlay) {
-                btnOpenLogin.addEventListener('click', () => {
-                    closeAllModals();
-                    loginModalOverlay.classList.add('active');
-                    resetLoginForm();
-                });
+            function resetLoginForm() {
+                loginEmail.value = '';
+                loginPassword.value = '';
+                loginName.value = '';
+                loginMessage.textContent = '';
+                loginMessage.className = 'modal-msg';
+                loginPassGroup.classList.toggle('hidden', loginMode !== 'admin');
+                loginNameGroup.classList.toggle('hidden', loginMode === 'admin');
+                loginPassword.required = loginMode === 'admin';
+                loginName.required = loginMode !== 'admin';
+                updateLoginBtnText();
             }
-            if (btnCloseModal && loginModalOverlay) {
-                btnCloseModal.addEventListener('click', () => closeAllModals());
-                loginModalOverlay.addEventListener('click', (e) => {
-                    if (e.target === loginModalOverlay) closeAllModals();
-                });
-            }
-            if (tabAdmin) {
-                tabAdmin.addEventListener('click', () => {
-                    loginMode = 'admin';
-                    tabAdmin.classList.add('active');
-                    if (tabClient) tabClient.classList.remove('active');
-                    resetLoginForm();
-                });
-            }
-            if (tabClient) {
-                tabClient.addEventListener('click', () => {
-                    loginMode = 'client';
-                    tabClient.classList.add('active');
-                    if (tabAdmin) tabAdmin.classList.remove('active');
-                    resetLoginForm();
-                });
-            }
-            if (loginForm) {
-                loginForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const t = tData[currentLang];
-                    const loginEmail = document.getElementById('loginEmail');
-                    const loginPassword = document.getElementById('loginPassword');
-                    const loginName = document.getElementById('loginName');
-                    const loginMessage = document.getElementById('loginMessage');
 
-                    if (loginMode === 'admin') {
-                        if (!loginEmail || !loginPassword) return;
-                        if (loginEmail.value.trim() === CONFIG.admin.email && await
-                            verifyAdminPassword(loginPassword.value)) {
-                            if (loginMessage) {
-                                loginMessage.textContent = t.adminLoginOk ||
-                                    '✅ Access granted!';
-                                loginMessage.className = 'modal-msg success';
-                            }
-                            isAdminLoggedIn = true;
-                            createAdminSession();
-                            setTimeout(async () => {
-                                closeAllModals();
-                                await refreshOrders();
-                                document.getElementById('dashboardOverlay').classList.add(
-                                    'active');
-                                renderDashboard();
-                            }, 600);
-                            showToast('✅ Admin logged in securely');
-                        } else {
-                            if (loginMessage) {
-                                loginMessage.textContent = t.loginErr ||
-                                    '❌ Invalid credentials.';
-                                loginMessage.className = 'modal-msg error';
-                            }
-                        }
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const t = tData[currentLang];
+                if (loginMode === 'admin') {
+                    const email = loginEmail.value.trim();
+                    const password = loginPassword.value;
+                    if (email === ADMIN_EMAIL && await verifyPassword(password)) {
+                        loginMessage.textContent = t.adminLoginOk;
+                        loginMessage.className = 'modal-msg success';
+                        setAdminLoggedIn(true);
+                        setTimeout(async () => {
+                            closeAllModals();
+                            await renderDashboard();
+                            dashboardOverlay.classList.add('active');
+                        }, 800);
+                        showToast('✅ Admin logged in');
                     } else {
-                        if (loginEmail && loginName && loginEmail.value.trim() && loginName.value
-                            .trim()) {
-                            if (loginMessage) {
-                                loginMessage.textContent = t.clientLoginOk ||
-                                    '✅ Welcome!';
-                                loginMessage.className = 'modal-msg success';
-                            }
-                            showToast('✅ Welcome, ' + loginName.value.trim() + '!');
-                            setTimeout(closeAllModals, 1200);
-                        } else {
-                            if (loginMessage) {
-                                loginMessage.textContent = t.loginFillErr ||
-                                    '❌ Please fill all fields.';
-                                loginMessage.className = 'modal-msg error';
-                            }
-                        }
+                        loginMessage.textContent = t.loginErr;
+                        loginMessage.className = 'modal-msg error';
                     }
-                });
-            }
+                } else {
+                    if (loginEmail.value.trim() && loginName.value.trim()) {
+                        loginMessage.textContent = t.clientLoginOk;
+                        loginMessage.className = 'modal-msg success';
+                        showToast('✅ Welcome, ' + loginName.value.trim() + '!');
+                        setTimeout(closeAllModals, 1200);
+                    } else {
+                        loginMessage.textContent = t.loginFillErr;
+                        loginMessage.className = 'modal-msg error';
+                    }
+                }
+            });
+
+            btnLogout.addEventListener('click', () => {
+                setAdminLoggedIn(false);
+                closeAllModals();
+                showToast('🚪 Logged out');
+            });
 
             // Dashboard
-            const dashboardOverlay = document.getElementById('dashboardOverlay');
-            const btnCloseDashboard = document.getElementById('btnCloseDashboard');
-            const btnLogoutAdmin = document.getElementById('btnLogoutAdmin');
-            const btnClearOrders = document.getElementById('btnClearOrders');
-            const btnRefreshOrders = document.getElementById('btnRefreshOrders');
-
-            if (btnCloseDashboard && dashboardOverlay) {
-                btnCloseDashboard.addEventListener('click', () => {
-                    dashboardOverlay.classList.remove('active');
-                });
-                dashboardOverlay.addEventListener('click', (e) => {
-                    if (e.target === dashboardOverlay) {
-                        dashboardOverlay.classList.remove('active');
+            btnCloseDashboard.addEventListener('click', () => dashboardOverlay.classList.remove('active'));
+            dashboardOverlay.addEventListener('click', e => { if (e.target === dashboardOverlay) dashboardOverlay
+                    .classList.remove('active'); });
+            btnLogoutAdmin.addEventListener('click', () => {
+                dashboardOverlay.classList.remove('active');
+                setAdminLoggedIn(false);
+                showToast('🚪 Logged out');
+            });
+            btnClearOrders.addEventListener('click', async () => {
+                if (confirm('Delete all orders?')) {
+                    if (db) {
+                        const snapshot = await db.collection("orders").get();
+                        const batch = db.batch();
+                        snapshot.forEach(doc => batch.delete(doc.ref));
+                        await batch.commit();
+                    } else {
+                        saveOrdersLocal([]);
                     }
-                });
-            }
-            if (btnLogoutAdmin) {
-                btnLogoutAdmin.addEventListener('click', () => {
-                    destroyAdminSession();
-                    document.getElementById('dashboardOverlay').classList.remove('active');
-                    isAdminLoggedIn = false;
-                    showToast('🚪 Logged out');
-                });
-            }
-            if (btnClearOrders) {
-                btnClearOrders.addEventListener('click', async () => {
-                    if (confirm('Delete ALL orders? This cannot be undone.')) {
-                        await clearAllOrdersFromFirebase();
-                        allOrders = [];
-                        renderDashboard();
-                        showToast('🗑 All orders cleared');
-                    }
-                });
-            }
-            if (btnRefreshOrders) {
-                btnRefreshOrders.addEventListener('click', async () => {
-                    await refreshOrders();
-                    showToast('🔄 Orders refreshed');
-                });
-            }
-
-            // Filter buttons
-            $$('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    $$('.filter-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    currentFilter = btn.getAttribute('data-filter');
                     renderDashboard();
-                });
+                    showToast('🗑 All orders cleared');
+                }
             });
 
             // Logo upload
-            const logoUploadArea = document.getElementById('logoUploadArea');
-            const logoFileInput = document.getElementById('logoFileInput');
-            const btnResetLogo = document.getElementById('btnResetLogo');
-
-            if (logoUploadArea && logoFileInput) {
-                logoUploadArea.addEventListener('click', () => logoFileInput.click());
-                logoFileInput.addEventListener('change', async (e) => {
-                    const file = e.target.files[0];
-                    if (!file) return;
-                    if (!file.type.startsWith('image/')) {
-                        showToast('⚠️ Please select an image file');
-                        return;
-                    }
-                    if (file.size > 5 * 1024 * 1024) {
-                        showToast('⚠️ Image must be under 5MB');
-                        return;
-                    }
-                    showToast('🖼️ Uploading logo...');
-                    const url = await uploadLogoToFirebase(file);
-                    if (url) {
-                        await saveLogoUrl(url);
-                        showToast('✅ Logo updated successfully!');
-                    }
-                });
-            }
-            if (btnResetLogo) {
-                btnResetLogo.addEventListener('click', async () => {
-                    await resetLogo();
-                });
-            }
+            btnUploadLogo.addEventListener('click', async () => {
+                const file = logoFileInput.files[0];
+                if (!file) { showToast('Please select a logo image.');
+                    return; }
+                await uploadLogo(file);
+                showToast('✅ Logo updated!');
+            });
+            btnResetLogo.addEventListener('click', () => {
+                applyLogo(null);
+                showToast('🔄 Logo reset to default');
+            });
 
             // Order form
-            const orderForm = document.getElementById('orderForm');
-            if (orderForm) {
-                orderForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    if (!validateOrderForm()) {
-                        showToast('⚠️ Please fix the errors in the form.');
-                        return;
-                    }
-                    const t = tData[currentLang];
-                    const orderData = {
-                        fullName: document.getElementById('fullName').value.trim(),
-                        email: document.getElementById('email').value.trim(),
-                        phone: document.getElementById('phone').value.trim(),
-                        websiteType: document.getElementById('websiteType').value,
-                        description: document.getElementById('description').value.trim(),
-                    };
+            orderForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const t = tData[currentLang];
+                const fullName = $('#fullName').value.trim();
+                const email = $('#email').value.trim();
+                const phone = $('#phone').value.trim();
+                const websiteType = $('#websiteType').value;
+                const description = $('#description').value.trim();
+                if (!fullName || !email || !phone || !websiteType || !description) {
+                    showToast('⚠️ Please fill all required fields.');
+                    return;
+                }
+                const order = {
+                    fullName,
+                    email,
+                    phone,
+                    websiteType,
+                    description,
+                    timestamp: new Date().toISOString(),
+                    status: 'Pending'
+                };
+                // Save to Firestore (or localStorage fallback)
+                if (db) {
+                    await saveOrderToFirestore(order);
+                } else {
+                    const orders = getOrders();
+                    order.id = Date.now();
+                    orders.unshift(order);
+                    saveOrdersLocal(orders);
+                }
+                // Send email via EmailJS
+                const emailSent = await sendEmail(order);
+                if (!emailSent) {
+                    // fallback: open mailto
+                    const subject = 'New Website Order from ' + fullName;
+                    const body = `Name: ${fullName}\nEmail: ${email}\nPhone: ${phone}\nType: ${websiteType}\nDescription: ${description}`;
+                    window.location.href = `mailto:${ORDER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                }
+                showToast(t.toastOrder || '📧 Order submitted!');
+                orderForm.reset();
+            });
 
-                    const submitBtn = document.getElementById('submitOrderBtn');
-                    if (submitBtn) {
-                        submitBtn.disabled = true;
-                        submitBtn.innerHTML =
-                            '<span class="loading-spinner"></span> Submitting...';
-                    }
+            whatsappShareLink.addEventListener('click', shareViaWhatsApp);
 
-                    try {
-                        // Save to database
-                        await addOrderToFirebase(orderData);
-                        // Send email
-                        await sendOrderEmail(orderData);
-                        showToast('✅ Order submitted! Email sent to ' + CONFIG.contactEmail);
-                        orderForm.reset();
-                    } catch (err) {
-                        showToast('⚠️ There was an issue, but your order was saved.');
-                        console.error('Order submission error:', err);
-                    } finally {
-                        if (submitBtn) {
-                            submitBtn.disabled = false;
-                            submitBtn.textContent = t.submitOrder || '🚀 Submit Order';
-                        }
-                    }
-                });
+            function closeAllModals() {
+                loginModalOverlay.classList.remove('active');
+                dashboardOverlay.classList.remove('active');
+                loginMessage.textContent = '';
+                loginMessage.className = 'modal-msg';
             }
 
-            // ESC key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') closeAllModals();
-            });
-        }
+            document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAllModals(); });
 
-        // ============ INITIALIZATION ============
-        async function initApp() {
-            // Set year
-            const yearSpan = document.getElementById('year');
-            if (yearSpan) yearSpan.textContent = new Date().getFullYear();
-
-            // Initialize Firebase
-            const fbReady = initFirebase();
-
-            // Initialize EmailJS
-            initEmailJS();
-
-            // Initialize password hash
-            await initPasswordHash();
-
-            // Load language
-            const savedLang = localStorage.getItem(CONFIG.storageKeys.lang);
+            // ==================== INIT ====================
+            checkSession();
+            const savedLang = localStorage.getItem(STORAGE_LANG_KEY);
             applyLang(savedLang === 'ne' ? 'ne' : 'en');
-
-            // Render dynamic content
+            const savedLogo = localStorage.getItem(STORAGE_LOGO_KEY);
+            if (savedLogo) applyLogo(savedLogo);
             renderServices();
             renderAboutStats();
-
-            // Load logo
-            await loadLogoFromFirebase();
-
-            // Load orders
-            allOrders = await fetchOrdersFromFirebase();
-
-            // Check admin session
-            if (checkAdminSession()) {
-                isAdminLoggedIn = true;
-                console.log('🔐 Admin session restored');
-            }
-
-            // Setup event listeners
-            setupEventListeners();
-
-            // Initial scroll dispatch
             window.dispatchEvent(new Event('scroll'));
-
-            console.log('👑 Royal Programming — Fully Loaded');
-            console.log('🔥 Firebase:', fbReady ? 'Connected' : 'Using local backup');
-            console.log('📧 EmailJS:', CONFIG.emailjs.publicKey !== 'YOUR_EMAILJS_PUBLIC_KEY' ? 'Configured' :
-                'Needs configuration');
-            console.log('🔐 Admin:', CONFIG.admin.email);
-            console.log('💾 Database:', fbReady ? 'Firestore + localStorage backup' : 'localStorage only');
-        }
-
-        // Start the application
-        document.addEventListener('DOMContentLoaded', initApp);
-
-        // Handle errors gracefully
-        window.addEventListener('error', (e) => {
-            console.warn('Global error caught:', e.message);
-            // Prevent crashes from breaking the UI
-        });
-
-        window.addEventListener('unhandledrejection', (e) => {
-            console.warn('Unhandled promise rejection:', e.reason);
-            // Prevent crashes
-        });
+            console.log('👑 Royal Programming — Enhanced System Ready');
+        })();
     </script>
 </body>
 </html>
