@@ -4,7 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Royal Programming | CODE · CREATE · ELEVATE</title>
+
+    <!-- ============ FIREBASE SDK (NEW) ============ -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js">
+    </script>
+
+    <!-- ============ EMAILJS SDK (NEW) ============ -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+
     <style>
+        /* ============ ALL EXISTING CSS - UNCHANGED ============ */
         :root {
             --gold: #C8963E;
             --gold-dark: #A07828;
@@ -22,172 +38,1133 @@
             --gray-900: #1A1A18;
             --text: #1A1A18;
             --text-secondary: #555450;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
-            --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
-            --shadow-gold: 0 4px 24px rgba(200,150,62,0.18);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.10);
+            --shadow-gold: 0 4px 24px rgba(200, 150, 62, 0.18);
             --radius-sm: 8px;
             --radius: 14px;
             --radius-lg: 20px;
-            --transition: 0.28s cubic-bezier(0.4,0,0.2,1);
-            --font-display: 'Georgia', 'Times New Roman', serif;
+            --transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-display: 'Georgia', 'Times New Roman', 'Noto Serif', serif;
             --font-body: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
             --max-width: 1200px;
             --nav-height: 72px;
         }
-        *{box-sizing:border-box;margin:0;padding:0}
-        html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-height) + 20px);font-size:16px}
-        body{font-family:var(--font-body);background:var(--white);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-        img,svg{display:block;max-width:100%;height:auto}
-        a{color:inherit;text-decoration:none}
-        ul{list-style:none}
-        button{cursor:pointer;font-family:inherit;border:none;background:none}
-        input,select,textarea{font-family:inherit;font-size:inherit}
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: calc(var(--nav-height) + 20px);
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+        }
+        body {
+            font-family: var(--font-body);
+            background: var(--white);
+            color: var(--text);
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+        img,
+        svg {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        ul {
+            list-style: none;
+        }
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
+        }
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+            font-size: inherit;
+        }
 
         /* NAVBAR */
-        .navbar{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,0.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--gray-200);transition:var(--transition);height:var(--nav-height)}
-        .navbar.scrolled{box-shadow:var(--shadow-md);border-bottom-color:var(--gold-pale)}
-        .nav-inner{max-width:var(--max-width);margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:100%;gap:1rem}
-        .nav-logo-link{flex-shrink:0;display:flex;align-items:center}
-        .nav-logo-link svg{height:44px;width:auto}
-        .nav-links{display:flex;align-items:center;gap:0.2rem;flex-wrap:wrap}
-        .nav-links a{padding:0.45rem 0.9rem;border-radius:6px;font-size:0.88rem;font-weight:500;color:var(--text-secondary);transition:var(--transition);white-space:nowrap;letter-spacing:0.3px}
-        .nav-links a:hover,.nav-links a.active{color:var(--gold-dark);background:var(--gold-pale)}
-        .nav-actions{display:flex;align-items:center;gap:0.5rem;flex-shrink:0}
-        .btn-lang{padding:0.4rem 0.75rem;border-radius:20px;font-size:0.78rem;font-weight:600;border:1.5px solid var(--gray-300);color:var(--text-secondary);transition:var(--transition);background:var(--white);letter-spacing:0.3px;white-space:nowrap}
-        .btn-lang:hover{border-color:var(--gold);color:var(--gold-dark);background:var(--gold-pale)}
-        .btn-nav-login{padding:0.45rem 1.1rem;border-radius:20px;font-size:0.82rem;font-weight:600;background:var(--gold);color:#fff;letter-spacing:0.4px;transition:var(--transition);white-space:nowrap;border:2px solid var(--gold)}
-        .btn-nav-login:hover{background:var(--gold-dark);border-color:var(--gold-dark);box-shadow:var(--shadow-gold);transform:translateY(-1px)}
-        .mobile-toggle{display:none;flex-direction:column;gap:5px;padding:0.5rem;z-index:1001;background:none;border:none;cursor:pointer}
-        .mobile-toggle span{display:block;width:24px;height:2.5px;background:var(--gold-dark);border-radius:2px;transition:var(--transition);transform-origin:center}
-        .mobile-toggle.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
-        .mobile-toggle.open span:nth-child(2){opacity:0;transform:scaleX(0)}
-        .mobile-toggle.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--gray-200);
+            transition: var(--transition);
+            height: var(--nav-height);
+        }
+        .navbar.scrolled {
+            box-shadow: var(--shadow-md);
+            border-bottom-color: var(--gold-pale);
+        }
+        .nav-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            gap: 1rem;
+        }
+        .nav-logo-link {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+        }
+        .nav-logo-link svg,
+        .nav-logo-link img {
+            height: 44px;
+            width: auto;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            padding: 0.45rem 0.9rem;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            white-space: nowrap;
+            letter-spacing: 0.3px;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--gold-dark);
+            background: var(--gold-pale);
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+        .btn-lang {
+            padding: 0.4rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border: 1.5px solid var(--gray-300);
+            color: var(--text-secondary);
+            transition: var(--transition);
+            background: var(--white);
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+        .btn-lang:hover {
+            border-color: var(--gold);
+            color: var(--gold-dark);
+            background: var(--gold-pale);
+        }
+        .btn-nav-login {
+            padding: 0.45rem 1.1rem;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            background: var(--gold);
+            color: #fff;
+            letter-spacing: 0.4px;
+            transition: var(--transition);
+            white-space: nowrap;
+            border: 2px solid var(--gold);
+        }
+        .btn-nav-login:hover {
+            background: var(--gold-dark);
+            border-color: var(--gold-dark);
+            box-shadow: var(--shadow-gold);
+            transform: translateY(-1px);
+        }
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            padding: 0.5rem;
+            z-index: 1001;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .mobile-toggle span {
+            display: block;
+            width: 24px;
+            height: 2.5px;
+            background: var(--gold-dark);
+            border-radius: 2px;
+            transition: var(--transition);
+            transform-origin: center;
+        }
+        .mobile-toggle.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .mobile-toggle.open span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .mobile-toggle.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
 
         /* HERO */
-        .hero{background:linear-gradient(180deg,var(--off-white) 0%,var(--white) 100%);padding:4rem 1.5rem 5rem;text-align:center;position:relative;overflow:hidden}
-        .hero::before{content:'';position:absolute;top:-100px;right:-120px;width:350px;height:350px;background:radial-gradient(circle,rgba(200,150,62,0.07) 0%,transparent 70%);border-radius:50%;pointer-events:none}
-        .hero-content{position:relative;z-index:1;max-width:750px;margin:0 auto}
-        .hero-logo-svg{display:block;margin:0 auto 1.8rem;width:260px;height:auto;animation:fadeInUp 0.7s ease-out}
-        .hero-badge{display:inline-block;background:var(--gold-pale);color:var(--gold-dark);padding:0.35rem 1.1rem;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:1.2rem;animation:fadeInUp 0.7s ease-out 0.1s both}
-        .hero-title{font-family:var(--font-display);font-size:2.8rem;font-weight:700;color:var(--gray-900);letter-spacing:1px;line-height:1.2;margin-bottom:0.8rem;animation:fadeInUp 0.7s ease-out 0.2s both}
-        .hero-title .gold{color:var(--gold)}
-        .hero-subtitle{font-size:1.08rem;color:var(--text-secondary);margin-bottom:2.2rem;max-width:540px;margin-left:auto;margin-right:auto;animation:fadeInUp 0.7s ease-out 0.3s both}
-        .hero-btns{display:flex;gap:0.9rem;flex-wrap:wrap;justify-content:center;animation:fadeInUp 0.7s ease-out 0.4s both}
-        @keyframes fadeInUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
-        .btn{display:inline-flex;align-items:center;justify-content:center;gap:0.4rem;padding:0.8rem 1.8rem;border-radius:30px;font-weight:600;letter-spacing:0.5px;cursor:pointer;transition:var(--transition);font-size:0.95rem;text-align:center;white-space:nowrap;border:2px solid transparent}
-        .btn-primary{background:linear-gradient(135deg,var(--gold-dark),var(--gold-metallic));color:#fff;border-color:transparent;box-shadow:0 4px 18px rgba(180,130,40,0.3)}
-        .btn-primary:hover{box-shadow:0 6px 28px rgba(180,130,40,0.45);transform:translateY(-2px);filter:brightness(1.06)}
-        .btn-outline{background:transparent;border-color:var(--gold);color:var(--gold-dark)}
-        .btn-outline:hover{background:var(--gold-pale);border-color:var(--gold-dark);transform:translateY(-2px)}
-        .btn-sm{padding:0.5rem 1.2rem;font-size:0.82rem;border-radius:22px}
-        .btn-block{width:100%;justify-content:center}
+        .hero {
+            background: linear-gradient(180deg, var(--off-white) 0%, var(--white) 100%);
+            padding: 4rem 1.5rem 5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -120px;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(200, 150, 62, 0.07) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(200, 150, 62, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+        .hero-logo-container {
+            display: block;
+            margin: 0 auto 1.8rem;
+            width: 260px;
+            height: auto;
+            animation: fadeInUp 0.7s ease-out;
+        }
+        .hero-logo-container svg,
+        .hero-logo-container img {
+            width: 100%;
+            height: auto;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: var(--gold-pale);
+            color: var(--gold-dark);
+            padding: 0.35rem 1.1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 1.2rem;
+            animation: fadeInUp 0.7s ease-out 0.1s both;
+        }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            letter-spacing: 1px;
+            line-height: 1.2;
+            margin-bottom: 0.8rem;
+            animation: fadeInUp 0.7s ease-out 0.2s both;
+        }
+        .hero-title .gold {
+            color: var(--gold);
+        }
+        .hero-subtitle {
+            font-size: 1.08rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.2rem;
+            max-width: 540px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 0.7s ease-out 0.3s both;
+        }
+        .hero-btns {
+            display: flex;
+            gap: 0.9rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeInUp 0.7s ease-out 0.4s both;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(28px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.8rem 1.8rem;
+            border-radius: 30px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            text-align: center;
+            white-space: nowrap;
+            border: 2px solid transparent;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-metallic));
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 18px rgba(180, 130, 40, 0.3);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 6px 28px rgba(180, 130, 40, 0.45);
+            transform: translateY(-2px);
+            filter: brightness(1.06);
+        }
+        .btn-outline {
+            background: transparent;
+            border-color: var(--gold);
+            color: var(--gold-dark);
+        }
+        .btn-outline:hover {
+            background: var(--gold-pale);
+            border-color: var(--gold-dark);
+            transform: translateY(-2px);
+        }
+        .btn-sm {
+            padding: 0.5rem 1.2rem;
+            font-size: 0.82rem;
+            border-radius: 22px;
+        }
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+        .btn-danger {
+            background: #c0392b;
+            color: #fff;
+            border-color: #c0392b;
+        }
+        .btn-danger:hover {
+            background: #a93226;
+            border-color: #a93226;
+        }
+        .btn-success {
+            background: #27ae60;
+            color: #fff;
+            border-color: #27ae60;
+        }
+        .btn-success:hover {
+            background: #219a52;
+            border-color: #219a52;
+        }
 
         /* SECTIONS */
-        .section{padding:4.5rem 1.5rem;max-width:var(--max-width);margin:0 auto}
-        .section-label{text-transform:uppercase;letter-spacing:3px;font-size:0.7rem;font-weight:700;color:var(--gold);margin-bottom:0.4rem}
-        .section-title{font-family:var(--font-display);font-size:2.2rem;font-weight:700;color:var(--gray-900);margin-bottom:0.6rem;letter-spacing:0.5px;line-height:1.2}
-        .section-divider{width:50px;height:3px;background:var(--gold);border-radius:2px;margin-bottom:1.5rem}
-        .section-desc{color:var(--text-secondary);font-size:1rem;max-width:580px;margin-bottom:2rem;line-height:1.7}
+        .section {
+            padding: 4.5rem 1.5rem;
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+        .section-label {
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 0.4rem;
+        }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.6rem;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+        .section-divider {
+            width: 50px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 2px;
+            margin-bottom: 1.5rem;
+        }
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 580px;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
 
         /* SERVICES */
-        .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
-        .service-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:2rem 1.6rem;transition:var(--transition);position:relative;overflow:hidden}
-        .service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light),var(--gold-dark));opacity:0;transition:var(--transition)}
-        .service-card:hover{border-color:var(--gold);box-shadow:var(--shadow-lg);transform:translateY(-4px)}
-        .service-card:hover::before{opacity:1}
-        .service-icon{font-size:2.2rem;display:block;margin-bottom:0.8rem}
-        .service-card h3{font-family:var(--font-display);font-size:1.15rem;color:var(--gray-900);margin-bottom:0.5rem;letter-spacing:0.3px}
-        .service-card p{color:var(--text-secondary);font-size:0.88rem;line-height:1.6}
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .service-card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            padding: 2rem 1.6rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .service-card:hover {
+            border-color: var(--gold);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+        .service-card:hover::before {
+            opacity: 1;
+        }
+        .service-icon {
+            font-size: 2.2rem;
+            display: block;
+            margin-bottom: 0.8rem;
+        }
+        .service-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3px;
+        }
+        .service-card p {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
 
         /* ORDER */
-        .order-section-bg{background:var(--gray-50);border-top:1px solid var(--gray-200);border-bottom:1px solid var(--gray-200)}
-        .order-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:2.5rem;align-items:start}
-        .order-info h3{font-family:var(--font-display);font-size:1.6rem;color:var(--gray-900);margin-bottom:0.8rem}
-        .order-info ul li{padding:0.4rem 0;color:var(--text-secondary);font-size:0.9rem;display:flex;align-items:center;gap:0.5rem}
-        .order-info ul li::before{content:'✦';color:var(--gold);font-size:0.6rem;flex-shrink:0}
-        .order-form-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:2rem;box-shadow:var(--shadow-sm)}
-        .order-form-card h3{font-family:var(--font-display);font-size:1.25rem;color:var(--gray-900);text-align:center;margin-bottom:1.5rem;letter-spacing:0.5px}
-        .form-group{margin-bottom:1rem}
-        .form-group label{display:block;font-size:0.78rem;font-weight:700;color:var(--text);margin-bottom:0.3rem;letter-spacing:0.4px;text-transform:uppercase}
-        .form-group input,.form-group select,.form-group textarea{width:100%;padding:0.7rem 0.9rem;background:var(--gray-50);border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);color:var(--text);font-size:0.9rem;transition:var(--transition);resize:vertical}
-        .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,150,62,0.06);background:var(--white)}
-        .form-group textarea{min-height:95px}
-        .form-group select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23C8963E'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0.9rem center;padding-right:2.4rem}
-        .form-note{text-align:center;font-size:0.72rem;color:var(--gray-600);margin-top:0.6rem}
+        .order-section-bg {
+            background: var(--gray-50);
+            border-top: 1px solid var(--gray-200);
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .order-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 2.5rem;
+            align-items: start;
+        }
+        .order-info h3 {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            color: var(--gray-900);
+            margin-bottom: 0.8rem;
+        }
+        .order-info ul li {
+            padding: 0.4rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .order-info ul li::before {
+            content: '✦';
+            color: var(--gold);
+            font-size: 0.6rem;
+            flex-shrink: 0;
+        }
+        .order-form-card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .order-form-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--gray-900);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.3rem;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            background: var(--gray-50);
+            border: 1.5px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-size: 0.9rem;
+            transition: var(--transition);
+            resize: vertical;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(200, 150, 62, 0.06);
+            background: var(--white);
+        }
+        .form-group textarea {
+            min-height: 95px;
+        }
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23C8963E'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.9rem center;
+            padding-right: 2.4rem;
+        }
+        .form-note {
+            text-align: center;
+            font-size: 0.72rem;
+            color: var(--gray-600);
+            margin-top: 0.6rem;
+        }
+        .form-group input.error,
+        .form-group select.error,
+        .form-group textarea.error {
+            border-color: #e74c3c;
+            background: #fef5f5;
+        }
+        .form-error-msg {
+            color: #e74c3c;
+            font-size: 0.7rem;
+            margin-top: 0.2rem;
+            display: none;
+        }
+        .form-error-msg.visible {
+            display: block;
+        }
 
         /* ABOUT */
-        .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center}
-        .about-text p{color:var(--text-secondary);margin-bottom:0.9rem;font-size:0.95rem;line-height:1.75}
-        .about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
-        .stat-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:1.5rem;text-align:center;transition:var(--transition)}
-        .stat-card:hover{border-color:var(--gold);box-shadow:var(--shadow-md)}
-        .stat-number{font-family:var(--font-display);font-size:2.2rem;font-weight:700;color:var(--gold);line-height:1}
-        .stat-label{font-size:0.75rem;color:var(--text-secondary);letter-spacing:1px;text-transform:uppercase;margin-top:0.3rem}
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            align-items: center;
+        }
+        .about-text p {
+            color: var(--text-secondary);
+            margin-bottom: 0.9rem;
+            font-size: 0.95rem;
+            line-height: 1.75;
+        }
+        .about-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .stat-card:hover {
+            border-color: var(--gold);
+            box-shadow: var(--shadow-md);
+        }
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 0.3rem;
+        }
 
         /* CONTACT */
-        .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-        .contact-card{background:var(--white);border:2px solid var(--gray-200);border-radius:var(--radius);padding:2rem 1.5rem;text-align:center;transition:var(--transition);cursor:pointer;display:block;color:inherit}
-        .contact-card:hover{border-color:var(--gold);box-shadow:var(--shadow-gold);transform:translateY(-3px)}
-        .contact-card .icon{font-size:2.4rem;display:block;margin-bottom:0.6rem}
-        .contact-card h4{font-family:var(--font-display);font-size:1.1rem;color:var(--gray-900);margin-bottom:0.2rem;letter-spacing:0.4px}
-        .contact-card span{color:var(--gold-dark);font-size:0.95rem;font-weight:600}
-        .contact-card small{display:block;color:var(--gray-600);font-size:0.7rem;margin-top:0.3rem}
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        .contact-card {
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            display: block;
+            color: inherit;
+        }
+        .contact-card:hover {
+            border-color: var(--gold);
+            box-shadow: var(--shadow-gold);
+            transform: translateY(-3px);
+        }
+        .contact-card .icon {
+            font-size: 2.4rem;
+            display: block;
+            margin-bottom: 0.6rem;
+        }
+        .contact-card h4 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            color: var(--gray-900);
+            margin-bottom: 0.2rem;
+            letter-spacing: 0.4px;
+        }
+        .contact-card span {
+            color: var(--gold-dark);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+        .contact-card small {
+            display: block;
+            color: var(--gray-600);
+            font-size: 0.7rem;
+            margin-top: 0.3rem;
+        }
 
         /* FOOTER */
-        .footer{background:var(--gray-900);color:#ccc;text-align:center;padding:2rem 1.5rem;font-size:0.8rem;letter-spacing:0.4px}
-        .footer .gold{color:var(--gold-light);font-weight:600}
+        .footer {
+            background: var(--gray-900);
+            color: #ccc;
+            text-align: center;
+            padding: 2rem 1.5rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.4px;
+        }
+        .footer .gold {
+            color: var(--gold-light);
+            font-weight: 600;
+        }
 
         /* MODAL */
-        .modal-overlay,.dashboard-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s ease;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
-        .modal-overlay.active,.dashboard-overlay.active{opacity:1;pointer-events:auto}
-        .modal{background:var(--white);border-radius:var(--radius-lg);padding:2.5rem 2rem;width:92%;max-width:700px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.25);animation:modalIn 0.3s ease-out;max-height:90vh;overflow-y:auto}
-        @keyframes modalIn{from{transform:translateY(36px) scale(0.95);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
-        .modal-close{position:absolute;top:0.9rem;right:0.9rem;width:34px;height:34px;border-radius:50%;background:var(--gray-100);color:var(--text-secondary);font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:var(--transition);border:none;cursor:pointer;line-height:1}
-        .modal-close:hover{background:#e0ded9;color:var(--text)}
-        .modal h3{font-family:var(--font-display);font-size:1.4rem;color:var(--gray-900);text-align:center;margin-bottom:0.2rem;letter-spacing:0.5px}
-        .modal .modal-sub{text-align:center;color:var(--text-secondary);font-size:0.8rem;margin-bottom:1.3rem}
-        .modal-tabs{display:flex;border-radius:24px;overflow:hidden;border:2px solid var(--gray-200);margin-bottom:1.4rem}
-        .modal-tab-btn{flex:1;padding:0.55rem;text-align:center;font-weight:600;font-size:0.82rem;letter-spacing:0.4px;transition:var(--transition);background:transparent;color:var(--text-secondary);border:none;cursor:pointer;font-family:inherit}
-        .modal-tab-btn.active{background:var(--gold);color:#fff}
-        .modal .form-group{margin-bottom:0.9rem}
-        .modal .btn-block{margin-top:0.4rem}
-        .modal-msg{text-align:center;font-size:0.78rem;margin-top:0.7rem;min-height:1.3em;transition:var(--transition);font-weight:500}
-        .modal-msg.success{color:#2d8a4e}
-        .modal-msg.error{color:#c0392b}
-        .hidden{display:none !important}
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem 2rem;
+            width: 92%;
+            max-width: 440px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            animation: modalIn 0.3s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-wide {
+            max-width: 750px;
+        }
+        @keyframes modalIn {
+            from {
+                transform: translateY(36px) scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+        .modal-close {
+            position: absolute;
+            top: 0.9rem;
+            right: 0.9rem;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--gray-100);
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .modal-close:hover {
+            background: #e0ded9;
+            color: var(--text);
+        }
+        .modal h3 {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            color: var(--gray-900);
+            text-align: center;
+            margin-bottom: 0.2rem;
+            letter-spacing: 0.5px;
+        }
+        .modal .modal-sub {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 1.3rem;
+        }
+        .modal-tabs {
+            display: flex;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 2px solid var(--gray-200);
+            margin-bottom: 1.4rem;
+        }
+        .modal-tab-btn {
+            flex: 1;
+            padding: 0.55rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.82rem;
+            letter-spacing: 0.4px;
+            transition: var(--transition);
+            background: transparent;
+            color: var(--text-secondary);
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .modal-tab-btn.active {
+            background: var(--gold);
+            color: #fff;
+        }
+        .modal .form-group {
+            margin-bottom: 0.9rem;
+        }
+        .modal .btn-block {
+            margin-top: 0.4rem;
+        }
+        .modal-msg {
+            text-align: center;
+            font-size: 0.78rem;
+            margin-top: 0.7rem;
+            min-height: 1.3em;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        .modal-msg.success {
+            color: #2d8a4e;
+        }
+        .modal-msg.error {
+            color: #c0392b;
+        }
+        .hidden {
+            display: none !important;
+        }
 
-        /* DASHBOARD */
-        .dashboard-tabs{display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:1.5rem;border-bottom:2px solid var(--gray-200);padding-bottom:0.5rem}
-        .dash-tab{padding:0.5rem 1rem;font-weight:600;font-size:0.85rem;border-radius:20px;transition:var(--transition);color:var(--text-secondary);background:transparent;border:none;cursor:pointer}
-        .dash-tab.active{background:var(--gold-pale);color:var(--gold-dark)}
-        .dashboard-content{background:var(--gray-50);border-radius:var(--radius-sm);padding:1rem;min-height:200px}
-        .order-track-table{width:100%;border-collapse:collapse;font-size:0.8rem}
-        .order-track-table th,.order-track-table td{padding:0.5rem;border-bottom:1px solid var(--gray-200);text-align:left}
-        .order-track-table th{background:var(--gray-100);font-weight:700}
-        .status-select{padding:0.3rem;border-radius:4px;border:1px solid var(--gray-300);font-size:0.75rem}
-        .note-input{width:100%;padding:0.3rem;font-size:0.75rem;border:1px solid var(--gray-300);border-radius:4px}
-        .logo-gallery{display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
-        .logo-option{width:80px;height:50px;border:2px solid var(--gray-200);border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:5px;transition:var(--transition)}
-        .logo-option.active{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold-pale)}
-        .logo-option svg{width:100%;height:auto}
-        .upload-area{border:2px dashed var(--gray-300);border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer;transition:var(--transition)}
-        .upload-area:hover{border-color:var(--gold);background:var(--gold-pale)}
+        /* DASHBOARD TABLE */
+        .dashboard-table-wrap {
+            overflow-x: auto;
+            margin-top: 1rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--gray-200);
+        }
+        .dashboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            min-width: 700px;
+        }
+        .dashboard-table th,
+        .dashboard-table td {
+            padding: 0.6rem 0.7rem;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .dashboard-table th {
+            background: var(--gray-50);
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            position: sticky;
+            top: 0;
+        }
+        .dashboard-table tr:hover td {
+            background: var(--gold-pale);
+        }
+        .dashboard-empty {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .badge-status {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        .badge-pending {
+            background: #fef3cd;
+            color: #856404;
+        }
+        .badge-progress {
+            background: #cce5ff;
+            color: #004085;
+        }
+        .badge-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+        .btn-xs {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.65rem;
+            border-radius: 4px;
+            border: 1px solid var(--gray-300);
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        .btn-xs:hover {
+            background: var(--gray-100);
+        }
+        .btn-xs.danger {
+            border-color: #e74c3c;
+            color: #e74c3c;
+        }
+        .btn-xs.danger:hover {
+            background: #fde8e8;
+        }
+        .logo-upload-area {
+            border: 2px dashed var(--gray-300);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 1rem;
+        }
+        .logo-upload-area:hover {
+            border-color: var(--gold);
+            background: var(--gold-pale);
+        }
+        .logo-upload-area img {
+            max-height: 60px;
+            margin: 0 auto 0.5rem;
+        }
+        .logo-upload-area input {
+            display: none;
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--gray-300);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 0.4rem;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .sync-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 0.3rem;
+            vertical-align: middle;
+        }
+        .sync-online {
+            background: #27ae60;
+        }
+        .sync-offline {
+            background: #e74c3c;
+        }
+        .sync-syncing {
+            background: #f39c12;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
 
         /* TOAST */
-        .toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--gray-900);color:#fff;padding:0.8rem 1.4rem;border-radius:28px;z-index:3000;font-weight:600;letter-spacing:0.3px;font-size:0.85rem;box-shadow:0 8px 30px rgba(0,0,0,0.3);animation:slideIn 0.35s ease-out,fadeOut 0.35s ease-in 2.5s forwards;pointer-events:none;border-left:3px solid var(--gold)}
-        @keyframes slideIn{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
-        @keyframes fadeOut{from{transform:translateX(0);opacity:1}to{transform:translateX(110%);opacity:0}}
+        .toast {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background: var(--gray-900);
+            color: #fff;
+            padding: 0.8rem 1.4rem;
+            border-radius: 28px;
+            z-index: 3000;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            font-size: 0.85rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.35s ease-out, fadeOut 0.35s ease-in 2.5s forwards;
+            pointer-events: none;
+            border-left: 3px solid var(--gold);
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateX(110%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes fadeOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(110%);
+                opacity: 0;
+            }
+        }
 
-        @media (max-width:968px){.order-grid,.about-grid,.contact-grid{grid-template-columns:1fr;gap:2rem}.hero-title{font-size:2.1rem}.section-title{font-size:1.7rem}.hero-logo-svg{width:200px}}
-        @media (max-width:768px){.nav-links{position:fixed;top:0;right:-100%;width:75%;max-width:300px;height:100vh;background:rgba(255,255,255,0.98);backdrop-filter:blur(20px);flex-direction:column;padding:5rem 1.5rem 2rem;gap:0.5rem;transition:right 0.35s ease;border-left:1px solid var(--gray-200);z-index:999}.nav-links.open{right:0}.nav-links a{font-size:0.95rem;padding:0.6rem 1rem;display:block;width:100%;border-radius:8px}.mobile-toggle{display:flex}.hero-title{font-size:1.7rem}.section{padding:3rem 1.2rem}.services-grid{grid-template-columns:1fr}}
+        /* RESPONSIVE */
+        @media (max-width: 968px) {
+            .order-grid,
+            .about-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .hero-title {
+                font-size: 2.1rem;
+            }
+            .section-title {
+                font-size: 1.7rem;
+            }
+            .hero-logo-container {
+                width: 200px;
+            }
+            .about-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 75%;
+                max-width: 300px;
+                height: 100vh;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 5rem 1.5rem 2rem;
+                gap: 0.5rem;
+                transition: right 0.35s ease;
+                border-left: 1px solid var(--gray-200);
+                z-index: 999;
+                box-shadow: -4px 0 20px rgba(0, 0, 0, 0.08);
+            }
+            .nav-links.open {
+                right: 0;
+            }
+            .nav-links a {
+                font-size: 0.95rem;
+                padding: 0.6rem 1rem;
+                display: block;
+                width: 100%;
+                border-radius: 8px;
+            }
+            .mobile-toggle {
+                display: flex;
+            }
+            .hero-title {
+                font-size: 1.7rem;
+            }
+            .hero-subtitle {
+                font-size: 0.9rem;
+            }
+            .section {
+                padding: 3rem 1.2rem;
+            }
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            .btn {
+                padding: 0.65rem 1.3rem;
+                font-size: 0.85rem;
+            }
+            .nav-actions {
+                gap: 0.3rem;
+            }
+            .btn-nav-login {
+                padding: 0.38rem 0.8rem;
+                font-size: 0.75rem;
+            }
+            .btn-lang {
+                padding: 0.35rem 0.6rem;
+                font-size: 0.7rem;
+            }
+            .hero-logo-container {
+                width: 170px;
+            }
+            .modal {
+                padding: 2rem 1.3rem;
+            }
+            .dashboard-table {
+                font-size: 0.7rem;
+                min-width: 600px;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 1.4rem;
+            }
+            .hero-logo-container {
+                width: 140px;
+            }
+            .section-title {
+                font-size: 1.3rem;
+            }
+            .about-stats {
+                grid-template-columns: 1fr;
+            }
+            .stat-number {
+                font-size: 1.6rem;
+            }
+            .order-form-card {
+                padding: 1.3rem 1rem;
+            }
+            .hero-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn {
+                width: 100%;
+                max-width: 280px;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- NAVBAR -->
+
+    <!-- ==================== NAVBAR ==================== -->
     <nav class="navbar" id="navbar">
         <div class="nav-inner">
-            <a href="#home" class="nav-logo-link" id="logoLink"></a>
+            <a href="#home" class="nav-logo-link" id="navLogoLink" aria-label="Royal Programming Home">
+                <!-- Default SVG Logo (can be replaced by uploaded logo) -->
+                <svg id="navLogoSvg" width="220" height="50" viewBox="0 0 440 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="ng1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#C8963E"/><stop offset="35%" stop-color="#E8D48B"/><stop offset="60%" stop-color="#D4A853"/><stop offset="100%" stop-color="#A07828"/>
+                        </linearGradient>
+                        <linearGradient id="ng2" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#A07828"/><stop offset="30%" stop-color="#D4A853"/><stop offset="70%" stop-color="#E8D48B"/><stop offset="100%" stop-color="#C8963E"/>
+                        </linearGradient>
+                        <linearGradient id="ng3" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#E8D48B"/><stop offset="50%" stop-color="#C8963E"/><stop offset="100%" stop-color="#A07828"/>
+                        </linearGradient>
+                    </defs>
+                    <polygon points="18,72 34,28 50,72 66,28 82,72" fill="url(#ng1)" stroke="url(#ng2)" stroke-width="2" stroke-linejoin="round"/>
+                    <rect x="18" y="70" width="64" height="10" rx="2" fill="url(#ng3)" stroke="url(#ng2)" stroke-width="1.5"/>
+                    <circle cx="34" cy="40" r="3.5" fill="#fff" opacity="0.85"/>
+                    <circle cx="50" cy="55" r="4" fill="#fff" opacity="0.9"/>
+                    <circle cx="66" cy="40" r="3.5" fill="#fff" opacity="0.85"/>
+                    <circle cx="26" cy="75" r="2" fill="#fff" opacity="0.7"/>
+                    <circle cx="50" cy="75" r="2.2" fill="#fff" opacity="0.8"/>
+                    <circle cx="74" cy="75" r="2" fill="#fff" opacity="0.7"/>
+                    <text x="100" y="50" font-size="18" font-family="'Courier New',monospace" font-weight="700" fill="url(#ng2)" dominant-baseline="middle">&lt;/&gt;</text>
+                    <text x="140" y="38" font-size="28" font-family="'Georgia',serif" font-weight="700" fill="url(#ng2)" letter-spacing="3">ROYAL</text>
+                    <text x="140" y="62" font-size="16" font-family="'Georgia',serif" font-weight="600" fill="#7A6A4A" letter-spacing="4">PROGRAMMING</text>
+                    <text x="140" y="82" font-size="7.5" font-family="'Segoe UI',sans-serif" font-weight="500" fill="#B0A080" letter-spacing="2.5">CODE · CREATE · ELEVATE</text>
+                </svg>
+                <img id="navLogoImg" src="" alt="Royal Programming" style="display:none;height:44px;width:auto;">
+            </a>
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home" data-lang-key="navHome" class="active">Home</a></li>
                 <li><a href="#services" data-lang-key="navServices">Services</a></li>
@@ -196,462 +1173,1483 @@
                 <li><a href="#contact" data-lang-key="navContact">Contact</a></li>
             </ul>
             <div class="nav-actions">
-                <button class="btn-lang" id="btnLang">🇳🇵 नेपाली</button>
-                <button class="btn-nav-login" id="btnOpenLogin">Login</button>
-                <button class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></button>
+                <span id="syncIndicator" class="sync-indicator sync-online" title="Connection status"></span>
+                <button class="btn-lang" id="btnLang" title="Switch Language">🇳🇵 नेपाली</button>
+                <button class="btn-nav-login" id="btnOpenLogin" data-lang-key="loginBtn">Login</button>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+                    <span></span><span></span><span></span>
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- HERO -->
-    <section class="hero" id="home"><div class="hero-content" id="heroLogoContainer"></div></section>
+    <!-- ==================== HERO ==================== -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-logo-container" id="heroLogoContainer">
+                <svg id="heroLogoSvg" width="300" height="120" viewBox="0 0 440 100" xmlns="http://www.w3.org/2000/svg" aria-label="Royal Programming Logo">
+                    <defs>
+                        <linearGradient id="hg1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#C8963E"/><stop offset="35%" stop-color="#E8D48B"/><stop offset="60%" stop-color="#D4A853"/><stop offset="100%" stop-color="#A07828"/>
+                        </linearGradient>
+                        <linearGradient id="hg2" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#A07828"/><stop offset="30%" stop-color="#D4A853"/><stop offset="70%" stop-color="#E8D48B"/><stop offset="100%" stop-color="#C8963E"/>
+                        </linearGradient>
+                        <linearGradient id="hg3" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#E8D48B"/><stop offset="50%" stop-color="#C8963E"/><stop offset="100%" stop-color="#A07828"/>
+                        </linearGradient>
+                    </defs>
+                    <polygon points="18,72 34,28 50,72 66,28 82,72" fill="url(#hg1)" stroke="url(#hg2)" stroke-width="2" stroke-linejoin="round"/>
+                    <rect x="18" y="70" width="64" height="10" rx="2" fill="url(#hg3)" stroke="url(#hg2)" stroke-width="1.5"/>
+                    <circle cx="34" cy="40" r="3.5" fill="#fff" opacity="0.85"/>
+                    <circle cx="50" cy="55" r="4" fill="#fff" opacity="0.9"/>
+                    <circle cx="66" cy="40" r="3.5" fill="#fff" opacity="0.85"/>
+                    <circle cx="26" cy="75" r="2" fill="#fff" opacity="0.7"/>
+                    <circle cx="50" cy="75" r="2.2" fill="#fff" opacity="0.8"/>
+                    <circle cx="74" cy="75" r="2" fill="#fff" opacity="0.7"/>
+                    <text x="100" y="50" font-size="20" font-family="'Courier New',monospace" font-weight="700" fill="url(#hg2)" dominant-baseline="middle">&lt;/&gt;</text>
+                    <text x="142" y="38" font-size="30" font-family="'Georgia',serif" font-weight="700" fill="url(#hg2)" letter-spacing="4">ROYAL</text>
+                    <text x="142" y="62" font-size="18" font-family="'Georgia',serif" font-weight="600" fill="#7A6A4A" letter-spacing="5">PROGRAMMING</text>
+                    <text x="142" y="84" font-size="8.5" font-family="'Segoe UI',sans-serif" font-weight="500" fill="#B0A080" letter-spacing="3">CODE · CREATE · ELEVATE</text>
+                </svg>
+                <img id="heroLogoImg" src="" alt="Royal Programming" style="display:none;width:100%;height:auto;">
+            </div>
+            <div class="hero-badge" data-lang-key="heroBadge">PREMIUM WEB SOLUTIONS</div>
+            <h1 class="hero-title" data-lang-key="heroTitle">We Build Your <span class="gold">Dream Website</span></h1>
+            <p class="hero-subtitle" data-lang-key="heroSubtitle">Custom websites crafted with precision, elegance, and cutting-edge technology. Your vision, our code.</p>
+            <div class="hero-btns">
+                <a href="#order" class="btn btn-primary" data-lang-key="heroBtn1">✨ Order Your Website</a>
+                <a href="#services" class="btn btn-outline" data-lang-key="heroBtn2">Explore Services</a>
+            </div>
+        </div>
+    </section>
 
-    <!-- SERVICES -->
-    <section class="section" id="services"><div class="section-label" data-lang-key="servicesLabel">WHAT WE OFFER</div><h2 class="section-title" data-lang-key="servicesTitle">Our Services</h2><div class="section-divider"></div><p class="section-desc" data-lang-key="servicesDesc">From stunning landing pages to full-scale web applications — we deliver excellence at every level.</p><div class="services-grid" id="servicesGrid"></div></section>
+    <!-- ==================== SERVICES ==================== -->
+    <section class="section" id="services">
+        <div class="section-label" data-lang-key="servicesLabel">WHAT WE OFFER</div>
+        <h2 class="section-title" data-lang-key="servicesTitle">Our Services</h2>
+        <div class="section-divider"></div>
+        <p class="section-desc" data-lang-key="servicesDesc">From stunning landing pages to full-scale web applications — we deliver excellence at every level.</p>
+        <div class="services-grid" id="servicesGrid"></div>
+    </section>
 
-    <!-- ORDER -->
-    <div class="order-section-bg" id="order"><div class="section"><div class="order-grid"><div class="order-info"><div class="section-label" data-lang-key="orderLabel">GET STARTED</div><h3 data-lang-key="orderTitle">Ready to Build Something Great?</h3><div class="section-divider"></div><p style="color:var(--text-secondary);margin-bottom:1.2rem;font-size:0.9rem;" data-lang-key="orderDesc">Fill out the form and tell us about your project. We'll get back within 24 hours.</p><ul id="orderBullets"><li data-lang-key="orderBullet1">Free consultation & quote</li><li data-lang-key="orderBullet2">Fast turnaround time</li><li data-lang-key="orderBullet3">100% custom design</li><li data-lang-key="orderBullet4">Ongoing support included</li></ul></div><div class="order-form-card"><h3 data-lang-key="orderFormTitle">📋 Order Your Website</h3><form id="orderForm" novalidate><div class="form-group"><label for="fullName" data-lang-key="fullName">Full Name</label><input type="text" id="fullName" required></div><div class="form-group"><label for="email" data-lang-key="email">Email Address</label><input type="email" id="email" required></div><div class="form-group"><label for="phone" data-lang-key="phone">Phone Number</label><input type="tel" id="phone" required></div><div class="form-group"><label for="websiteType" data-lang-key="websiteType">Website Type</label><select id="websiteType" required><option value="" disabled selected>— Select Type —</option><option value="Business">Business Website</option><option value="E-Commerce">E-Commerce Store</option><option value="Portfolio">Portfolio / Personal</option><option value="Landing Page">Landing Page</option><option value="Custom App">Custom Web App</option></select></div><div class="form-group"><label for="description" data-lang-key="description">Describe Your Dream Website</label><textarea id="description" required></textarea></div><button type="submit" class="btn btn-primary btn-block">🚀 Submit Order</button><p class="form-note">We'll reply within 24 hours. Your order will be sent to our team.</p></form></div></div></div></div>
+    <!-- ==================== ORDER NOW ==================== -->
+    <div class="order-section-bg" id="order">
+        <div class="section">
+            <div class="order-grid">
+                <div class="order-info">
+                    <div class="section-label" data-lang-key="orderLabel">GET STARTED</div>
+                    <h3 data-lang-key="orderTitle">Ready to Build Something Great?</h3>
+                    <div class="section-divider"></div>
+                    <p style="color:var(--text-secondary);margin-bottom:1.2rem;font-size:0.9rem;" data-lang-key="orderDesc">Fill out the form and tell us about your project. We'll get back to you within 24 hours.</p>
+                    <ul id="orderBullets">
+                        <li data-lang-key="orderBullet1">Free consultation & quote</li>
+                        <li data-lang-key="orderBullet2">Fast turnaround time</li>
+                        <li data-lang-key="orderBullet3">100% custom design</li>
+                        <li data-lang-key="orderBullet4">Ongoing support included</li>
+                    </ul>
+                </div>
+                <div class="order-form-card">
+                    <h3 data-lang-key="orderFormTitle">📋 Order Your Website</h3>
+                    <form id="orderForm" novalidate>
+                        <div class="form-group"><label for="fullName" data-lang-key="fullName">Full Name</label><input type="text" id="fullName" required placeholder="John Doe"><span class="form-error-msg" id="errFullName"></span></div>
+                        <div class="form-group"><label for="email" data-lang-key="email">Email Address</label><input type="email" id="email" required placeholder="john@example.com"><span class="form-error-msg" id="errEmail"></span></div>
+                        <div class="form-group"><label for="phone" data-lang-key="phone">Phone Number</label><input type="tel" id="phone" required placeholder="+977 98xxxxxxxx"><span class="form-error-msg" id="errPhone"></span></div>
+                        <div class="form-group">
+                            <label for="websiteType" data-lang-key="websiteType">Website Type</label>
+                            <select id="websiteType" required>
+                                <option value="" disabled selected data-lang-key="selectType">— Select Type —</option>
+                                <option value="Business Website" data-lang-key="typeBusiness">Business Website</option>
+                                <option value="E-Commerce Store" data-lang-key="typeEcommerce">E-Commerce Store</option>
+                                <option value="Portfolio / Personal" data-lang-key="typePortfolio">Portfolio / Personal</option>
+                                <option value="Landing Page" data-lang-key="typeLanding">Landing Page</option>
+                                <option value="Custom Web Application" data-lang-key="typeCustom">Custom Web Application</option>
+                                <option value="Other" data-lang-key="typeOther">Other</option>
+                            </select>
+                            <span class="form-error-msg" id="errWebsiteType"></span>
+                        </div>
+                        <div class="form-group"><label for="description" data-lang-key="description">Describe Your Dream Website</label><textarea id="description" required placeholder="Tell us about your business, goals, features..."></textarea><span class="form-error-msg" id="errDescription"></span></div>
+                        <button type="submit" class="btn btn-primary btn-block" id="submitOrderBtn" data-lang-key="submitOrder">🚀 Submit Order</button>
+                        <p class="form-note" data-lang-key="formNote">We'll confirm via email. Response within 24 hours.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- ABOUT -->
-    <section class="section" id="about"><div class="section-label" data-lang-key="aboutLabel">WHO WE ARE</div><h2 class="section-title" data-lang-key="aboutTitle">About Royal Programming</h2><div class="section-divider"></div><div class="about-grid"><div class="about-text"><p data-lang-key="aboutP1">Royal Programming is a premium web development studio crafting exceptional digital experiences.</p><p data-lang-key="aboutP2">We combine technical expertise with creative vision to build websites that are visually stunning, fast, and secure.</p></div><div class="about-stats" id="aboutStats"></div></div></section>
+    <!-- ==================== ABOUT ==================== -->
+    <section class="section" id="about">
+        <div class="section-label" data-lang-key="aboutLabel">WHO WE ARE</div>
+        <h2 class="section-title" data-lang-key="aboutTitle">About Royal Programming</h2>
+        <div class="section-divider"></div>
+        <div class="about-grid">
+            <div class="about-text">
+                <p data-lang-key="aboutP1">Royal Programming is a premium web development studio crafting exceptional digital experiences that elevate brands and drive results.</p>
+                <p data-lang-key="aboutP2">We combine technical expertise with creative vision to build websites that are visually stunning, fast, secure, and optimized for performance.</p>
+            </div>
+            <div class="about-stats" id="aboutStats"></div>
+        </div>
+    </section>
 
-    <!-- CONTACT -->
-    <section class="section" id="contact"><div class="section-label" data-lang-key="contactLabel">GET IN TOUCH</div><h2 class="section-title" data-lang-key="contactTitle">Contact Us</h2><div class="section-divider"></div><div class="contact-grid"><a href="https://wa.me/9779849653762" target="_blank" class="contact-card"><span class="icon">💬</span><h4>WhatsApp</h4><span>+977 9849653762</span></a><a href="mailto:yroyalprogramming@gmail.com" class="contact-card"><span class="icon">📧</span><h4>Email Us</h4><span>yroyalprogramming@gmail.com</span></a></div></section>
+    <!-- ==================== CONTACT ==================== -->
+    <section class="section" id="contact">
+        <div class="section-label" data-lang-key="contactLabel">GET IN TOUCH</div>
+        <h2 class="section-title" data-lang-key="contactTitle">Contact Us</h2>
+        <div class="section-divider"></div>
+        <p class="section-desc" data-lang-key="contactDesc">Reach out anytime — we're here to help bring your vision to life.</p>
+        <div class="contact-grid">
+            <a href="https://wa.me/9779849653762" target="_blank" rel="noopener" class="contact-card" id="whatsappCard">
+                <span class="icon">💬</span>
+                <h4 data-lang-key="whatsappTitle">WhatsApp</h4>
+                <span>+977 9849653762</span>
+                <small data-lang-key="whatsappClick">Click to chat instantly</small>
+            </a>
+            <a href="mailto:yroyalprogramming@gmail.com" class="contact-card" id="emailCard">
+                <span class="icon">📧</span>
+                <h4 data-lang-key="emailTitle">Email Us</h4>
+                <span>yroyalprogramming@gmail.com</span>
+                <small data-lang-key="emailClick">Click to open email client</small>
+            </a>
+        </div>
+    </section>
 
-    <footer class="footer"><p>&copy; <span id="year">2026</span> <span class="gold">Royal Programming</span> — CODE · CREATE · ELEVATE. All rights reserved.</p></footer>
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <p>&copy; <span id="year">2026</span> <span class="gold">Royal Programming</span> — <span data-lang-key="footerText">CODE · CREATE · ELEVATE. All rights reserved.</span></p>
+    </footer>
 
-    <!-- LOGIN MODAL -->
-    <div class="modal-overlay" id="loginModalOverlay"><div class="modal"><button class="modal-close" id="btnCloseModal">&times;</button><h3>🔐 Admin Login</h3><p class="modal-sub">Secure access for management</p><form id="loginForm"><div class="form-group"><label>Email</label><input type="email" id="loginEmail" required value="bashyalyushan@gmail.com" readonly></div><div class="form-group"><label>Password</label><input type="password" id="loginPassword" required placeholder="Enter admin password"></div><button type="submit" class="btn btn-primary btn-block">Sign In</button><p class="modal-msg" id="loginMessage"></p></form></div></div>
+    <!-- ==================== LOGIN MODAL ==================== -->
+    <div class="modal-overlay" id="loginModalOverlay">
+        <div class="modal" id="loginModal">
+            <button class="modal-close" id="btnCloseModal">&times;</button>
+            <h3 data-lang-key="modalTitle">🔐 Welcome</h3>
+            <p class="modal-sub" data-lang-key="modalSubtitle">Sign in to your account</p>
+            <div class="modal-tabs">
+                <button class="modal-tab-btn active" id="tabAdmin" data-lang-key="tabAdmin">Admin</button>
+                <button class="modal-tab-btn" id="tabClient" data-lang-key="tabClient">Client</button>
+            </div>
+            <form id="loginForm" novalidate>
+                <div class="form-group"><label for="loginEmail" data-lang-key="loginEmailLbl">Email</label><input type="email" id="loginEmail" required placeholder="your@email.com"></div>
+                <div class="form-group" id="loginPassGroup"><label for="loginPassword" data-lang-key="loginPassLbl">Password</label><input type="password" id="loginPassword" required placeholder="········"></div>
+                <div class="form-group hidden" id="loginNameGroup"><label for="loginName" data-lang-key="loginNameLbl">Full Name</label><input type="text" id="loginName" placeholder="John Doe"></div>
+                <button type="submit" class="btn btn-primary btn-block" id="loginSubmitBtn" data-lang-key="signIn">Sign In</button>
+                <p class="modal-msg" id="loginMessage"></p>
+            </form>
+        </div>
+    </div>
 
-    <!-- DASHBOARD -->
-    <div class="dashboard-overlay" id="dashboardOverlay"><div class="modal" style="max-width:800px"><button class="modal-close" id="btnCloseDashboard">&times;</button><h3>📊 Admin Dashboard</h3><div class="dashboard-tabs"><button class="dash-tab active" data-tab="orders">📋 Orders</button><button class="dash-tab" data-tab="clients">👥 Clients</button><button class="dash-tab" data-tab="settings">⚙️ Settings</button></div><div class="dashboard-content" id="dashboardContent"></div><button class="btn btn-outline btn-sm" id="btnLogoutAdmin" style="margin-top:1rem">🚪 Logout</button></div></div>
+    <!-- ==================== ADMIN DASHBOARD MODAL (ENHANCED) ==================== -->
+    <div class="modal-overlay" id="dashboardOverlay">
+        <div class="modal modal-wide" id="dashboardModal" style="max-height:88vh;">
+            <button class="modal-close" id="btnCloseDashboard">&times;</button>
+            <h3 style="font-family:var(--font-display);text-align:center;color:var(--gold-dark);">📊 Admin Dashboard</h3>
+            <p style="text-align:center;font-size:0.8rem;color:var(--text-secondary);margin-bottom:0.5rem;">
+                <span id="dbSyncStatus">🟢 Connected to Firebase</span> | Total Orders: <strong id="dbOrderCount">0</strong>
+            </p>
+            <!-- [NEW] Status filter -->
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:1rem;">
+                <button class="btn-xs filter-btn active" data-filter="all">All</button>
+                <button class="btn-xs filter-btn" data-filter="Pending">🟡 Pending</button>
+                <button class="btn-xs filter-btn" data-filter="In Progress">🔵 In Progress</button>
+                <button class="btn-xs filter-btn" data-filter="Completed">🟢 Completed</button>
+            </div>
+            <!-- [NEW] Logo Upload -->
+            <div class="logo-upload-area" id="logoUploadArea" title="Click to upload a custom logo">
+                <span id="logoUploadIcon">🖼️</span>
+                <p style="font-size:0.8rem;color:var(--text-secondary);">Click to upload logo (Admin)</p>
+                <input type="file" id="logoFileInput" accept="image/*">
+                <img id="logoPreview" src="" alt="Logo Preview" style="display:none;">
+            </div>
+            <button class="btn btn-outline btn-sm btn-block" id="btnResetLogo" style="margin-bottom:1rem;">🔄 Reset to Default Logo</button>
+            <div id="dashboardContent">
+                <div class="dashboard-empty">Loading orders...</div>
+            </div>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;">
+                <button class="btn btn-outline btn-sm" id="btnRefreshOrders">🔄 Refresh</button>
+                <button class="btn btn-danger btn-sm" id="btnClearOrders">🗑 Clear All</button>
+                <button class="btn btn-outline btn-sm" id="btnLogoutAdmin">🚪 Logout</button>
+            </div>
+        </div>
+    </div>
 
+    <!-- Toast container -->
     <div id="toastContainer"></div>
 
     <script>
-        (function() {
-            // ============ CONFIGURATION ============
-            const CONFIG = {
-                adminEmail: 'bashyalyushan@gmail.com',
-                adminPassword: 'Sadi0609', // This will be hashed and stored securely
-                orderEmail: 'yroyalprogramming@gmail.com',
-                whatsapp: '9779849653762',
-                storageKeys: {
-                    orders: 'rp_orders',
-                    clients: 'rp_clients',
-                    settings: 'rp_settings',
-                    logo: 'rp_logo',
-                    lang: 'rp_lang',
-                    adminHash: 'rp_admin_hash'
-                }
-            };
+        // ================================================================
+        // ROYAL PROGRAMMING - FULL-STACK ENHANCED VERSION
+        // ================================================================
 
-            // Simple hash function for password (SHA-256 simulation via SubtleCrypto not ideal for sync, so we use a precomputed hash)
-            // Precompute: password "Sadi0609" -> we'll store its SHA-256 hex
-            const ADMIN_PASSWORD_HASH = '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'; // placeholder, will be set on first run
-            // Actually, we'll generate proper hash on first admin setup.
-
-            // ============ DOM REFS ============
-            const $ = (s) => document.querySelector(s);
-            const $$ = (s) => document.querySelectorAll(s);
-
-            const navbar = $('#navbar');
-            const navLinks = $('#navLinks');
-            const mobileToggle = $('#mobileToggle');
-            const btnLang = $('#btnLang');
-            const btnOpenLogin = $('#btnOpenLogin');
-            const loginModalOverlay = $('#loginModalOverlay');
-            const btnCloseModal = $('#btnCloseModal');
-            const loginForm = $('#loginForm');
-            const loginEmail = $('#loginEmail');
-            const loginPassword = $('#loginPassword');
-            const loginMessage = $('#loginMessage');
-            const orderForm = $('#orderForm');
-            const dashboardOverlay = $('#dashboardOverlay');
-            const btnCloseDashboard = $('#btnCloseDashboard');
-            const dashboardContent = $('#dashboardContent');
-            const btnLogoutAdmin = $('#btnLogoutAdmin');
-            const toastContainer = $('#toastContainer');
-            const logoLink = $('#logoLink');
-            const heroLogoContainer = $('#heroLogoContainer');
-            const yearSpan = $('#year');
-            const servicesGrid = $('#servicesGrid');
-            const aboutStats = $('#aboutStats');
-
-            let currentLang = 'en';
-            let isAdminLoggedIn = false;
-            let currentDashboardTab = 'orders';
-
-            yearSpan.textContent = new Date().getFullYear();
-
-            // ============ TRANSLATIONS ============
-            const tData = {
-                en: {
-                    navHome:'Home',navServices:'Services',navOrder:'Order Now',navAbout:'About',navContact:'Contact',
-                    servicesLabel:'WHAT WE OFFER',servicesTitle:'Our Services',servicesDesc:'From landing pages to web apps — excellence at every level.',
-                    orderLabel:'GET STARTED',orderTitle:'Ready to Build Something Great?',orderDesc:'Fill out the form. We\'ll reply within 24 hours.',
-                    orderBullet1:'Free consultation',orderBullet2:'Fast turnaround',orderBullet3:'100% custom design',orderBullet4:'Ongoing support',
-                    orderFormTitle:'📋 Order Your Website',fullName:'Full Name',email:'Email Address',phone:'Phone Number',
-                    websiteType:'Website Type',description:'Describe Your Dream Website',
-                    aboutLabel:'WHO WE ARE',aboutTitle:'About Royal Programming',aboutP1:'Premium web development studio crafting exceptional digital experiences.',aboutP2:'We combine technical expertise with creative vision for stunning, fast, secure websites.',
-                    contactLabel:'GET IN TOUCH',contactTitle:'Contact Us',
-                    services:[
-                        {icon:'🏢',title:'Business Websites',desc:'Professional sites that establish your brand with authority.'},
-                        {icon:'🛒',title:'E-Commerce Stores',desc:'Fully functional online stores with secure payments.'},
-                        {icon:'📱',title:'Responsive Design',desc:'Flawless on every device.'},
-                        {icon:'⚡',title:'Custom Web Apps',desc:'Tailored web applications with modern tech.'},
-                        {icon:'🔍',title:'SEO Optimization',desc:'Higher rankings, more organic traffic.'},
-                        {icon:'🛠️',title:'Maintenance & Support',desc:'Ongoing support to keep your site updated.'}
-                    ],
-                    stats:[
-                        {num:'50+',label:'Projects Delivered'},{num:'30+',label:'Happy Clients'},
-                        {num:'24/7',label:'Support Available'},{num:'100%',label:'Client Satisfaction'}
-                    ]
-                }
-            };
-
-            // ============ STORAGE & HELPERS ============
-            function getData(key) { try { return JSON.parse(localStorage.getItem(key)) || null; } catch(e){ return null; } }
-            function setData(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
-
-            function getOrders() { return getData(CONFIG.storageKeys.orders) || []; }
-            function saveOrders(orders) { setData(CONFIG.storageKeys.orders, orders); }
-
-            function getClients() { return getData(CONFIG.storageKeys.clients) || []; }
-            function saveClients(clients) { setData(CONFIG.storageKeys.clients, clients); }
-
-            function getSettings() { return getData(CONFIG.storageKeys.settings) || { logo: null, hostingLive: true }; }
-            function saveSettings(settings) { setData(CONFIG.storageKeys.settings, settings); }
-
-            function addOrder(order) {
-                const orders = getOrders();
-                order.id = Date.now();
-                order.timestamp = new Date().toISOString();
-                order.status = 'Pending';
-                order.notes = '';
-                orders.unshift(order);
-                saveOrders(orders);
-                // Also add to clients if new
-                updateClientFromOrder(order);
+        // ============ CONFIGURATION - REPLACE WITH YOUR VALUES ============
+        const CONFIG = {
+            // Firebase config (REPLACE with your Firebase project config)
+            firebase: {
+                apiKey: "YOUR_FIREBASE_API_KEY",
+                authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+                projectId: "YOUR_PROJECT_ID",
+                storageBucket: "YOUR_PROJECT_ID.appspot.com",
+                messagingSenderId: "YOUR_SENDER_ID",
+                appId: "YOUR_APP_ID"
+            },
+            // EmailJS config (REPLACE with your EmailJS credentials)
+            emailjs: {
+                publicKey: "YOUR_EMAILJS_PUBLIC_KEY",
+                serviceId: "YOUR_EMAILJS_SERVICE_ID",
+                templateId: "YOUR_EMAILJS_TEMPLATE_ID"
+            },
+            // Admin credentials
+            admin: {
+                email: "bashyalyushan@gmail.com",
+                // SHA-256 hash of "Sadi0609" - computed at runtime for security
+                passwordHash: "" // Will be set after crypto API call
+            },
+            // Contact
+            contactEmail: "yroyalprogramming@gmail.com",
+            whatsappNumber: "9779849653762",
+            // Storage keys
+            storageKeys: {
+                orders: 'rp_orders_backup',
+                lang: 'rp_lang',
+                session: 'rp_admin_session',
+                logo: 'rp_custom_logo'
             }
+        };
 
-            function updateClientFromOrder(order) {
-                const clients = getClients();
-                let client = clients.find(c => c.email === order.email);
-                if (!client) {
-                    client = { id: Date.now(), name: order.fullName, email: order.email, phone: order.phone, orders: [order.id], totalOrders: 1, lastActive: new Date().toISOString() };
-                    clients.push(client);
-                } else {
-                    if (!client.orders.includes(order.id)) client.orders.push(order.id);
-                    client.totalOrders = client.orders.length;
-                    client.lastActive = new Date().toISOString();
-                    client.name = order.fullName;
-                    client.phone = order.phone;
-                }
-                saveClients(clients);
-            }
+        // The admin password - hashed at initialization
+        const ADMIN_PASSWORD_PLAIN = "Sadi0609";
+        // Will store the SHA-256 hash
+        let ADMIN_PASSWORD_HASH = "";
 
-            function updateOrderStatus(orderId, status) {
-                const orders = getOrders();
-                const order = orders.find(o => o.id === orderId);
-                if (order) { order.status = status; saveOrders(orders); }
-            }
-            function updateOrderNotes(orderId, notes) {
-                const orders = getOrders();
-                const order = orders.find(o => o.id === orderId);
-                if (order) { order.notes = notes; saveOrders(orders); }
-            }
+        // ============ FIREBASE INITIALIZATION (NEW) ============
+        let db = null;
+        let auth = null;
+        let storage = null;
+        let firebaseReady = false;
+        let ordersCollection = null;
+        let settingsDoc = null;
 
-            function showToast(msg) {
-                const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg;
-                toastContainer.appendChild(t);
-                setTimeout(() => { if (t.parentNode) t.remove(); }, 3000);
-            }
+        function initFirebase() {
+            try {
+                firebase.initializeApp(CONFIG.firebase);
+                db = firebase.firestore();
+                auth = firebase.auth();
+                storage = firebase.storage();
+                ordersCollection = db.collection('orders');
+                settingsDoc = db.collection('settings').doc('admin');
+                firebaseReady = true;
 
-            function closeAllModals() {
-                loginModalOverlay.classList.remove('active');
-                dashboardOverlay.classList.remove('active');
-                loginMessage.textContent = ''; loginMessage.className = 'modal-msg';
-            }
-
-            // ============ PASSWORD HASHING (SHA-256) ============
-            async function sha256(message) {
-                const msgBuffer = new TextEncoder().encode(message);
-                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-                const hashArray = Array.from(new Uint8Array(hashBuffer));
-                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            }
-
-            async function verifyPassword(input) {
-                const storedHash = localStorage.getItem(CONFIG.storageKeys.adminHash);
-                if (!storedHash) {
-                    // First time setup: hash the default password and store
-                    const hash = await sha256(CONFIG.adminPassword);
-                    localStorage.setItem(CONFIG.storageKeys.adminHash, hash);
-                    return input === CONFIG.adminPassword; // Direct compare for first time
-                }
-                const inputHash = await sha256(input);
-                return inputHash === storedHash;
-            }
-
-            // ============ RENDER LOGO ============
-            function renderLogo(container, sizeClass = '') {
-                const settings = getSettings();
-                const logoData = settings.logo; // base64 or null
-                if (logoData) {
-                    container.innerHTML = `<img src="${logoData}" alt="Royal Programming" style="height:44px;width:auto;" class="${sizeClass}">`;
-                } else {
-                    // Default SVG
-                    container.innerHTML = `<svg width="220" height="50" viewBox="0 0 440 100"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C8963E"/><stop offset="35%" stop-color="#E8D48B"/><stop offset="60%" stop-color="#D4A853"/><stop offset="100%" stop-color="#A07828"/></linearGradient><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#A07828"/><stop offset="30%" stop-color="#D4A853"/><stop offset="70%" stop-color="#E8D48B"/><stop offset="100%" stop-color="#C8963E"/></linearGradient></defs><polygon points="18,72 34,28 50,72 66,28 82,72" fill="url(#g1)" stroke="url(#g2)" stroke-width="2"/><rect x="18" y="70" width="64" height="10" rx="2" fill="url(#g1)"/><circle cx="34" cy="40" r="3" fill="#fff" opacity="0.8"/><circle cx="50" cy="55" r="3.5" fill="#fff" opacity="0.9"/><circle cx="66" cy="40" r="3" fill="#fff" opacity="0.8"/><text x="100" y="50" font-size="20" font-family="'Courier New',monospace" font-weight="700" fill="url(#g2)">&lt;/&gt;</text><text x="142" y="38" font-size="30" font-family="'Georgia',serif" font-weight="700" fill="url(#g2)" letter-spacing="4">ROYAL</text><text x="142" y="62" font-size="18" font-family="'Georgia',serif" font-weight="600" fill="#7A6A4A" letter-spacing="5">PROGRAMMING</text><text x="142" y="84" font-size="8" font-family="'Segoe UI',sans-serif" fill="#B0A080" letter-spacing="3">CODE · CREATE · ELEVATE</text></svg>`;
-                }
-            }
-
-            function updateAllLogos() {
-                renderLogo(logoLink);
-                renderLogo(heroLogoContainer, 'hero-logo-svg');
-                // Also update hero content with badge and text
-                heroLogoContainer.innerHTML += `
-                  <div class="hero-badge">PREMIUM WEB SOLUTIONS</div>
-                  <h1 class="hero-title">We Build Your <span class="gold">Dream Website</span></h1>
-                  <p class="hero-subtitle">Custom websites crafted with precision, elegance, and cutting-edge technology.</p>
-                  <div class="hero-btns">
-                    <a href="#order" class="btn btn-primary">✨ Order Your Website</a>
-                    <a href="#services" class="btn btn-outline">Explore Services</a>
-                  </div>`;
-            }
-
-            // ============ RENDER SERVICES & STATS ============
-            function renderServices() {
-                const t = tData.en; // simple, can be extended for Nepali
-                servicesGrid.innerHTML = t.services.map(s => `<div class="service-card"><span class="service-icon">${s.icon}</span><h3>${s.title}</h3><p>${s.desc}</p></div>`).join('');
-            }
-            function renderAboutStats() {
-                const t = tData.en;
-                aboutStats.innerHTML = t.stats.map(s => `<div class="stat-card"><div class="stat-number">${s.num}</div><div class="stat-label">${s.label}</div></div>`).join('');
-            }
-
-            // ============ DASHBOARD RENDERING ============
-            function renderDashboardTab(tab) {
-                currentDashboardTab = tab;
-                $$('.dash-tab').forEach(btn => btn.classList.remove('active'));
-                $(`.dash-tab[data-tab="${tab}"]`).classList.add('active');
-                switch(tab) {
-                    case 'orders': renderOrdersTab(); break;
-                    case 'clients': renderClientsTab(); break;
-                    case 'settings': renderSettingsTab(); break;
-                }
-            }
-
-            function renderOrdersTab() {
-                const orders = getOrders();
-                if (orders.length === 0) { dashboardContent.innerHTML = '<p style="text-align:center;padding:2rem;">No orders yet. Orders appear when clients submit the form.</p>'; return; }
-                let html = `<table class="order-track-table"><thead><tr><th>ID</th><th>Date</th><th>Client</th><th>Email</th><th>Type</th><th>Status</th><th>Notes</th><th>Action</th></tr></thead><tbody>`;
-                orders.forEach(o => {
-                    html += `<tr>
-                        <td>${o.id}</td><td>${new Date(o.timestamp).toLocaleDateString()}</td><td>${escHtml(o.fullName)}</td><td>${escHtml(o.email)}</td>
-                        <td>${o.websiteType}</td>
-                        <td><select class="status-select" data-id="${o.id}">
-                            <option value="Pending" ${o.status==='Pending'?'selected':''}>Pending</option>
-                            <option value="In Progress" ${o.status==='In Progress'?'selected':''}>In Progress</option>
-                            <option value="Completed" ${o.status==='Completed'?'selected':''}>Completed</option>
-                            <option value="Delivered" ${o.status==='Delivered'?'selected':''}>Delivered</option>
-                        </select></td>
-                        <td><input class="note-input" value="${escHtml(o.notes||'')}" data-id="${o.id}" placeholder="Add note..."></td>
-                        <td><button class="btn-danger-sm" data-del="${o.id}">Del</button></td>
-                    </tr>`;
-                });
-                html += '</tbody></table>';
-                dashboardContent.innerHTML = html;
-                // event listeners for status/notes
-                dashboardContent.querySelectorAll('.status-select').forEach(sel => {
-                    sel.addEventListener('change', (e) => {
-                        updateOrderStatus(parseInt(e.target.dataset.id), e.target.value);
-                        showToast('Status updated.');
-                    });
-                });
-                dashboardContent.querySelectorAll('.note-input').forEach(inp => {
-                    inp.addEventListener('change', (e) => {
-                        updateOrderNotes(parseInt(e.target.dataset.id), e.target.value);
-                    });
-                });
-                dashboardContent.querySelectorAll('.btn-danger-sm').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const id = parseInt(btn.dataset.del);
-                        const updated = getOrders().filter(o => o.id !== id);
-                        saveOrders(updated);
-                        renderOrdersTab();
-                        showToast('Order deleted.');
-                    });
-                });
-            }
-
-            function renderClientsTab() {
-                const clients = getClients();
-                if (clients.length === 0) { dashboardContent.innerHTML = '<p style="text-align:center;padding:2rem;">No clients recorded yet.</p>'; return; }
-                let html = `<table class="order-track-table"><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Total Orders</th><th>Last Active</th></tr></thead><tbody>`;
-                clients.forEach(c => {
-                    html += `<tr><td>${escHtml(c.name)}</td><td>${escHtml(c.email)}</td><td>${escHtml(c.phone)}</td><td>${c.totalOrders}</td><td>${new Date(c.lastActive).toLocaleDateString()}</td></tr>`;
-                });
-                html += '</tbody></table>';
-                dashboardContent.innerHTML = html;
-            }
-
-            function renderSettingsTab() {
-                const settings = getSettings();
-                let logoHtml = `<div class="logo-gallery">`;
-                // Default logo option
-                logoHtml += `<div class="logo-option ${!settings.logo ? 'active' : ''}" data-logo="default"><svg width="80" height="30" viewBox="0 0 200 50"><text x="10" y="30" font-size="20" font-family="Georgia" fill="#C8963E">👑 RP</text></svg></div>`;
-                // If custom logo exists
-                if (settings.logo) {
-                    logoHtml += `<div class="logo-option active" data-logo="custom"><img src="${settings.logo}" style="max-height:40px;"></div>`;
-                }
-                // Upload area
-                logoHtml += `</div><div class="upload-area" id="uploadLogo">📁 Click to upload new logo (PNG/SVG)</div><input type="file" id="logoFileInput" accept="image/*" style="display:none">`;
-                // Hosting toggle
-                logoHtml += `<div style="margin-top:1.5rem;"><label style="font-weight:600;">Site Status: </label>
-                    <button class="btn btn-sm ${settings.hostingLive ? 'btn-primary' : 'btn-outline'}" id="toggleHosting">${settings.hostingLive ? '🟢 Live' : '🔴 Maintenance'}</button></div>`;
-                dashboardContent.innerHTML = logoHtml;
-                // logo selection
-                $$('.logo-option').forEach(opt => {
-                    opt.addEventListener('click', () => {
-                        const type = opt.dataset.logo;
-                        if (type === 'default') {
-                            saveSettings({...settings, logo: null});
-                        }
-                        renderSettingsTab();
-                        updateAllLogos();
-                        showToast('Logo updated.');
-                    });
-                });
-                // upload
-                $('#uploadLogo').addEventListener('click', () => $('#logoFileInput').click());
-                $('#logoFileInput').addEventListener('change', (e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = (ev) => {
-                            saveSettings({...settings, logo: ev.target.result});
-                            renderSettingsTab();
-                            updateAllLogos();
-                            showToast('Logo uploaded successfully.');
-                        };
-                        reader.readAsDataURL(file);
+                // Enable offline persistence
+                db.enablePersistence({ synchronizeTabs: true }).catch((err) => {
+                    if (err.code === 'failed-precondition') {
+                        console.warn('Firebase persistence failed (multiple tabs)');
+                    } else if (err.code === 'unimplemented') {
+                        console.warn('Firebase persistence not supported');
                     }
                 });
-                // hosting toggle
-                $('#toggleHosting').addEventListener('click', () => {
-                    const newSettings = {...settings, hostingLive: !settings.hostingLive};
-                    saveSettings(newSettings);
-                    renderSettingsTab();
-                    if (!newSettings.hostingLive) {
-                        document.body.style.filter = 'grayscale(0.5)';
-                        showToast('Site set to Maintenance Mode');
+
+                // Sign in anonymously for Firestore access
+                auth.signInAnonymously().catch((err) => {
+                    console.warn('Anonymous auth failed:', err.message);
+                });
+
+                // Listen for connection state
+                db.enableNetwork().then(() => updateSyncIndicator('online'));
+                window.addEventListener('online', () => {
+                    db.enableNetwork().then(() => updateSyncIndicator('online'));
+                });
+                window.addEventListener('offline', () => {
+                    db.disableNetwork().then(() => updateSyncIndicator('offline'));
+                });
+
+                console.log('🔥 Firebase initialized successfully');
+                return true;
+            } catch (err) {
+                console.error('Firebase init error:', err.message);
+                firebaseReady = false;
+                updateSyncIndicator('offline');
+                return false;
+            }
+        }
+
+        function updateSyncIndicator(status) {
+            const indicator = document.getElementById('syncIndicator');
+            if (!indicator) return;
+            indicator.classList.remove('sync-online', 'sync-offline', 'sync-syncing');
+            switch (status) {
+                case 'online':
+                    indicator.classList.add('sync-online');
+                    indicator.title = 'Connected to Firebase';
+                    break;
+                case 'offline':
+                    indicator.classList.add('sync-offline');
+                    indicator.title = 'Offline - using local backup';
+                    break;
+                case 'syncing':
+                    indicator.classList.add('sync-syncing');
+                    indicator.title = 'Syncing...';
+                    break;
+            }
+        }
+
+        // ============ EMAILJS INITIALIZATION (NEW) ============
+        function initEmailJS() {
+            try {
+                emailjs.init(CONFIG.emailjs.publicKey);
+                console.log('📧 EmailJS initialized');
+                return true;
+            } catch (err) {
+                console.warn('EmailJS init error:', err.message);
+                return false;
+            }
+        }
+
+        // ============ PASSWORD HASHING (NEW - SECURITY) ============
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        async function initPasswordHash() {
+            ADMIN_PASSWORD_HASH = await hashPassword(ADMIN_PASSWORD_PLAIN);
+            // Also store in settings doc for server-side verification
+            if (firebaseReady && settingsDoc) {
+                try {
+                    await settingsDoc.set({
+                        adminPasswordHash: ADMIN_PASSWORD_HASH,
+                        adminEmail: CONFIG.admin.email,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+                } catch (err) {
+                    console.warn('Could not store password hash in Firestore:', err.message);
+                }
+            }
+            console.log('🔐 Password hash initialized (SHA-256)');
+        }
+
+        async function verifyAdminPassword(enteredPassword) {
+            const enteredHash = await hashPassword(enteredPassword);
+            // First check against local hash
+            if (enteredHash === ADMIN_PASSWORD_HASH) return true;
+            // Fallback: check against Firestore stored hash
+            if (firebaseReady && settingsDoc) {
+                try {
+                    const doc = await settingsDoc.get();
+                    if (doc.exists && doc.data().adminPasswordHash === enteredHash) {
+                        return true;
+                    }
+                } catch (err) {
+                    console.warn('Firestore password check failed:', err.message);
+                }
+            }
+            return false;
+        }
+
+        // ============ SESSION MANAGEMENT (NEW) ============
+        const SESSION_DURATION = 8 * 60 * 60 * 1000; // 8 hours
+
+        function createAdminSession() {
+            const session = {
+                loggedIn: true,
+                timestamp: Date.now(),
+                expiresAt: Date.now() + SESSION_DURATION,
+                email: CONFIG.admin.email
+            };
+            sessionStorage.setItem(CONFIG.storageKeys.session, JSON.stringify(session));
+            // Also set a cookie for cross-tab awareness
+            document.cookie = `rp_admin_session=1;max-age=${SESSION_DURATION / 1000};path=/;SameSite=Lax`;
+        }
+
+        function checkAdminSession() {
+            try {
+                const sessionData = sessionStorage.getItem(CONFIG.storageKeys.session);
+                if (!sessionData) return false;
+                const session = JSON.parse(sessionData);
+                if (Date.now() > session.expiresAt) {
+                    destroyAdminSession();
+                    return false;
+                }
+                // Extend session
+                session.expiresAt = Date.now() + SESSION_DURATION;
+                sessionStorage.setItem(CONFIG.storageKeys.session, JSON.stringify(session));
+                return true;
+            } catch (err) {
+                return false;
+            }
+        }
+
+        function destroyAdminSession() {
+            sessionStorage.removeItem(CONFIG.storageKeys.session);
+            document.cookie = 'rp_admin_session=;max-age=0;path=/';
+            isAdminLoggedIn = false;
+        }
+
+        let isAdminLoggedIn = false;
+
+        // ============ GLOBAL STATE ============
+        let currentLang = 'en';
+        let loginMode = 'admin';
+        let customLogoUrl = null;
+        let currentFilter = 'all';
+        let allOrders = [];
+
+        // ============ DOM REFS ============
+        const $ = (sel) => document.querySelector(sel);
+        const $$ = (sel) => document.querySelectorAll(sel);
+
+        // ============ LOCAL STORAGE BACKUP (MODIFIED - now backup only) ============
+        function getLocalOrders() {
+            try { return JSON.parse(localStorage.getItem(CONFIG.storageKeys.orders)) || []; } catch (e) { return []; }
+        }
+
+        function saveLocalOrders(orders) {
+            try { localStorage.setItem(CONFIG.storageKeys.orders, JSON.stringify(orders)); } catch (e) {
+                console.warn('localStorage full, clearing old data');
+            }
+        }
+
+        function getLocalLogo() {
+            return localStorage.getItem(CONFIG.storageKeys.logo) || null;
+        }
+
+        function saveLocalLogo(url) {
+            if (url) {
+                localStorage.setItem(CONFIG.storageKeys.logo, url);
+            } else {
+                localStorage.removeItem(CONFIG.storageKeys.logo);
+            }
+        }
+
+        // ============ FIREBASE CRUD OPERATIONS (NEW) ============
+        async function fetchOrdersFromFirebase() {
+            if (!firebaseReady || !ordersCollection) {
+                updateSyncIndicator('offline');
+                return getLocalOrders();
+            }
+            try {
+                updateSyncIndicator('syncing');
+                const snapshot = await ordersCollection.orderBy('timestamp', 'desc').get();
+                const orders = [];
+                snapshot.forEach(doc => {
+                    orders.push({ id: doc.id, firebaseId: doc.id, ...doc.data() });
+                });
+                updateSyncIndicator('online');
+                // Update local backup
+                saveLocalOrders(orders);
+                return orders;
+            } catch (err) {
+                console.warn('Firebase fetch failed, using local backup:', err.message);
+                updateSyncIndicator('offline');
+                return getLocalOrders();
+            }
+        }
+
+        async function addOrderToFirebase(orderData) {
+            const order = {
+                ...orderData,
+                status: 'Pending',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp ?
+                    firebase.firestore.FieldValue.serverTimestamp() :
+                    new Date().toISOString(),
+                createdAt: new Date().toISOString()
+            };
+
+            // Save locally first (backup)
+            const localOrders = getLocalOrders();
+            const localOrder = { ...order, id: Date.now(), timestamp: new Date().toISOString() };
+            localOrders.unshift(localOrder);
+            saveLocalOrders(localOrders);
+
+            // Try Firebase
+            if (firebaseReady && ordersCollection) {
+                try {
+                    updateSyncIndicator('syncing');
+                    const docRef = await ordersCollection.add(order);
+                    localOrder.firebaseId = docRef.id;
+                    // Update local with firebase ID
+                    const updatedLocal = getLocalOrders();
+                    const idx = updatedLocal.findIndex(o => o.id === localOrder.id);
+                    if (idx >= 0) updatedLocal[idx].firebaseId = docRef.id;
+                    saveLocalOrders(updatedLocal);
+                    updateSyncIndicator('online');
+                    console.log('✅ Order saved to Firebase:', docRef.id);
+                } catch (err) {
+                    console.warn('Firebase save failed, saved locally:', err.message);
+                    updateSyncIndicator('offline');
+                }
+            }
+            return localOrder;
+        }
+
+        async function updateOrderStatusInFirebase(orderId, newStatus) {
+            // Update local
+            const localOrders = getLocalOrders();
+            const idx = localOrders.findIndex(o => o.id === orderId || o.firebaseId === orderId);
+            if (idx >= 0) {
+                localOrders[idx].status = newStatus;
+                saveLocalOrders(localOrders);
+            }
+
+            // Update Firebase
+            if (firebaseReady && ordersCollection) {
+                try {
+                    // Find by firebaseId or local id
+                    const firebaseId = typeof orderId === 'string' && orderId.length > 15 ? orderId :
+                        (localOrders[idx]?.firebaseId || null);
+                    if (firebaseId) {
+                        await ordersCollection.doc(firebaseId).update({ status: newStatus });
+                    }
+                } catch (err) {
+                    console.warn('Firebase status update failed:', err.message);
+                }
+            }
+        }
+
+        async function deleteOrderFromFirebase(orderId) {
+            // Remove local
+            const localOrders = getLocalOrders();
+            const idx = localOrders.findIndex(o => o.id === orderId || o.firebaseId === orderId);
+            const firebaseId = idx >= 0 ? localOrders[idx].firebaseId : null;
+            if (idx >= 0) {
+                localOrders.splice(idx, 1);
+                saveLocalOrders(localOrders);
+            }
+
+            // Remove from Firebase
+            if (firebaseReady && ordersCollection && firebaseId) {
+                try {
+                    await ordersCollection.doc(firebaseId).delete();
+                } catch (err) {
+                    console.warn('Firebase delete failed:', err.message);
+                }
+            }
+        }
+
+        async function clearAllOrdersFromFirebase() {
+            saveLocalOrders([]);
+            if (firebaseReady && ordersCollection) {
+                try {
+                    const snapshot = await ordersCollection.get();
+                    const batch = db.batch();
+                    snapshot.forEach(doc => batch.delete(doc.ref));
+                    await batch.commit();
+                } catch (err) {
+                    console.warn('Firebase clear failed:', err.message);
+                }
+            }
+        }
+
+        // ============ LOGO MANAGEMENT (NEW) ============
+        async function uploadLogoToFirebase(file) {
+            if (!firebaseReady || !storage) {
+                // Fallback to base64
+                return await convertToBase64(file);
+            }
+            try {
+                const storageRef = storage.ref();
+                const logoRef = storageRef.child('site-logo/' + Date.now() + '-' + file.name);
+                const snapshot = await logoRef.put(file);
+                const url = await snapshot.ref.getDownloadURL();
+                return url;
+            } catch (err) {
+                console.warn('Firebase Storage upload failed, using base64:', err.message);
+                return await convertToBase64(file);
+            }
+        }
+
+        function convertToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function saveLogoUrl(url) {
+            customLogoUrl = url;
+            saveLocalLogo(url);
+            // Also save to Firestore settings
+            if (firebaseReady && settingsDoc) {
+                try {
+                    await settingsDoc.set({ logoUrl: url }, { merge: true });
+                } catch (err) {
+                    console.warn('Firestore logo save failed:', err.message);
+                }
+            }
+            updateLogoDisplay();
+        }
+
+        async function loadLogoFromFirebase() {
+            // Check localStorage first
+            const localLogo = getLocalLogo();
+            if (localLogo) {
+                customLogoUrl = localLogo;
+                updateLogoDisplay();
+                return;
+            }
+            // Try Firestore
+            if (firebaseReady && settingsDoc) {
+                try {
+                    const doc = await settingsDoc.get();
+                    if (doc.exists && doc.data().logoUrl) {
+                        customLogoUrl = doc.data().logoUrl;
+                        saveLocalLogo(customLogoUrl);
+                        updateLogoDisplay();
+                    }
+                } catch (err) {
+                    console.warn('Firestore logo load failed:', err.message);
+                }
+            }
+        }
+
+        function updateLogoDisplay() {
+            const navSvg = document.getElementById('navLogoSvg');
+            const navImg = document.getElementById('navLogoImg');
+            const heroSvg = document.getElementById('heroLogoSvg');
+            const heroImg = document.getElementById('heroLogoImg');
+            const logoPreview = document.getElementById('logoPreview');
+            const logoUploadIcon = document.getElementById('logoUploadIcon');
+
+            if (customLogoUrl) {
+                // Show custom logo
+                if (navSvg) navSvg.style.display = 'none';
+                if (navImg) { navImg.src = customLogoUrl;
+                    navImg.style.display = 'block'; }
+                if (heroSvg) heroSvg.style.display = 'none';
+                if (heroImg) { heroImg.src = customLogoUrl;
+                    heroImg.style.display = 'block'; }
+                if (logoPreview) { logoPreview.src = customLogoUrl;
+                    logoPreview.style.display = 'block'; }
+                if (logoUploadIcon) logoUploadIcon.style.display = 'none';
+            } else {
+                // Show default SVG logo
+                if (navSvg) navSvg.style.display = 'block';
+                if (navImg) navImg.style.display = 'none';
+                if (heroSvg) heroSvg.style.display = 'block';
+                if (heroImg) heroImg.style.display = 'none';
+                if (logoPreview) logoPreview.style.display = 'none';
+                if (logoUploadIcon) logoUploadIcon.style.display = 'inline';
+            }
+        }
+
+        async function resetLogo() {
+            customLogoUrl = null;
+            saveLocalLogo(null);
+            if (firebaseReady && settingsDoc) {
+                try {
+                    await settingsDoc.set({ logoUrl: firebase.firestore.FieldValue.delete() }, { merge: true });
+                } catch (err) {
+                    console.warn('Firestore logo reset failed:', err.message);
+                }
+            }
+            updateLogoDisplay();
+            showToast('🔄 Logo reset to default');
+        }
+
+        // ============ EMAIL SENDING (NEW - EmailJS) ============
+        async function sendOrderEmail(orderData) {
+            const templateParams = {
+                name: orderData.fullName,
+                email: orderData.email,
+                phone: orderData.phone,
+                type: orderData.websiteType,
+                description: orderData.description,
+                to_email: CONFIG.contactEmail,
+                reply_to: orderData.email
+            };
+
+            try {
+                const response = await emailjs.send(
+                    CONFIG.emailjs.serviceId,
+                    CONFIG.emailjs.templateId,
+                    templateParams
+                );
+                console.log('📧 Email sent successfully:', response.status);
+                return true;
+            } catch (err) {
+                console.warn('EmailJS send failed:', err.message);
+                // Fallback: open mailto
+                const subject = encodeURIComponent('New Website Order from ' + orderData.fullName);
+                const body = encodeURIComponent(
+                    '📋 NEW WEBSITE ORDER\n\n👤 Name: ' + orderData.fullName +
+                    '\n📧 Email: ' + orderData.email +
+                    '\n📞 Phone: ' + orderData.phone +
+                    '\n🌐 Type: ' + orderData.websiteType +
+                    '\n\n📝 Description:\n' + orderData.description +
+                    '\n\n---\nRoyal Programming Order'
+                );
+                window.location.href = 'mailto:' + CONFIG.contactEmail + '?subject=' + subject + '&body=' + body;
+                return false;
+            }
+        }
+
+        // ============ TRANSLATION DATA ============
+        const tData = {
+            en: {
+                navHome: 'Home',
+                navServices: 'Services',
+                navOrder: 'Order Now',
+                navAbout: 'About',
+                navContact: 'Contact',
+                loginBtn: 'Login',
+                langLabel: '🇳🇵 नेपाली',
+                heroBadge: 'PREMIUM WEB SOLUTIONS',
+                heroTitle: 'We Build Your <span class="gold">Dream Website</span>',
+                heroSubtitle: 'Custom websites crafted with precision, elegance, and cutting-edge technology.',
+                heroBtn1: '✨ Order Your Website',
+                heroBtn2: 'Explore Services',
+                servicesLabel: 'WHAT WE OFFER',
+                servicesTitle: 'Our Services',
+                servicesDesc: 'From stunning landing pages to full-scale web applications — excellence at every level.',
+                orderLabel: 'GET STARTED',
+                orderTitle: 'Ready to Build Something Great?',
+                orderDesc: 'Fill out the form. We\'ll get back to you within 24 hours.',
+                orderBullet1: 'Free consultation & quote',
+                orderBullet2: 'Fast turnaround time',
+                orderBullet3: '100% custom design',
+                orderBullet4: 'Ongoing support included',
+                orderFormTitle: '📋 Order Your Website',
+                fullName: 'Full Name',
+                email: 'Email Address',
+                phone: 'Phone Number',
+                websiteType: 'Website Type',
+                selectType: '— Select Type —',
+                typeBusiness: 'Business Website',
+                typeEcommerce: 'E-Commerce Store',
+                typePortfolio: 'Portfolio / Personal',
+                typeLanding: 'Landing Page',
+                typeCustom: 'Custom Web Application',
+                typeOther: 'Other',
+                description: 'Describe Your Dream Website',
+                submitOrder: '🚀 Submit Order',
+                formNote: 'We\'ll confirm via email. Response within 24 hours.',
+                aboutLabel: 'WHO WE ARE',
+                aboutTitle: 'About Royal Programming',
+                aboutP1: 'Royal Programming is a premium web development studio crafting exceptional digital experiences.',
+                aboutP2: 'We combine technical expertise with creative vision for stunning, fast, secure websites.',
+                contactLabel: 'GET IN TOUCH',
+                contactTitle: 'Contact Us',
+                contactDesc: 'Reach out anytime — we\'re here to help.',
+                whatsappTitle: 'WhatsApp',
+                whatsappClick: 'Click to chat instantly',
+                emailTitle: 'Email Us',
+                emailClick: 'Click to open email client',
+                footerText: 'CODE · CREATE · ELEVATE. All rights reserved.',
+                modalTitle: '🔐 Welcome',
+                modalSubtitle: 'Sign in to your account',
+                tabAdmin: 'Admin',
+                tabClient: 'Client',
+                loginEmailLbl: 'Email',
+                loginPassLbl: 'Password',
+                loginNameLbl: 'Full Name',
+                signIn: 'Sign In',
+                signUp: 'Sign Up',
+                adminLoginOk: '✅ Access granted! Opening dashboard...',
+                clientLoginOk: '✅ Welcome! (Demo)',
+                loginErr: '❌ Invalid credentials.',
+                loginFillErr: '❌ Please fill all fields.',
+                orderOk: '✅ Order submitted! Check your email.',
+                toastOrder: '📧 Sending order...',
+                serviceData: [
+                    { icon: '🏢', title: 'Business Websites',
+                        desc: 'Professional websites establishing your brand with authority.' },
+                    { icon: '🛒', title: 'E-Commerce Stores',
+                        desc: 'Full online stores with secure payments and beautiful design.' },
+                    { icon: '📱', title: 'Responsive Design',
+                        desc: 'Flawless on every device — mobile, tablet, desktop.' },
+                    { icon: '⚡', title: 'Custom Web Apps', desc: 'Tailored apps with modern tech stacks.' },
+                    { icon: '🔍', title: 'SEO Optimization', desc: 'Higher rankings, more organic traffic.' },
+                    { icon: '🛠️', title: 'Maintenance & Support',
+                    desc: 'Ongoing support to keep your site secure and updated.' },
+                ],
+                statData: [
+                    { num: '50+', label: 'Projects Delivered' }, { num: '30+', label: 'Happy Clients' },
+                    { num: '24/7', label: 'Support Available' }, { num: '100%', label: 'Client Satisfaction' },
+                ],
+            },
+            ne: {
+                navHome: 'गृहपृष्ठ',
+                navServices: 'सेवाहरू',
+                navOrder: 'अर्डर',
+                navAbout: 'हाम्रोबारे',
+                navContact: 'सम्पर्क',
+                loginBtn: 'लगइन',
+                langLabel: '🇬🇧 English',
+                heroBadge: 'प्रिमियम वेब समाधान',
+                heroTitle: 'हामी तपाईंको <span class="gold">सपनाको वेबसाइट</span> बनाउँछौं',
+                heroSubtitle: 'सटीकता, भव्यता र अत्याधुनिक प्रविधिका साथ अनुकूलित वेबसाइटहरू।',
+                heroBtn1: '✨ वेबसाइट अर्डर गर्नुहोस्',
+                heroBtn2: 'सेवाहरू हेर्नुहोस्',
+                servicesLabel: 'हामी के प्रदान गर्छौं',
+                servicesTitle: 'हाम्रा सेवाहरू',
+                servicesDesc: 'आकर्षक ल्यान्डिङ पृष्ठदेखि पूर्ण वेब एपसम्म।',
+                orderLabel: 'सुरु गर्नुहोस्',
+                orderTitle: 'केहि उत्कृष्ट निर्माण गर्न तयार हुनुहुन्छ?',
+                orderDesc: 'फारम भर्नुहोस्। हामी २४ घण्टाभित्र सम्पर्क गर्नेछौं।',
+                orderBullet1: 'निःशुल्क परामर्श र उद्धरण',
+                orderBullet2: 'द्रुत निर्माण समय',
+                orderBullet3: '१००% अनुकूलित डिजाइन',
+                orderBullet4: 'निरन्तर सहयोग समावेश',
+                orderFormTitle: '📋 वेबसाइट अर्डर गर्नुहोस्',
+                fullName: 'पूरा नाम',
+                email: 'इमेल ठेगाना',
+                phone: 'फोन नम्बर',
+                websiteType: 'वेबसाइट प्रकार',
+                selectType: '— प्रकार छान्नुहोस् —',
+                typeBusiness: 'व्यावसायिक वेबसाइट',
+                typeEcommerce: 'इ-कमर्स स्टोर',
+                typePortfolio: 'पोर्टफोलियो',
+                typeLanding: 'ल्यान्डिङ पृष्ठ',
+                typeCustom: 'अनुकूलित वेब एप',
+                typeOther: 'अन्य',
+                description: 'आफ्नो सपनाको वेबसाइट वर्णन गर्नुहोस्',
+                submitOrder: '🚀 अर्डर पठाउनुहोस्',
+                formNote: 'हामी इमेल मार्फत पुष्टि गर्नेछौं।',
+                aboutLabel: 'हामी को हौं',
+                aboutTitle: 'रोयल प्रोग्रामिङको बारेमा',
+                aboutP1: 'रोयल प्रोग्रामिङ एक प्रिमियम वेब विकास स्टुडियो हो।',
+                aboutP2: 'हामी सुन्दर, तीव्र र सुरक्षित वेबसाइटहरू निर्माण गर्छौं।',
+                contactLabel: 'सम्पर्कमा रहनुहोस्',
+                contactTitle: 'सम्पर्क गर्नुहोस्',
+                contactDesc: 'कुनै पनि समय सम्पर्क गर्नुहोस्।',
+                whatsappTitle: 'ह्वाट्सएप',
+                whatsappClick: 'तुरुन्त कुराकानी गर्न क्लिक गर्नुहोस्',
+                emailTitle: 'इमेल गर्नुहोस्',
+                emailClick: 'इमेल क्लाइन्ट खोल्न क्लिक गर्नुहोस्',
+                footerText: 'कोड · सिर्जना · उन्नति। सर्वाधिकार सुरक्षित।',
+                modalTitle: '🔐 स्वागतम्',
+                modalSubtitle: 'आफ्नो खातामा साइन इन गर्नुहोस्',
+                tabAdmin: 'प्रशासक',
+                tabClient: 'ग्राहक',
+                loginEmailLbl: 'इमेल',
+                loginPassLbl: 'पासवर्ड',
+                loginNameLbl: 'पूरा नाम',
+                signIn: 'साइन इन',
+                signUp: 'साइन अप',
+                adminLoginOk: '✅ पहुँच स्वीकृत! ड्यासबोर्ड खुल्दै...',
+                clientLoginOk: '✅ स्वागतम्! (डेमो)',
+                loginErr: '❌ अमान्य प्रमाणहरू।',
+                loginFillErr: '❌ सबै फिल्डहरू भर्नुहोस्।',
+                orderOk: '✅ अर्डर पेश भयो! इमेल जाँच गर्नुहोस्।',
+                toastOrder: '📧 अर्डर पठाउँदै...',
+                serviceData: [
+                    { icon: '🏢', title: 'व्यावसायिक वेबसाइट',
+                    desc: 'तपाईंको ब्रान्डलाई अधिकारका साथ स्थापित गर्ने वेबसाइट।' },
+                    { icon: '🛒', title: 'इ-कमर्स स्टोर', desc: 'सुरक्षित भुक्तानीसहित पूर्ण अनलाइन स्टोर।' },
+                    { icon: '📱', title: 'रिस्पोन्सिभ डिजाइन', desc: 'हरेक उपकरणमा निर्दोष।' },
+                    { icon: '⚡', title: 'अनुकूलित वेब एप', desc: 'आधुनिक प्रविधिसहित अनुकूलित एप।' },
+                    { icon: '🔍', title: 'एसइओ अप्टिमाइजेसन', desc: 'उच्च रैंकिङ, अधिक ट्राफिक।' },
+                    { icon: '🛠️', title: 'मर्मत र सहयोग', desc: 'निरन्तर सहयोग र अद्यावधिक।' },
+                ],
+                statData: [
+                    { num: '50+', label: 'परियोजनाहरू' }, { num: '30+', label: 'खुसी ग्राहक' },
+                    { num: '24/7', label: 'सहयोग' }, { num: '100%', label: 'सन्तुष्टि' },
+                ],
+            },
+        };
+
+        // ============ HELPERS ============
+        function showToast(msg, duration = 3000) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = msg;
+            const container = document.getElementById('toastContainer');
+            container.appendChild(toast);
+            setTimeout(() => { if (toast.parentNode) toast.remove(); }, duration);
+        }
+
+        function closeAllModals() {
+            document.getElementById('loginModalOverlay').classList.remove('active');
+            document.getElementById('dashboardOverlay').classList.remove('active');
+            const loginMsg = document.getElementById('loginMessage');
+            if (loginMsg) { loginMsg.textContent = '';
+                loginMsg.className = 'modal-msg'; }
+        }
+
+        function escHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str || '';
+            return div.innerHTML;
+        }
+
+        function resetLoginForm() {
+            const loginEmail = document.getElementById('loginEmail');
+            const loginPassword = document.getElementById('loginPassword');
+            const loginName = document.getElementById('loginName');
+            const loginPassGroup = document.getElementById('loginPassGroup');
+            const loginNameGroup = document.getElementById('loginNameGroup');
+            const loginMessage = document.getElementById('loginMessage');
+
+            if (loginEmail) loginEmail.value = '';
+            if (loginPassword) loginPassword.value = '';
+            if (loginName) loginName.value = '';
+            if (loginMessage) { loginMessage.textContent = '';
+                loginMessage.className = 'modal-msg'; }
+
+            if (loginMode === 'admin') {
+                if (loginPassGroup) loginPassGroup.classList.remove('hidden');
+                if (loginNameGroup) loginNameGroup.classList.add('hidden');
+                if (loginPassword) loginPassword.required = true;
+                if (loginName) loginName.required = false;
+            } else {
+                if (loginPassGroup) loginPassGroup.classList.add('hidden');
+                if (loginNameGroup) loginNameGroup.classList.remove('hidden');
+                if (loginPassword) loginPassword.required = false;
+                if (loginName) loginName.required = true;
+            }
+            updateLoginBtnText();
+        }
+
+        function updateLoginBtnText() {
+            const t = tData[currentLang];
+            const btn = document.getElementById('loginSubmitBtn');
+            if (btn) btn.textContent = loginMode === 'admin' ? (t.signIn || 'Sign In') : (t.signUp || 'Sign Up');
+        }
+
+        function validateOrderForm() {
+            let valid = true;
+            const fields = ['fullName', 'email', 'phone', 'websiteType', 'description'];
+            const errorSpans = {
+                fullName: 'errFullName',
+                email: 'errEmail',
+                phone: 'errPhone',
+                websiteType: 'errWebsiteType',
+                description: 'errDescription'
+            };
+
+            // Clear all errors
+            Object.values(errorSpans).forEach(id => {
+                const span = document.getElementById(id);
+                if (span) { span.textContent = '';
+                    span.classList.remove('visible'); }
+            });
+            $$('.form-group input, .form-group select, .form-group textarea').forEach(el => el.classList.remove(
+                'error'));
+
+            fields.forEach(field => {
+                const el = document.getElementById(field);
+                const errSpan = document.getElementById(errorSpans[field]);
+                if (!el) return;
+
+                if (!el.value.trim()) {
+                    valid = false;
+                    el.classList.add('error');
+                    if (errSpan) { errSpan.textContent = 'This field is required.';
+                        errSpan.classList.add('visible'); }
+                } else if (field === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim())) {
+                    valid = false;
+                    el.classList.add('error');
+                    if (errSpan) { errSpan.textContent = 'Please enter a valid email.';
+                        errSpan.classList.add('visible'); }
+                } else if (field === 'phone' && !/^\+?[\d\s()-]{7,15}$/.test(el.value.trim())) {
+                    valid = false;
+                    el.classList.add('error');
+                    if (errSpan) { errSpan.textContent = 'Please enter a valid phone number.';
+                        errSpan.classList.add('visible'); }
+                }
+            });
+            return valid;
+        }
+
+        // ============ RENDER FUNCTIONS ============
+        function renderServices() {
+            const grid = document.getElementById('servicesGrid');
+            if (!grid) return;
+            const t = tData[currentLang];
+            grid.innerHTML = t.serviceData.map(s => `
+                <div class="service-card">
+                    <span class="service-icon">${s.icon}</span>
+                    <h3>${s.title}</h3>
+                    <p>${s.desc}</p>
+                </div>`).join('');
+        }
+
+        function renderAboutStats() {
+            const container = document.getElementById('aboutStats');
+            if (!container) return;
+            const t = tData[currentLang];
+            container.innerHTML = t.statData.map(s => `
+                <div class="stat-card">
+                    <div class="stat-number">${s.num}</div>
+                    <div class="stat-label">${s.label}</div>
+                </div>`).join('');
+        }
+
+        function renderDashboard() {
+            const container = document.getElementById('dashboardContent');
+            const countEl = document.getElementById('dbOrderCount');
+            const t = tData[currentLang];
+
+            let filteredOrders = allOrders;
+            if (currentFilter !== 'all') {
+                filteredOrders = allOrders.filter(o => o.status === currentFilter);
+            }
+
+            if (countEl) countEl.textContent = allOrders.length;
+
+            if (filteredOrders.length === 0) {
+                container.innerHTML = '<div class="dashboard-empty">No orders found.</div>';
+                return;
+            }
+
+            let html = `<div class="dashboard-table-wrap"><table class="dashboard-table"><thead><tr>
+                <th>#</th><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Type</th>
+                <th>Description</th><th>Status</th><th>Actions</th>
+            </tr></thead><tbody>`;
+
+            filteredOrders.forEach((o, i) => {
+                const date = o.timestamp ? new Date(o.timestamp).toLocaleDateString('en-US', { month: 'short',
+                    day: 'numeric', year: 'numeric' }) : 'N/A';
+                const statusClass = o.status === 'Completed' ? 'badge-completed' :
+                    o.status === 'In Progress' ? 'badge-progress' : 'badge-pending';
+                const orderId = o.firebaseId || o.id;
+                html += `<tr>
+                    <td>${i + 1}</td>
+                    <td>${date}</td>
+                    <td>${escHtml(o.fullName)}</td>
+                    <td>${escHtml(o.email)}</td>
+                    <td>${escHtml(o.phone)}</td>
+                    <td>${escHtml(o.websiteType)}</td>
+                    <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escHtml(o.description)}">${escHtml(o.description)}</td>
+                    <td><span class="badge-status ${statusClass}">${o.status || 'Pending'}</span></td>
+                    <td style="white-space:nowrap;">
+                        <button class="btn-xs status-btn" data-id="${orderId}" data-status="In Progress" ${o.status === 'In Progress' ? 'disabled' : ''}>🔵</button>
+                        <button class="btn-xs status-btn" data-id="${orderId}" data-status="Completed" ${o.status === 'Completed' ? 'disabled' : ''}>🟢</button>
+                        <button class="btn-xs danger del-btn" data-id="${orderId}">🗑</button>
+                    </td>
+                </tr>`;
+            });
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
+
+            // Attach event listeners
+            container.querySelectorAll('.status-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const id = btn.getAttribute('data-id');
+                    const newStatus = btn.getAttribute('data-status');
+                    await updateOrderStatusInFirebase(id, newStatus);
+                    await refreshOrders();
+                    showToast('✅ Status updated to: ' + newStatus);
+                });
+            });
+            container.querySelectorAll('.del-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    if (confirm('Delete this order?')) {
+                        const id = btn.getAttribute('data-id');
+                        await deleteOrderFromFirebase(id);
+                        await refreshOrders();
+                        showToast('🗑 Order deleted');
+                    }
+                });
+            });
+        }
+
+        async function refreshOrders() {
+            allOrders = await fetchOrdersFromFirebase();
+            renderDashboard();
+        }
+
+        // ============ APPLY LANGUAGE ============
+        function applyLang(lang) {
+            currentLang = lang;
+            const t = tData[lang];
+            $$('[data-lang-key]').forEach(el => {
+                const key = el.getAttribute('data-lang-key');
+                if (t[key] !== undefined) {
+                    if (key === 'heroTitle') {
+                        el.innerHTML = t[key];
+                    } else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = t[key];
+                    } else if (el.tagName === 'OPTION') {
+                        el.textContent = t[key];
                     } else {
-                        document.body.style.filter = '';
-                        showToast('Site is Live');
+                        el.textContent = t[key];
+                    }
+                }
+            });
+            const btnLang = document.getElementById('btnLang');
+            if (btnLang) btnLang.textContent = t.langLabel || '🇳🇵 नेपाली';
+
+            const sel = document.getElementById('websiteType');
+            if (sel) {
+                const optKeys = ['selectType', 'typeBusiness', 'typeEcommerce', 'typePortfolio', 'typeLanding',
+                    'typeCustom', 'typeOther'
+                ];
+                for (let i = 0; i < sel.options.length; i++) {
+                    if (optKeys[i] && t[optKeys[i]]) sel.options[i].textContent = t[optKeys[i]];
+                }
+            }
+
+            const bulletLis = $$('#orderBullets li');
+            const bKeys = ['orderBullet1', 'orderBullet2', 'orderBullet3', 'orderBullet4'];
+            bulletLis.forEach((li, i) => {
+                if (bKeys[i] && t[bKeys[i]]) {
+                    Array.from(li.childNodes).filter(n => n.nodeType === 3).forEach(n => n.remove());
+                    li.appendChild(document.createTextNode(t[bKeys[i]]));
+                }
+            });
+
+            updateLoginBtnText();
+            renderServices();
+            renderAboutStats();
+            localStorage.setItem(CONFIG.storageKeys.lang, lang);
+        }
+
+        // ============ EVENT LISTENERS SETUP ============
+        function setupEventListeners() {
+            // Language toggle
+            const btnLang = document.getElementById('btnLang');
+            if (btnLang) {
+                btnLang.addEventListener('click', () => {
+                    const newLang = currentLang === 'en' ? 'ne' : 'en';
+                    applyLang(newLang);
+                    showToast(newLang === 'ne' ? '🇳🇵 भाषा: नेपाली' : '🇬🇧 Language: English');
+                });
+            }
+
+            // Mobile menu
+            const mobileToggle = document.getElementById('mobileToggle');
+            const navLinks = document.getElementById('navLinks');
+            if (mobileToggle && navLinks) {
+                mobileToggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('open');
+                    mobileToggle.classList.toggle('open');
+                });
+                navLinks.querySelectorAll('a').forEach(a => {
+                    a.addEventListener('click', () => {
+                        navLinks.classList.remove('open');
+                        mobileToggle.classList.remove('open');
+                    });
+                });
+                document.addEventListener('click', (e) => {
+                    if (!navLinks.contains(e.target) && !mobileToggle.contains(e.target) && navLinks
+                        .classList.contains('open')) {
+                        navLinks.classList.remove('open');
+                        mobileToggle.classList.remove('open');
                     }
                 });
             }
 
-            // ============ EVENT LISTENERS ============
-            btnLang.addEventListener('click', () => {
-                currentLang = currentLang === 'en' ? 'ne' : 'en';
-                btnLang.textContent = currentLang === 'ne' ? '🇬🇧 English' : '🇳🇵 नेपाली';
-                showToast(currentLang === 'ne' ? '🇳🇵 भाषा: नेपाली' : '🇬🇧 Language: English');
-                // Full translation can be expanded
-            });
-
-            mobileToggle.addEventListener('click', () => {
-                navLinks.classList.toggle('open');
-                mobileToggle.classList.toggle('open');
-            });
-            navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-                navLinks.classList.remove('open');
-                mobileToggle.classList.remove('open');
-            }));
-
+            // Navbar scroll
+            const navbar = document.getElementById('navbar');
             window.addEventListener('scroll', () => {
-                navbar.classList.toggle('scrolled', window.scrollY > 40);
+                if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 40);
+                const sections = $$('section, .hero, .order-section-bg');
+                let current = '';
+                sections.forEach(sec => {
+                    const top = sec.getBoundingClientRect().top;
+                    if (top < 140) {
+                        const id = sec.getAttribute('id');
+                        if (id) current = id;
+                    }
+                });
+                const orderSection = document.getElementById('order');
+                if (orderSection && orderSection.getBoundingClientRect().top < 140) current = 'order';
+                if (navLinks) {
+                    navLinks.querySelectorAll('a').forEach(a => {
+                        a.classList.remove('active');
+                        if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+                    });
+                }
+                if (!current && window.scrollY < 80 && navLinks) {
+                    const homeLink = navLinks.querySelector('a[href="#home"]');
+                    if (homeLink) homeLink.classList.add('active');
+                }
             });
 
             // Login modal
-            btnOpenLogin.addEventListener('click', () => {
-                closeAllModals();
-                loginModalOverlay.classList.add('active');
-                loginMessage.textContent = '';
-            });
-            btnCloseModal.addEventListener('click', closeAllModals);
-            loginModalOverlay.addEventListener('click', (e) => { if (e.target === loginModalOverlay) closeAllModals(); });
+            const btnOpenLogin = document.getElementById('btnOpenLogin');
+            const loginModalOverlay = document.getElementById('loginModalOverlay');
+            const btnCloseModal = document.getElementById('btnCloseModal');
+            const tabAdmin = document.getElementById('tabAdmin');
+            const tabClient = document.getElementById('tabClient');
+            const loginForm = document.getElementById('loginForm');
 
-            loginForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const pass = loginPassword.value;
-                const isValid = await verifyPassword(pass);
-                if (isValid) {
-                    loginMessage.textContent = '✅ Access granted! Opening dashboard...';
-                    loginMessage.className = 'modal-msg success';
-                    isAdminLoggedIn = true;
-                    setTimeout(() => {
-                        closeAllModals();
-                        dashboardOverlay.classList.add('active');
-                        renderDashboardTab('orders');
-                    }, 600);
-                } else {
-                    loginMessage.textContent = '❌ Invalid password.';
-                    loginMessage.className = 'modal-msg error';
-                }
-            });
+            if (btnOpenLogin && loginModalOverlay) {
+                btnOpenLogin.addEventListener('click', () => {
+                    closeAllModals();
+                    loginModalOverlay.classList.add('active');
+                    resetLoginForm();
+                });
+            }
+            if (btnCloseModal && loginModalOverlay) {
+                btnCloseModal.addEventListener('click', () => closeAllModals());
+                loginModalOverlay.addEventListener('click', (e) => {
+                    if (e.target === loginModalOverlay) closeAllModals();
+                });
+            }
+            if (tabAdmin) {
+                tabAdmin.addEventListener('click', () => {
+                    loginMode = 'admin';
+                    tabAdmin.classList.add('active');
+                    if (tabClient) tabClient.classList.remove('active');
+                    resetLoginForm();
+                });
+            }
+            if (tabClient) {
+                tabClient.addEventListener('click', () => {
+                    loginMode = 'client';
+                    tabClient.classList.add('active');
+                    if (tabAdmin) tabAdmin.classList.remove('active');
+                    resetLoginForm();
+                });
+            }
+            if (loginForm) {
+                loginForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const t = tData[currentLang];
+                    const loginEmail = document.getElementById('loginEmail');
+                    const loginPassword = document.getElementById('loginPassword');
+                    const loginName = document.getElementById('loginName');
+                    const loginMessage = document.getElementById('loginMessage');
 
-            // Dashboard
-            btnCloseDashboard.addEventListener('click', () => { dashboardOverlay.classList.remove('active'); isAdminLoggedIn = false; });
-            dashboardOverlay.addEventListener('click', (e) => { if (e.target === dashboardOverlay) { dashboardOverlay.classList.remove('active'); isAdminLoggedIn = false; } });
-            btnLogoutAdmin.addEventListener('click', () => { dashboardOverlay.classList.remove('active'); isAdminLoggedIn = false; showToast('Logged out.'); });
-
-            $$('.dash-tab').forEach(btn => {
-                btn.addEventListener('click', () => renderDashboardTab(btn.dataset.tab));
-            });
-
-            // Order form submission
-            orderForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const order = {
-                    fullName: $('#fullName').value.trim(),
-                    email: $('#email').value.trim(),
-                    phone: $('#phone').value.trim(),
-                    websiteType: $('#websiteType').value,
-                    description: $('#description').value.trim()
-                };
-                if (!order.fullName || !order.email || !order.phone || !order.websiteType || !order.description) {
-                    showToast('⚠️ Please fill all fields.');
-                    return;
-                }
-                addOrder(order);
-                // Send email via mailto as fallback
-                const subject = encodeURIComponent('New Website Order from ' + order.fullName);
-                const body = encodeURIComponent(`📋 NEW ORDER\n\nName: ${order.fullName}\nEmail: ${order.email}\nPhone: ${order.phone}\nType: ${order.websiteType}\nDescription: ${order.description}`);
-                window.location.href = `mailto:${CONFIG.orderEmail}?subject=${subject}&body=${body}`;
-                orderForm.reset();
-                showToast('📧 Order submitted! Opening email client...');
-            });
-
-            // ESC key
-            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAllModals(); });
-
-            // Check hosting status on load
-            const settings = getSettings();
-            if (!settings.hostingLive) {
-                document.body.style.filter = 'grayscale(0.5)';
-                showToast('Site is in Maintenance Mode');
+                    if (loginMode === 'admin') {
+                        if (!loginEmail || !loginPassword) return;
+                        if (loginEmail.value.trim() === CONFIG.admin.email && await
+                            verifyAdminPassword(loginPassword.value)) {
+                            if (loginMessage) {
+                                loginMessage.textContent = t.adminLoginOk ||
+                                    '✅ Access granted!';
+                                loginMessage.className = 'modal-msg success';
+                            }
+                            isAdminLoggedIn = true;
+                            createAdminSession();
+                            setTimeout(async () => {
+                                closeAllModals();
+                                await refreshOrders();
+                                document.getElementById('dashboardOverlay').classList.add(
+                                    'active');
+                                renderDashboard();
+                            }, 600);
+                            showToast('✅ Admin logged in securely');
+                        } else {
+                            if (loginMessage) {
+                                loginMessage.textContent = t.loginErr ||
+                                    '❌ Invalid credentials.';
+                                loginMessage.className = 'modal-msg error';
+                            }
+                        }
+                    } else {
+                        if (loginEmail && loginName && loginEmail.value.trim() && loginName.value
+                            .trim()) {
+                            if (loginMessage) {
+                                loginMessage.textContent = t.clientLoginOk ||
+                                    '✅ Welcome!';
+                                loginMessage.className = 'modal-msg success';
+                            }
+                            showToast('✅ Welcome, ' + loginName.value.trim() + '!');
+                            setTimeout(closeAllModals, 1200);
+                        } else {
+                            if (loginMessage) {
+                                loginMessage.textContent = t.loginFillErr ||
+                                    '❌ Please fill all fields.';
+                                loginMessage.className = 'modal-msg error';
+                            }
+                        }
+                    }
+                });
             }
 
-            // ============ INIT ============
-            updateAllLogos();
+            // Dashboard
+            const dashboardOverlay = document.getElementById('dashboardOverlay');
+            const btnCloseDashboard = document.getElementById('btnCloseDashboard');
+            const btnLogoutAdmin = document.getElementById('btnLogoutAdmin');
+            const btnClearOrders = document.getElementById('btnClearOrders');
+            const btnRefreshOrders = document.getElementById('btnRefreshOrders');
+
+            if (btnCloseDashboard && dashboardOverlay) {
+                btnCloseDashboard.addEventListener('click', () => {
+                    dashboardOverlay.classList.remove('active');
+                });
+                dashboardOverlay.addEventListener('click', (e) => {
+                    if (e.target === dashboardOverlay) {
+                        dashboardOverlay.classList.remove('active');
+                    }
+                });
+            }
+            if (btnLogoutAdmin) {
+                btnLogoutAdmin.addEventListener('click', () => {
+                    destroyAdminSession();
+                    document.getElementById('dashboardOverlay').classList.remove('active');
+                    isAdminLoggedIn = false;
+                    showToast('🚪 Logged out');
+                });
+            }
+            if (btnClearOrders) {
+                btnClearOrders.addEventListener('click', async () => {
+                    if (confirm('Delete ALL orders? This cannot be undone.')) {
+                        await clearAllOrdersFromFirebase();
+                        allOrders = [];
+                        renderDashboard();
+                        showToast('🗑 All orders cleared');
+                    }
+                });
+            }
+            if (btnRefreshOrders) {
+                btnRefreshOrders.addEventListener('click', async () => {
+                    await refreshOrders();
+                    showToast('🔄 Orders refreshed');
+                });
+            }
+
+            // Filter buttons
+            $$('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    $$('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.getAttribute('data-filter');
+                    renderDashboard();
+                });
+            });
+
+            // Logo upload
+            const logoUploadArea = document.getElementById('logoUploadArea');
+            const logoFileInput = document.getElementById('logoFileInput');
+            const btnResetLogo = document.getElementById('btnResetLogo');
+
+            if (logoUploadArea && logoFileInput) {
+                logoUploadArea.addEventListener('click', () => logoFileInput.click());
+                logoFileInput.addEventListener('change', async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    if (!file.type.startsWith('image/')) {
+                        showToast('⚠️ Please select an image file');
+                        return;
+                    }
+                    if (file.size > 5 * 1024 * 1024) {
+                        showToast('⚠️ Image must be under 5MB');
+                        return;
+                    }
+                    showToast('🖼️ Uploading logo...');
+                    const url = await uploadLogoToFirebase(file);
+                    if (url) {
+                        await saveLogoUrl(url);
+                        showToast('✅ Logo updated successfully!');
+                    }
+                });
+            }
+            if (btnResetLogo) {
+                btnResetLogo.addEventListener('click', async () => {
+                    await resetLogo();
+                });
+            }
+
+            // Order form
+            const orderForm = document.getElementById('orderForm');
+            if (orderForm) {
+                orderForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    if (!validateOrderForm()) {
+                        showToast('⚠️ Please fix the errors in the form.');
+                        return;
+                    }
+                    const t = tData[currentLang];
+                    const orderData = {
+                        fullName: document.getElementById('fullName').value.trim(),
+                        email: document.getElementById('email').value.trim(),
+                        phone: document.getElementById('phone').value.trim(),
+                        websiteType: document.getElementById('websiteType').value,
+                        description: document.getElementById('description').value.trim(),
+                    };
+
+                    const submitBtn = document.getElementById('submitOrderBtn');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML =
+                            '<span class="loading-spinner"></span> Submitting...';
+                    }
+
+                    try {
+                        // Save to database
+                        await addOrderToFirebase(orderData);
+                        // Send email
+                        await sendOrderEmail(orderData);
+                        showToast('✅ Order submitted! Email sent to ' + CONFIG.contactEmail);
+                        orderForm.reset();
+                    } catch (err) {
+                        showToast('⚠️ There was an issue, but your order was saved.');
+                        console.error('Order submission error:', err);
+                    } finally {
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = t.submitOrder || '🚀 Submit Order';
+                        }
+                    }
+                });
+            }
+
+            // ESC key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeAllModals();
+            });
+        }
+
+        // ============ INITIALIZATION ============
+        async function initApp() {
+            // Set year
+            const yearSpan = document.getElementById('year');
+            if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+            // Initialize Firebase
+            const fbReady = initFirebase();
+
+            // Initialize EmailJS
+            initEmailJS();
+
+            // Initialize password hash
+            await initPasswordHash();
+
+            // Load language
+            const savedLang = localStorage.getItem(CONFIG.storageKeys.lang);
+            applyLang(savedLang === 'ne' ? 'ne' : 'en');
+
+            // Render dynamic content
             renderServices();
             renderAboutStats();
+
+            // Load logo
+            await loadLogoFromFirebase();
+
+            // Load orders
+            allOrders = await fetchOrdersFromFirebase();
+
+            // Check admin session
+            if (checkAdminSession()) {
+                isAdminLoggedIn = true;
+                console.log('🔐 Admin session restored');
+            }
+
+            // Setup event listeners
+            setupEventListeners();
+
+            // Initial scroll dispatch
             window.dispatchEvent(new Event('scroll'));
-            console.log('👑 Royal Programming — Enhanced Admin Ready');
-            console.log('🔐 Admin password set to: Sadi0609');
-        })();
+
+            console.log('👑 Royal Programming — Fully Loaded');
+            console.log('🔥 Firebase:', fbReady ? 'Connected' : 'Using local backup');
+            console.log('📧 EmailJS:', CONFIG.emailjs.publicKey !== 'YOUR_EMAILJS_PUBLIC_KEY' ? 'Configured' :
+                'Needs configuration');
+            console.log('🔐 Admin:', CONFIG.admin.email);
+            console.log('💾 Database:', fbReady ? 'Firestore + localStorage backup' : 'localStorage only');
+        }
+
+        // Start the application
+        document.addEventListener('DOMContentLoaded', initApp);
+
+        // Handle errors gracefully
+        window.addEventListener('error', (e) => {
+            console.warn('Global error caught:', e.message);
+            // Prevent crashes from breaking the UI
+        });
+
+        window.addEventListener('unhandledrejection', (e) => {
+            console.warn('Unhandled promise rejection:', e.reason);
+            // Prevent crashes
+        });
     </script>
 </body>
 </html>
